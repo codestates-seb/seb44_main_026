@@ -1,7 +1,7 @@
 # We are the ㅇㅋ team
 - **Team name**: ㅇㅋ
 
-- **Project**: Carbon Reduction Project
+- **Project**: 그린나래
 
 - **Development Duration**: `2023.06.28~2023.07.27`
 
