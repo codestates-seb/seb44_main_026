@@ -7,17 +7,17 @@
 
 ## 👪Team
 ### Frontend
-| 김영윤                                             | 백승효                                                | 김수성<br>(Team Reader)                              |
+| 김영윤                                            | 백승효                                                | 김수성<br>(Team Reader)                            |
 |---------------------------------------------------|-------------------------------------------------------|-----------------------------------------------------|
 | [@youngyun213](https://github.com/youngyun213)    | [@hyo-4](https://github.com/hyo-4)                    | [@KimSuSung0326](https://github.com/KimSuSung0326)  |
-| <img src="img/red.png" width="100" height="100"> | <img src="img/orange.png" width="100" height="100"> | <img src="img/yellow.png" width="100" height="100"> |
+| <img src="img/red.png" width="100" height="100">  | <img src="img/orange.png" width="100" height="100">   | <img src="img/yellow.png" width="100" height="100"> |
 
                                                                                                                                         
 ### Backend
-| 최서우                                             | 김리나                                                | 백도담<br>(Team Reader)                              |
+| 최서우                                            | 김리나                                                | 백도담<br>(Team Reader)                            |
 |---------------------------------------------------|-------------------------------------------------------|-----------------------------------------------------|
-| [@wooseoboy](https://github.com/wooseoboy)                                              | [@LinaKK](https://github.com/LinaKK)                                                  | [@BAEKDODAM](https://github.com/BAEKDODAM)          |
-| <img src="img/green.png" width="100" height="100"> | <img src="img/blue.png" width="100" height="100"> | <img src="img/darkblue.png" width="100" height="100"> |
+| [@wooseoboy](https://github.com/wooseoboy)        | [@LinaKK](https://github.com/LinaKK)                  | [@BAEKDODAM](https://github.com/BAEKDODAM)          |
+| <img src="img/green.png" width="100" height="100">| <img src="img/blue.png" width="100" height="100">     | <img src="img/darkblue.png" width="100" height="100"> |
 
 
 ## ✍Tech Stack
