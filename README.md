@@ -16,7 +16,7 @@
 ### Backend
 | 최서우                                             | 김리나                                                | 백도담<br>(Team Reader)                              |
 |---------------------------------------------------|-------------------------------------------------------|-----------------------------------------------------|
-| []()                                              | [@LinaKK](https://github.com/LinaKK)                                                  | [@BAEKDODAM](https://github.com/BAEKDODAM)          |
+| [wooseoboy](https://github.com/wooseoboy)                                              | [@LinaKK](https://github.com/LinaKK)                                                  | [@BAEKDODAM](https://github.com/BAEKDODAM)          |
 | <img src="img/green.png" width="100" height="100"> | <img src="img/blue.png" width="100" height="100"> | <img src="img/darkblue.png" width="100" height="100"> |
 
 
