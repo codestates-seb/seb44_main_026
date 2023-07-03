@@ -1,3 +1,4 @@
+import { Route, Routes } from 'react-router-dom';
 import { createGlobalStyle } from 'styled-components';
 import { Nav } from 'components/Nav';
 import { ItemList } from 'pages/ItemList';
@@ -25,7 +26,9 @@ function App() {
     <>
       <GlobalStyle />
       <Nav />
-      <ItemList />
+      <Routes>
+        <Route path="/itemlist" element={<ItemList />} />
+      </Routes>
     </>
   );
 }

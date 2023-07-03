@@ -1,9 +1,11 @@
 import { styled } from 'styled-components';
 import { useAtom } from 'jotai';
 import { menuAtom } from 'jotai/atom';
+import { useNavigate } from 'react-router-dom';
 
 export const Nav = () => {
-  // 마켓, 커뮤니티 여부
+  const navigate = useNavigate();
+  // 마켓, 커뮤니티 여부 -> 추후 수정
   const isShop = true;
 
   const [currentMenu, setCurrentMenu] = useAtom(menuAtom);
@@ -13,11 +15,21 @@ export const Nav = () => {
 
   const selectMenuHandler = (menu: string) => {
     setCurrentMenu(menu);
+    if (isShop) {
+      // 상품목록 페이지로 이동
+      navigate('/itemlist');
+    } else if (!isShop && menu === '챌린지') {
+      // 커뮤니티-챌린지 페이지로 이동
+      // navigate('/챌린지');
+    } else if (!isShop && menu === '그린나래지도') {
+      // 커뮤니티-지도 페이지로 이동
+      // navigate('/지도');
+    }
   };
 
   return (
-    <>
-      <NavWrapper>
+    <NavWrapper>
+      <MenuWrapper>
         {isShop
           ? shopMenuArr.map((menu) => {
               return (
@@ -41,22 +53,25 @@ export const Nav = () => {
                 </Menu>
               );
             })}
-      </NavWrapper>
-    </>
+      </MenuWrapper>
+    </NavWrapper>
   );
 };
 
-const NavWrapper = styled.ul`
+const NavWrapper = styled.nav`
   top: 0;
   position: sticky;
   z-index: 1;
 
+  background-color: var(--white);
+  border-bottom: 0.1rem solid var(--gray);
+`;
+
+const MenuWrapper = styled.ul`
   display: flex;
   flex-direction: row;
   align-items: center;
 
-  background-color: var(--white);
-  border-bottom: 0.1rem solid var(--gray);
   list-style: none;
   padding: 0 2rem;
 `;
