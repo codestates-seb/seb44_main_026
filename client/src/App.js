@@ -1,9 +1,14 @@
-function App() {
+import MainPage from 'pages/MainPage';
+import { Route, Routes } from 'react-router-dom';
+
+const App = () => {
   return (
     <div>
-      <h2>adasd</h2>
+      <Routes>
+        <Route path="/" element={<MainPage />}></Route>
+      </Routes>
     </div>
   );
-}
+};
 
 export default App;
