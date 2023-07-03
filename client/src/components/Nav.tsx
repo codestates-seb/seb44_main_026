@@ -11,33 +11,33 @@ export const Nav = () => {
   const shopMenuArr = ['NEW', 'BEST', 'SALE'];
   const communityMenuArr = ['챌린지', '그린나래지도'];
 
-  const selectMenuHandler = (index: number) => {
-    setCurrentMenu(index);
+  const selectMenuHandler = (menu: string) => {
+    setCurrentMenu(menu);
   };
 
   return (
     <>
       <NavWrapper>
         {isShop
-          ? shopMenuArr.map((el, index) => {
+          ? shopMenuArr.map((menu) => {
               return (
                 <Menu
-                  key={index}
-                  className={currentMenu === index ? 'focused' : null}
-                  onClick={() => selectMenuHandler(index)}
+                  key={menu}
+                  className={currentMenu === menu ? 'focused' : null}
+                  onClick={() => selectMenuHandler(menu)}
                 >
-                  {el}
+                  {menu}
                 </Menu>
               );
             })
-          : communityMenuArr.map((el, index) => {
+          : communityMenuArr.map((menu) => {
               return (
                 <Menu
-                  key={index}
-                  className={currentMenu === index ? 'focused' : null}
-                  onClick={() => selectMenuHandler(index)}
+                  key={menu}
+                  className={currentMenu === menu ? 'focused' : null}
+                  onClick={() => selectMenuHandler(menu)}
                 >
-                  {el}
+                  {menu}
                 </Menu>
               );
             })}

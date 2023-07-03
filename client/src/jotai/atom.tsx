@@ -1,3 +1,3 @@
 import { atom } from 'jotai';
 
-export const menuAtom = atom(0);
+export const menuAtom = atom('main');
