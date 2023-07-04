@@ -2,53 +2,129 @@ import { useEffect, useRef, useState } from 'react';
 import { slideArr } from './AdInfo';
 import styled, { keyframes, css } from 'styled-components';
 import { useInterval } from 'hook/UseInterval';
-import { transform } from '@babel/core';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import {
+  faChevronLeft,
+  faChevronRight,
+} from '@fortawesome/free-solid-svg-icons';
+import SlideButton from './SlideButton';
 
-interface AutoProps {
-  idx: number;
-}
-
-const AutoSlide = () => {
+const AutoSlide: React.FC = () => {
   const [slideIndex, setslideIndex] = useState(0); //slider index
+  const [currentInterval, setCurrentInterval] = useState(3000);
   const LastIdx = slideArr.length;
-  useInterval(() => setslideIndex((slideIndex) => slideIndex + 1), 4000); //custom hook
+  const beforeSlide = slideArr[LastIdx - 1];
+  const afterSlide = slideArr[0];
+  const copiedArr = [...slideArr];
+  const COPIED_NUM = copiedArr.length;
+  const outRef = useRef<HTMLDivElement>(null);
+  const slideRef = useRef<HTMLDivElement>(null);
 
-  if (slideIndex === LastIdx) {
+  useInterval(
+    () => setslideIndex((slideIndex) => slideIndex + 1),
+    currentInterval,
+  ); //custom hook
+
+  if (slideIndex === COPIED_NUM) {
     setslideIndex(0);
   }
 
   const slideUp = () => {
-    if (slideIndex < LastIdx) {
+    if (slideIndex < COPIED_NUM) {
       setslideIndex(slideIndex + 1);
     } else {
       setslideIndex(0);
     }
+    stopSlide();
   };
   const slideDown = () => {
     if (slideIndex > 0) {
       setslideIndex(slideIndex - 1);
     } else {
-      setslideIndex(LastIdx - 1);
+      setslideIndex(COPIED_NUM - 1);
     }
+    stopSlide();
   };
+
+  const stopSlide = () => {
+    setCurrentInterval(10000);
+  };
+
+  const restartSlide = () => {
+    setCurrentInterval(3000);
+  };
+
+  useEffect(() => {
+    outRef.current?.addEventListener('mouseover', stopSlide);
+    outRef.current?.addEventListener('mouseleave', restartSlide);
+
+    return () => {
+      outRef.current?.removeEventListener('mouseover', stopSlide);
+      outRef.current?.removeEventListener('mouseleave', restartSlide);
+    };
+  }, [currentInterval]); //마우스 올리면 interval 초기화
+
   return (
-    <>
-      <button onClick={slideDown}>{`<`}</button>
-      <DivConatiner>
-        <StyledContainer display={slideIndex}>
-          <SingleContainer>
-            {slideArr.map((el) => (
-              <img src={el[0]} />
-            ))}
-          </SingleContainer>
-        </StyledContainer>
-      </DivConatiner>
-      <button onClick={slideUp}>{`>`}</button>
-    </>
+    <StyledAutoContainer>
+      <HeadLine>
+        <h2>🌎 알아서 챙겨주는 나만의 환경 트레이너 🌎</h2>
+      </HeadLine>
+      <div className="ad-slider" ref={outRef}>
+        <FontAwesomeIcon
+          icon={faChevronLeft}
+          className="ad-icon-left"
+          onClick={slideDown}
+        />
+        <DivConatiner>
+          <StyledContainer display={slideIndex}>
+            <SingleContainer ref={slideRef}>
+              {copiedArr.map((item, index) => (
+                <img src={item[0]} alt="banner" key={index} />
+              ))}
+            </SingleContainer>
+          </StyledContainer>
+        </DivConatiner>
+        <FontAwesomeIcon
+          icon={faChevronRight}
+          className="ad-icon-right"
+          onClick={slideUp}
+        />
+      </div>
+      <SlideButton
+        slideIndex={slideIndex}
+        setslideIndex={setslideIndex}
+        slideArr={slideArr}
+        stopSlide={stopSlide}
+      />
+    </StyledAutoContainer>
   );
 };
 
 export default AutoSlide;
+
+const StyledAutoContainer = styled.div`
+  .ad-slider {
+    display: flex;
+    position: relative;
+    align-items: center;
+    .ad-icon-left {
+      position: absolute;
+      z-index: 99;
+      margin-left: 0.5rem;
+      font-size: 2rem;
+      color: white;
+    }
+    .ad-icon-right {
+      position: absolute;
+      margin-left: 58.1rem;
+      z-index: 99;
+      font-size: 2rem;
+      color: white;
+    }
+  }
+`;
+
+const HeadLine = styled.div``;
 
 const DivConatiner = styled.div`
   width: 60rem;
@@ -61,8 +137,8 @@ const DivConatiner = styled.div`
 `;
 
 const StyledContainer = styled.div<{ display: number }>`
-  width: 300rem;
-  transition: 0.5s;
+  width: 500rem;
+  transition: 1s;
   transform: ${(props) =>
     props.display ? `translate(${-(props.display * 60)}rem)` : null};
 `;
