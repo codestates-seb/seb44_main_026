@@ -1,7 +1,37 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
   <component name="ChangeListManager">
-    <list default="true" id="408bf46b-0b9b-4066-bfc6-a6c8c4e5da2c" name="Changes" comment="" />
+    <list default="true" id="408bf46b-0b9b-4066-bfc6-a6c8c4e5da2c" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/seb44_main_026.iml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/greenNare/greenNare/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/greenNare/greenNare/build.gradle" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/greenNare/greenNare/gradle/wrapper/gradle-wrapper.jar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/greenNare/greenNare/gradle/wrapper/gradle-wrapper.properties" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/greenNare/greenNare/gradlew" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/greenNare/greenNare/gradlew.bat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/greenNare/greenNare/settings.gradle" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/greenNare/greenNare/src/main/java/greenNare/GreenNareApplication.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/greenNare/greenNare/src/main/java/greenNare/Response/ErrorResponse.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/greenNare/greenNare/src/main/java/greenNare/Response/MultiResponseDto.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/greenNare/greenNare/src/main/java/greenNare/Response/PageInfo.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/greenNare/greenNare/src/main/java/greenNare/Response/SingleResponseDto.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/greenNare/greenNare/src/main/java/greenNare/advice/GlobalExceptionAdvice.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/greenNare/greenNare/src/main/java/greenNare/audit/Aduitable.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/greenNare/greenNare/src/main/java/greenNare/config/SecurityConfiguration.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/greenNare/greenNare/src/main/java/greenNare/exception/BusinessLogicException.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/greenNare/greenNare/src/main/java/greenNare/exception/ExceptionCode.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/greenNare/greenNare/src/main/java/greenNare/exception/GlobalExceptionHandler.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/greenNare/greenNare/src/main/java/greenNare/utils/UriCreator.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/greenNare/greenNare/src/main/resources/application.yml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/greenNare/greenNare/src/test/java/greenNare/GreenNareApplicationTests.java" beforeDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -21,7 +51,7 @@
   "keyToString": {
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
-    "last_opened_file_path": "C:/Users/kimri/codestates/seb44_main_026/server/greenNare/greenNare/build.gradle"
+    "last_opened_file_path": "C:/Users/kimri/codestates/seb44_main_026"
   }
 }]]></component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
