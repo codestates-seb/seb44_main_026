@@ -9,6 +9,7 @@ interface AutoProps {
   setslideIndex: any;
   slideArr: string[][];
   stopSlide: () => void;
+  restartSlide: () => void;
 }
 
 const SlideButton: React.FC<AutoProps> = ({
@@ -16,6 +17,7 @@ const SlideButton: React.FC<AutoProps> = ({
   setslideIndex,
   slideArr,
   stopSlide,
+  restartSlide,
 }) => {
   const PAGE_LEN = slideArr.length;
   const paginationArr = new Array(PAGE_LEN);
@@ -23,6 +25,7 @@ const SlideButton: React.FC<AutoProps> = ({
   const paginationHandler = (index: number) => {
     setslideIndex(index);
     stopSlide();
+    restartSlide();
   };
   return (
     <ButtonWrapper>

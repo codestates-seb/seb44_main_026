@@ -95,6 +95,7 @@ const AutoSlide: React.FC = () => {
         setslideIndex={setslideIndex}
         slideArr={slideArr}
         stopSlide={stopSlide}
+        restartSlide={restartSlide}
       />
     </StyledAutoContainer>
   );
