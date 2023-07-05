@@ -5,27 +5,22 @@ import { Item } from 'feature/item';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 
-export interface ItemType {
+interface ItemType {
+  albumId: number;
+  id: number;
+  thumbnailUrl: string;
   title: string;
   url: string;
 }
 
 export const Product = () => {
-  const [item, setItem] = useState<ItemType>({
-    title: '',
-    url: '',
-  });
+  const [itemList, setItemList] = useState<ItemType[]>([]);
 
   useEffect(() => {
     axios
-      .get(`https://jsonplaceholder.typicode.com/photos/1`)
+      .get(`https://jsonplaceholder.typicode.com/photos?albumId=1`)
       .then((res) => {
-        console.log(res.data);
-        const { title, thumbnailUrl } = res.data;
-        setItem({
-          title: title,
-          url: thumbnailUrl,
-        });
+        setItemList(res.data);
       })
       .catch((err) => {
         console.log(err);
@@ -36,13 +31,30 @@ export const Product = () => {
     <ProductWrapper>
       <Nav />
       <Category />
-      <Item title={item.title} url={item.url} />
+      <ItemListWrapper>
+        <ItemList>
+          {itemList.map((item) => (
+            <Item key={item.id} title={item.title} url={item.url} />
+          ))}
+        </ItemList>
+      </ItemListWrapper>
     </ProductWrapper>
   );
 };
 
 const ProductWrapper = styled.div`
-  width: 100%;
-  display: flex;
+  /* display: flex;
   flex-direction: column;
+  align-items: center; */
+`;
+const ItemListWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+`;
+const ItemList = styled.div`
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+
+  gap: 1rem;
 `;
