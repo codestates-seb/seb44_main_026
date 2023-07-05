@@ -3,8 +3,6 @@ import { Header } from 'components/layouts/Header';
 import styled from 'styled-components';
 import { Outlet } from 'react-router-dom';
 import { Footer } from 'components/layouts/Footer';
-import { Nav } from 'components/Nav';
-import { Category } from 'feature/Category';
 
 const GlobalStyle = createGlobalStyle`
 * {
@@ -36,8 +34,6 @@ const App = () => (
   <div>
     <GlobalStyle />
     <Header />
-    <Nav />
-    <Category />
     <MainWrapper>
       <Outlet />
     </MainWrapper>

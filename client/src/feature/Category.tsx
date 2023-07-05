@@ -12,7 +12,7 @@ export const Category = () => {
   };
 
   return (
-    <>
+    <Wrapper>
       <CategoryWrapper>
         {filterArr.map((filter) => {
           return (
@@ -26,9 +26,15 @@ export const Category = () => {
           );
         })}
       </CategoryWrapper>
-    </>
+    </Wrapper>
   );
 };
+
+const Wrapper = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
 
 const CategoryWrapper = styled.ul`
   border: 0.1rem solid var(--gray);
