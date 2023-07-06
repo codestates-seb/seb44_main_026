@@ -47,7 +47,7 @@ const AutoSlide: React.FC = () => {
   };
 
   const stopSlide = () => {
-    setCurrentInterval(10000);
+    setCurrentInterval(5000);
   };
 
   const restartSlide = () => {
@@ -104,6 +104,7 @@ const AutoSlide: React.FC = () => {
 export default AutoSlide;
 
 const StyledAutoContainer = styled.div`
+  width: 100%;
   .ad-slider {
     display: flex;
     position: relative;
@@ -125,7 +126,9 @@ const StyledAutoContainer = styled.div`
   }
 `;
 
-const HeadLine = styled.div``;
+const HeadLine = styled.div`
+  margin-bottom: 1rem;
+`;
 
 const DivConatiner = styled.div`
   width: 60rem;

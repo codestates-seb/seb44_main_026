@@ -3,7 +3,6 @@ import { styled } from 'styled-components';
 import ChallengeItem from './ChallengeItem';
 import API from '../../api/index';
 import { useEffect, useState } from 'react';
-import Pagination from './Pagination';
 
 const ChallengeList = () => {
   const [challengeList, setChallengeList] = useState([]);
@@ -13,7 +12,7 @@ const ChallengeList = () => {
   const getChallenge = async () => {
     try {
       const res = await API.GET('https://jsonplaceholder.typicode.com/posts');
-      setChallengeList([...challengeList, ...res.data]);
+      setChallengeList([...res.data]);
     } catch (err) {
       console.log(err);
       setChallengeList([]);
@@ -45,11 +44,6 @@ const ChallengeList = () => {
       {challengeList.map((item) => (
         <ChallengeItem item={item} key={item.id} />
       ))}
-      <Pagination
-        postPerPage={postPerPage}
-        totalPosts={challengeList.length}
-        paginate={setCurrentPage}
-      />
     </ListWrapper>
   );
 };
@@ -61,4 +55,6 @@ const ListWrapper = styled.div`
   justify-content: center;
   align-items: center;
   flex-direction: column;
+  width: 100%;
+  margin-bottom: 3rem;
 `;

@@ -17,7 +17,7 @@ export const useInterval: IUseInterval = (callback, interval) => {
         savedCallback.current();
       }
     }
-    if (interval !== 10000) {
+    if (interval !== 5000) {
       const id = setInterval(tick, interval);
       return () => clearInterval(id);
     }
