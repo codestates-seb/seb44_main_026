@@ -59,6 +59,7 @@ const ItemWrapper = styled.li`
   list-style: none;
   border: 0.1rem solid var(--gray);
   border-radius: 0.5rem;
+  background-color: var(--white);
 
   width: 18rem;
   height: 21rem;

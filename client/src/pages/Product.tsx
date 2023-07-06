@@ -28,33 +28,28 @@ export const Product = () => {
   }, []);
 
   return (
-    <ProductWrapper>
+    <>
       <Nav />
-      <Category />
-      <ItemListWrapper>
+      <ProductWrapper>
+        <Category />
         <ItemList>
           {itemList.map((item) => (
             <Item key={item.id} title={item.title} url={item.url} />
           ))}
         </ItemList>
-      </ItemListWrapper>
-    </ProductWrapper>
+      </ProductWrapper>
+    </>
   );
 };
 
 const ProductWrapper = styled.div`
-  /* display: flex;
-  flex-direction: column;
-  align-items: center; */
+  padding: 2rem;
 `;
-const ItemListWrapper = styled.div`
-  display: flex;
-  justify-content: center;
-`;
-const ItemList = styled.div`
-  display: flex;
-  justify-content: center;
-  flex-wrap: wrap;
 
+const ItemList = styled.ul`
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(18rem, max-content));
+  justify-content: center;
   gap: 1rem;
+  margin: 2rem;
 `;

@@ -22,21 +22,21 @@ const GlobalStyle = createGlobalStyle`
   } 
 }
 `;
-const MainWrapper = styled.div`
-  max-width: 1264px;
-  width: 100%;
-  display: flex;
-  margin: 0 auto;
-  flex: 1;
-`;
+// const MainWrapper = styled.div`
+//   max-width: 1264px;
+//   width: 100%;
+//   display: flex;
+//   margin: 0 auto;
+//   flex: 1;
+// `;
 
 const App = () => (
   <div>
     <GlobalStyle />
     <Header />
-    <MainWrapper>
-      <Outlet />
-    </MainWrapper>
+    {/* <MainWrapper> */}
+    <Outlet />
+    {/* </MainWrapper> */}
     <Footer />
   </div>
 );

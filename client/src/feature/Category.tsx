@@ -47,7 +47,7 @@ const CategoryWrapper = styled.ul`
 
   overflow: hidden;
   list-style: none;
-  margin: 1rem;
+  /* margin: 1rem; */
 `;
 
 const Filter = styled.li`
