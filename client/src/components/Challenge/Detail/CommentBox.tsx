@@ -20,8 +20,10 @@ const CommentBox: React.FC<CommentProps> = ({
     <DivContainer>
       <InfoContainer>
         <div className="member-name">{'🐥 ' + name}</div>
-        <div className="member-point">{point + '점'}</div>
-        <div className="comment-date">{'⏱️' + moment(createdAt).fromNow()}</div>
+        <div className="member-point">{'🏆 ' + point + '점'}</div>
+        <div className="comment-date">
+          {'⏱️ ' + moment(createdAt).fromNow()}
+        </div>
         <div className="del-button">삭제</div>
       </InfoContainer>
       <BodyContainer>{body}</BodyContainer>
@@ -36,7 +38,7 @@ const DivContainer = styled.div`
   flex-direction: column;
   margin: 1rem;
   padding: 1rem 2rem;
-  border: 1px solid var(--green-300);
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
   border-radius: 0.5rem;
 `;
 

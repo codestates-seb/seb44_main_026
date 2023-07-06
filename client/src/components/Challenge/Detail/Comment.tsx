@@ -16,6 +16,7 @@ const InputItem: React.FC<InputItemProps> = ({ setComment, value }) => {
         onChange={textHandler}
         className="input-content"
         value={value}
+        placeholder="댓글을 달고 챌린지에 참여해보세요!"
       ></input>
       <InputButton>등록</InputButton>
     </InputContainer>
@@ -53,7 +54,11 @@ const InputContainer = styled.div`
     height: 2rem;
     padding: 1rem;
     border-radius: 0.5rem;
-    border: 1px solid var(--green-300);
+    border: none;
+    box-shadow: rgba(0, 0, 0, 0.3) 1px 1px 4px;
+  }
+  input::placeholder {
+    color: var(--gray);
   }
 `;
 
@@ -61,6 +66,7 @@ const InputButton = styled.div`
   display: flex;
   background-color: var(--green-100);
   border-radius: 0.5rem;
+  font-size: 13px;
   align-items: center;
   justify-content: center;
   margin: 0rem 0.5rem;

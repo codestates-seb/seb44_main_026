@@ -28,7 +28,7 @@ export default ChallengeItem;
 
 const ItemWrapper = styled.div`
   display: flex;
-  border: 1px solid black;
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
   padding: 2rem;
   font-size: 1rem;
   margin-top: 1rem;
@@ -60,6 +60,6 @@ const WriterContainer = styled.div`
   justify-content: center;
   align-items: center;
   color: var(--green-300);
-  font-size: 1rem;
+  font-size: 12px;
   width: 20%;
 `;

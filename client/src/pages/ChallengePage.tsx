@@ -42,6 +42,9 @@ const WriteButton = styled.div`
   border-radius: 0.5rem;
   color: white;
   background-color: var(--green-100);
+  &:hover {
+    background-color: var(--green-200);
+  }
   @media (max-width: 900px) {
     width: 20%;
   }
