@@ -1,13 +1,17 @@
 import ChallengeList from 'components/Challenge/ChallengeList';
 import React from 'react';
 import { styled } from 'styled-components';
-
+import { useNavigate } from 'react-router-dom';
 const ChallengePage = () => {
+  const navigate = useNavigate();
+  const gotoWrite = () => {
+    navigate('/challenge/write');
+  };
   return (
     <StyledWrapper>
       <HeadLine>
         <h1>☘️ 챌린지</h1>
-        <WriteButton>글 작성하기</WriteButton>
+        <WriteButton onClick={gotoWrite}>글 작성하기</WriteButton>
       </HeadLine>
       <ChallengeList />
     </StyledWrapper>
@@ -38,4 +42,7 @@ const WriteButton = styled.div`
   border-radius: 0.5rem;
   color: white;
   background-color: var(--green-100);
+  @media (max-width: 900px) {
+    width: 20%;
+  }
 `;

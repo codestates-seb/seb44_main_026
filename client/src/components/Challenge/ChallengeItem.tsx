@@ -1,14 +1,19 @@
 import React from 'react';
 import { styled } from 'styled-components';
 import { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 type ItemProps = {
   item: any;
 };
 
 const ChallengeItem: React.FC<ItemProps> = ({ item }) => {
+  const navigate = useNavigate();
+  const gotoDetail = () => {
+    navigate(`/challenge/${item.id}`);
+  };
   return (
-    <ItemWrapper>
+    <ItemWrapper onClick={gotoDetail}>
       <div className="challenge">
         {'🌱 ' + item.id + '. '}
         {item.title}
@@ -33,7 +38,7 @@ const ItemWrapper = styled.div`
     display: flex;
     width: 60%;
     border-radius: 1rem;
-    color: #9dc18b;
+    color: var(--green-300);
     align-items: center;
   }
 `;
@@ -47,13 +52,14 @@ const CountContainer = styled.div`
   width: 20%;
   justify-content: center;
   margin-left: 1rem;
-  background-color: #9dc18b;
+  background-color: var(--green-200);
 `;
 
 const WriterContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  color: var(--green-300);
   font-size: 1rem;
   width: 20%;
 `;

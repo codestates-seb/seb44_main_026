@@ -104,7 +104,7 @@ const AutoSlide: React.FC = () => {
 export default AutoSlide;
 
 const StyledAutoContainer = styled.div`
-  width: 100%;
+  margin: 1rem 0rem;
   .ad-slider {
     display: flex;
     position: relative;
