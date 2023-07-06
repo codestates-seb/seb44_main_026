@@ -4,13 +4,18 @@ import API from '../api/index';
 import { useEffect, useState } from 'react';
 import { styled } from 'styled-components';
 import loadimg from '../assets/img/loading.gif';
+import { InputItem } from 'components/Challenge/Detail/Comment';
+import { dummyComment } from 'components/Challenge/Detail/DummyComment';
+import CommentBox from 'components/Challenge/Detail/CommentBox';
 
 const ChallengeDetail = () => {
-  const id = useParams().id;
+  const id = useParams().id; //챌린지 아이디
   const [title, setTitle] = useState('');
   const [body, setBody] = useState('');
-  const [loading, setloading] = useState(false);
-  const comment = 1;
+  const [loading, setloading] = useState(false); //데이터 받아올 때 로딩
+  const [comment, setComment] = useState(''); //새로 작성할 댓글 내용
+  const commentCount = 0;
+
   const getChallenge = async () => {
     try {
       setloading(true);
@@ -26,13 +31,14 @@ const ChallengeDetail = () => {
     setloading(false);
   };
   useEffect(() => {
+    window.scrollTo(0, 0);
     getChallenge();
   }, []);
 
   return (
     <DivContainer>
       <HeadLine>
-        <h1>🦄 상세 게시판</h1>
+        <h1>🦄 참여하기</h1>
       </HeadLine>
       <ItemContainer>
         {loading && <img src={loadimg}></img>}
@@ -41,8 +47,17 @@ const ChallengeDetail = () => {
         <BodyContainer>{body}</BodyContainer>
       </ItemContainer>
       <CommentContainer>
-        <CommentTitle>참여 댓글 {comment}개</CommentTitle>
-        <Comments>댓글</Comments>
+        <CommentTitle>참여 댓글 {commentCount}개</CommentTitle>
+        <InputItem setComment={setComment} value={comment} />
+        {dummyComment.map((item: any, index: any) => (
+          <CommentBox
+            name={item.memberId}
+            body={item.body}
+            point={item.point}
+            createdAt={item.createdAt}
+            key={index}
+          ></CommentBox>
+        ))}
       </CommentContainer>
     </DivContainer>
   );
@@ -58,7 +73,8 @@ const DivContainer = styled.div`
 const HeadLine = styled.div`
   display: flex;
   margin-bottom: 1rem;
-  margin-top: 1rem;
+  margin-top: 2rem;
+  margin-left: 1rem;
 `;
 
 const ItemContainer = styled.div`
@@ -96,9 +112,5 @@ const CommentContainer = styled.div``;
 const CommentTitle = styled.div`
   font-size: 20px;
   margin: 1rem;
-`;
-
-const Comments = styled.div`
-  border: 1px solid black;
-  border-radius: 0.5rem;
+  margin-top: 2rem;
 `;
