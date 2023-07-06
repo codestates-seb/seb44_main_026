@@ -45,6 +45,29 @@ const TextareaItem: React.FC<TextareaItemProps> = ({ setBody, value }) => {
   );
 };
 */
+
+interface InputProps {
+  setTitle: (comment: string) => void;
+  value: string;
+}
+
+const InputTitle: React.FC<InputProps> = ({ setTitle, value }) => {
+  const textHandler = (e: React.FormEvent<HTMLInputElement>) => {
+    setTitle(e.currentTarget.value);
+  };
+
+  return (
+    <InputTitleContainer>
+      <input
+        onChange={textHandler}
+        className="input-content"
+        value={value}
+        placeholder="제목을 입력하세요"
+      ></input>
+    </InputTitleContainer>
+  );
+};
+
 const InputContainer = styled.div`
   display: flex;
   margin-left: 1rem;
@@ -56,6 +79,22 @@ const InputContainer = styled.div`
     border-radius: 0.5rem;
     border: none;
     box-shadow: rgba(0, 0, 0, 0.3) 1px 1px 4px;
+  }
+  input::placeholder {
+    color: var(--gray);
+  }
+`;
+
+const InputTitleContainer = styled.div`
+  display: flex;
+  margin-bottom: 1rem;
+  input {
+    width: 100%;
+    height: 2rem;
+    padding: 1rem;
+    border-radius: 0.5rem;
+    border: none;
+    border: 1px solid var(--gray-100);
   }
   input::placeholder {
     color: var(--gray);
@@ -96,4 +135,4 @@ const TextareaContainer = styled.section`
   border: 1px solid var(--black-075);
   border-radius: 3px;
 `;*/
-export { InputItem };
+export { InputItem, InputTitle };
