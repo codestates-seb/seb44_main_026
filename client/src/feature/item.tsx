@@ -1,16 +1,9 @@
 import { styled } from 'styled-components';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faHeart as solidHeart } from '@fortawesome/free-solid-svg-icons';
-import { faHeart as regularHeart } from '@fortawesome/free-regular-svg-icons';
-import { useState } from 'react';
+import { LikeButton } from 'feature/LikeButton';
 
 interface ItemProps {
   title: string;
   url: string;
-}
-
-interface LikeProps {
-  color: string;
 }
 
 interface ImageProps {
@@ -18,13 +11,7 @@ interface ImageProps {
 }
 
 export const Item = ({ title, url }: ItemProps) => {
-  const [isLike, setIsLike] = useState(false);
-
-  const onLikeHandler = () => {
-    setIsLike(!isLike);
-
-    // 관심상품 여부 저장
-  };
+  const itemId = 1;
 
   console.log(title, url);
 
@@ -37,19 +24,8 @@ export const Item = ({ title, url }: ItemProps) => {
           <Price>10000원</Price>
           <Review>리뷰 00개</Review>
         </ItemInfo>
-        {isLike ? (
-          <LikeButton
-            icon={solidHeart}
-            onClick={() => onLikeHandler()}
-            color={`var(--red)`}
-          />
-        ) : (
-          <LikeButton
-            icon={regularHeart}
-            onClick={() => onLikeHandler()}
-            color={`var(--gray)`}
-          />
-        )}
+
+        <LikeButton id={itemId} />
       </ItemInfoWrapper>
     </ItemWrapper>
   );
@@ -103,10 +79,4 @@ const Price = styled.div`
 `;
 const Review = styled.div`
   padding-top: 0.3rem;
-`;
-
-const LikeButton = styled(FontAwesomeIcon)<LikeProps>`
-  width: 2rem;
-  height: 2rem;
-  color: ${(props) => props.color};
 `;
