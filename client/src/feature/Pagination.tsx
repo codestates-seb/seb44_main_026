@@ -10,9 +10,12 @@ interface PaginationProps {
 export const Pagination = ({ total, page, setPage }: PaginationProps) => {
   return (
     <PaginationWrapper>
-      <Button onClick={() => setPage(page - 1)} disabled={page <= 1}>
-        pre
-      </Button>
+      {page > 1 ? (
+        <Button onClick={() => setPage(page - 1)} disabled={page <= 1}>
+          pre
+        </Button>
+      ) : null}
+
       {Array(total)
         .fill(null)
         .map((el, index) => (
@@ -24,16 +27,14 @@ export const Pagination = ({ total, page, setPage }: PaginationProps) => {
             {index + 1}
           </Button>
         ))}
-
-      <Button onClick={() => setPage(page + 1)} disabled={page >= total}>
-        next
-      </Button>
+      {page < total ? (
+        <Button onClick={() => setPage(page + 1)}>next</Button>
+      ) : null}
     </PaginationWrapper>
   );
 };
 
 const PaginationWrapper = styled.nav`
-  border: 0.1rem solid var(--gray);
   padding: 1rem;
   margin: 1rem;
 

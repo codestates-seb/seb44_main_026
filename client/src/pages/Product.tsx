@@ -49,7 +49,7 @@ export const Product = () => {
       .get(`https://jsonplaceholder.typicode.com/photos?albumId=${id}`)
       .then((res) => {
         // setItemList(res.data.slice(0, 10));
-        setItemList(res.data.slice((currentPage - 1) * 10, currentPage * 10));
+        setItemList(res.data.slice((currentPage - 1) * 8, currentPage * 8));
       })
       .catch((err) => {
         console.log(err);
@@ -61,16 +61,16 @@ export const Product = () => {
       <Nav />
       <ProductWrapper>
         <Category />
-        <Pagination
-          total={totalPages}
-          page={currentPage}
-          setPage={setCurrentPage}
-        />
         <ItemList>
           {itemList.map((item) => (
             <Item key={item.id} title={item.title} url={item.url} />
           ))}
         </ItemList>
+        <Pagination
+          total={totalPages}
+          page={currentPage}
+          setPage={setCurrentPage}
+        />
       </ProductWrapper>
     </>
   );
