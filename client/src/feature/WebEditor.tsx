@@ -61,5 +61,6 @@ export const EditorComponent: React.FC<EditorProps> = ({
 const DivContainer = styled.div`
   .quill {
     height: 15rem;
+    padding: 0;
   }
 `;

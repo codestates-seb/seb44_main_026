@@ -1,6 +1,5 @@
 import { createGlobalStyle } from 'styled-components';
 import { Header } from 'components/layouts/Header';
-import styled from 'styled-components';
 import { Outlet } from 'react-router-dom';
 import { Footer } from 'components/layouts/Footer';
 import { Nav } from 'components/Nav';

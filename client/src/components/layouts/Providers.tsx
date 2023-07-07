@@ -7,6 +7,7 @@ import ChallengePage from 'pages/ChallengePage';
 import MainPage from 'pages/MainPage';
 import ChallengeDetail from 'pages/ChallengeDetail';
 import AddChallenge from 'pages/AddChallenge';
+import MyProfile from 'pages/MyProfile';
 
 const router = createBrowserRouter([
   {
@@ -20,6 +21,7 @@ const router = createBrowserRouter([
       { path: 'challenge/:id', element: <ChallengeDetail /> },
       { path: 'challenge/write', element: <AddChallenge /> },
       { path: 'main', element: <MainPage /> },
+      { path: 'mypage', element: <MyProfile /> },
     ],
   },
 ]);

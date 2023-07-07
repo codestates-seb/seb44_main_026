@@ -42,7 +42,10 @@ const ChallengeDetail = () => {
       </HeadLine>
       <ItemContainer>
         {loading && <img src={loadimg}></img>}
-        <TitleContainer>{title}</TitleContainer>
+        <TitleContainer>
+          <div className="detail-title">{title}</div>
+          <div className="detail-writer">작성자:김철수 Date</div>
+        </TitleContainer>
         {!loading && <hr />}
         <BodyContainer>{body}</BodyContainer>
       </ItemContainer>
@@ -95,9 +98,18 @@ const ItemContainer = styled.div`
 
 const TitleContainer = styled.div`
   display: flex;
-  margin: 1.5rem;
-  margin-left: 3rem;
-  font-size: 21px;
+  flex-direction: column;
+  .detail-title {
+    margin-top: 1.5rem;
+    margin-left: 3rem;
+    font-size: 21px;
+  }
+  .detail-writer {
+    display: flex;
+    font-size: 13px;
+    margin: 0.5rem 0rem;
+    margin-left: 3rem;
+  }
 `;
 
 const BodyContainer = styled.div`
