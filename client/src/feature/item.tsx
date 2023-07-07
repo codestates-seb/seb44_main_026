@@ -1,7 +1,9 @@
 import { styled } from 'styled-components';
 import { LikeButton } from 'feature/LikeButton';
+import { useNavigate } from 'react-router-dom';
 
 interface ItemProps {
+  id: number;
   title: string;
   url: string;
 }
@@ -10,22 +12,24 @@ interface ImageProps {
   img: string;
 }
 
-export const Item = ({ title, url }: ItemProps) => {
-  const itemId = 1;
+export const Item = ({ id, title, url }: ItemProps) => {
+  const navigate = useNavigate();
 
-  console.log(title, url);
+  const selectItemHandler = (id: number) => {
+    navigate(`/product/${id}`);
+  };
 
   return (
     <ItemWrapper>
-      <Image img={url} />
+      <Image img={url} onClick={() => selectItemHandler(id)} />
       <ItemInfoWrapper>
         <ItemInfo>
-          <Title>{title}</Title>
+          <Title onClick={() => selectItemHandler(id)}>{title}</Title>
           <Price>10000원</Price>
           <Review>리뷰 00개</Review>
         </ItemInfo>
 
-        <LikeButton id={itemId} />
+        <LikeButton id={id} />
       </ItemInfoWrapper>
     </ItemWrapper>
   );
@@ -46,12 +50,11 @@ const ItemWrapper = styled.li`
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
-
-  cursor: pointer;
 `;
 
 const Image = styled.div<ImageProps>`
   border: 0.1rem solid var(--gray);
+  cursor: pointer;
 
   width: 16rem;
   height: 13rem;
@@ -73,7 +76,9 @@ const ItemInfoWrapper = styled.div`
 
 const ItemInfo = styled.div``;
 
-const Title = styled.div``;
+const Title = styled.div`
+  cursor: pointer;
+`;
 const Price = styled.div`
   padding-top: 0.3rem;
 `;

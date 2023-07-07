@@ -29,7 +29,7 @@ export const Product = () => {
   const filter = useAtomValue(filterAtom);
 
   const [itemList, setItemList] = useState<ItemType[]>([]);
-  const [currentPage, setCurrentPage] = useState(0);
+  const [currentPage, setCurrentPage] = useState(1);
 
   const totalItems = 50; // 아이템 총 개수 -> 해당 카테고리의 상품 개수
   const itemsPerPage = 10; // 각 페이지에 표시될 아이템 개수 -> 응답으로 받은 아이템의 개수
@@ -63,7 +63,12 @@ export const Product = () => {
         <Category />
         <ItemList>
           {itemList.map((item) => (
-            <Item key={item.id} title={item.title} url={item.url} />
+            <Item
+              key={item.id}
+              id={item.id}
+              title={item.title}
+              url={item.url}
+            />
           ))}
         </ItemList>
         <Pagination
