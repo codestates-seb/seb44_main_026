@@ -1,19 +1,20 @@
 import { styled } from 'styled-components';
 import { LikeButton } from 'feature/LikeButton';
 import { useNavigate } from 'react-router-dom';
+import { ItemType } from 'pages/Product';
 
-interface ItemProps {
-  id: number;
-  title: string;
-  url: string;
-  heart: boolean;
-}
+// interface ItemProps {
+//   id: number;
+//   title: string;
+//   url: string;
+//   heart: boolean;
+// }
 
 interface ImageProps {
   img: string;
 }
 
-export const Item = ({ id, title, url, heart }: ItemProps) => {
+export const Item = ({ id, title, url, heart }: ItemType) => {
   const navigate = useNavigate();
 
   const selectItemHandler = (id: number) => {

@@ -1,12 +1,12 @@
 import { styled } from 'styled-components';
 import { Nav } from 'components/Nav';
 import { Category } from 'feature/Category';
-import { Item } from 'feature/item';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useAtomValue } from 'jotai';
 import { filterAtom } from 'jotai/atom';
 import { Pagination } from 'feature/Pagination';
+import { ItemList } from 'feature/ItemList';
 
 // api 명세서 - 응답
 // interface ItemType {
@@ -17,10 +17,10 @@ import { Pagination } from 'feature/Pagination';
 // }
 
 // 임시
-interface ItemType {
-  albumId: number;
+export interface ItemType {
+  albumId?: number;
   id: number;
-  thumbnailUrl: string;
+  thumbnailUrl?: string;
   title: string;
   url: string;
   heart: boolean;
@@ -62,17 +62,8 @@ export const Product = () => {
       <Nav />
       <ProductWrapper>
         <Category />
-        <ItemList>
-          {itemList.map((item) => (
-            <Item
-              key={item.id}
-              id={item.id}
-              title={item.title}
-              url={item.url}
-              heart={item.heart}
-            />
-          ))}
-        </ItemList>
+        <ItemList itemlist={itemList} />
+
         <Pagination
           total={totalPages}
           page={currentPage}
@@ -85,12 +76,4 @@ export const Product = () => {
 
 const ProductWrapper = styled.div`
   padding: 2rem;
-`;
-
-const ItemList = styled.ul`
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(18rem, max-content));
-  justify-content: center;
-  gap: 1rem;
-  margin: 2rem;
 `;

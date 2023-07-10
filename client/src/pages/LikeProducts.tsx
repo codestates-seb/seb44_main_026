@@ -1,6 +1,6 @@
 import { styled } from 'styled-components';
 import { Nav } from 'components/Nav';
-import { Item } from 'feature/item';
+import { ItemList } from 'feature/ItemList';
 import { useEffect, useState } from 'react';
 
 export const LikeProducts = () => {
@@ -15,24 +15,7 @@ export const LikeProducts = () => {
       <Nav />
       <ProductWrapper>
         <Title>관심 상품</Title>
-        <ItemList>
-          {likeItems.map(
-            (item: {
-              id: number;
-              title: string;
-              url: string;
-              heart: boolean;
-            }) => (
-              <Item
-                key={item.id}
-                id={item.id}
-                title={item.title}
-                url={item.url}
-                heart={item.heart}
-              />
-            ),
-          )}
-        </ItemList>
+        <ItemList itemlist={likeItems} />
       </ProductWrapper>
     </>
   );
@@ -44,12 +27,4 @@ const ProductWrapper = styled.div`
 const Title = styled.h1`
   font-size: 1.5rem;
   margin: 0 2rem;
-`;
-
-const ItemList = styled.ul`
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(18rem, max-content));
-  justify-content: center;
-  gap: 1rem;
-  margin: 2rem;
 `;
