@@ -3,13 +3,6 @@ import { LikeButton } from 'feature/LikeButton';
 import { useNavigate } from 'react-router-dom';
 import { ItemType } from 'pages/Product';
 
-// interface ItemProps {
-//   id: number;
-//   title: string;
-//   url: string;
-//   heart: boolean;
-// }
-
 interface ImageProps {
   img: string;
 }
@@ -31,7 +24,7 @@ export const Item = ({ id, title, url, heart }: ItemType) => {
           <Review>리뷰 00개</Review>
         </ItemInfo>
 
-        <LikeButton id={id} heart={heart} />
+        <LikeButton id={id} title={title} url={url} heart={heart} />
       </ItemInfoWrapper>
     </ItemWrapper>
   );

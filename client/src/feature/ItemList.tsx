@@ -2,15 +2,6 @@ import { styled } from 'styled-components';
 import { Item } from 'feature/item';
 import { ItemType } from 'pages/Product';
 
-// interface ItemType {
-//   albumId?: number;
-//   id: number;
-//   thumbnailUrl?: string;
-//   title: string;
-//   url: string;
-//   heart: boolean;
-// }
-
 interface ItemListProps {
   itemlist: ItemType[];
 }
@@ -18,18 +9,9 @@ interface ItemListProps {
 export const ItemList = ({ itemlist }: ItemListProps) => {
   return (
     <ListWrapper>
-      {itemlist.map(
-        (item: { id: number; title: string; url: string; heart: boolean }) => (
-          <Item
-            // key={item.id}
-            // id={item.id}
-            // title={item.title}
-            // url={item.url}
-            // heart={item.heart}
-            {...item}
-          />
-        ),
-      )}
+      {itemlist.map((item: ItemType) => (
+        <Item {...item} />
+      ))}
     </ListWrapper>
   );
 };

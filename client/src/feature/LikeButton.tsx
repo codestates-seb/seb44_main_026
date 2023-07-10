@@ -3,17 +3,13 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHeart as solidHeart } from '@fortawesome/free-solid-svg-icons';
 import { faHeart as regularHeart } from '@fortawesome/free-regular-svg-icons';
 import { useState } from 'react';
-
-interface LikeButtonProps {
-  id: number;
-  heart?: boolean;
-}
+import { ItemType } from 'pages/Product';
 
 interface StyleLikeProps {
   color: string;
 }
 
-export const LikeButton = ({ id, heart }: LikeButtonProps) => {
+export const LikeButton = ({ id, title, url, heart }: ItemType) => {
   const [isLike, setIsLike] = useState(heart);
 
   const onLikeHandler = (id: number) => {
@@ -23,12 +19,10 @@ export const LikeButton = ({ id, heart }: LikeButtonProps) => {
 
     // 관심상품 여부 저장
     if (isLike) {
-      const filterArr = likeItems.filter(
-        (obj: { id: number; heart: boolean }) => obj.id !== id,
-      );
+      const filterArr = likeItems.filter((obj: ItemType) => obj.id !== id);
       localStorage.setItem('likeItems', JSON.stringify(filterArr));
     } else {
-      likeItems.push({ id: id, heart: !isLike });
+      likeItems.push({ id: id, title: title, url: url, heart: !isLike });
       localStorage.setItem('likeItems', JSON.stringify(likeItems));
     }
     console.log(likeItems);
