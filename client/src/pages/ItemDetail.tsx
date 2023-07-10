@@ -1,18 +1,25 @@
 import { styled } from 'styled-components';
 import { Nav } from 'components/Nav';
 import { LikeButton } from 'feature/LikeButton';
+import { useLocation } from 'react-router-dom';
+
+interface ImageProps {
+  img: string;
+}
 
 export const ItemDetail = () => {
-  const itemId = 1;
+  // const itemId = 1;
+  const location = useLocation();
+  const item = location.state;
 
   return (
     <>
       <Nav />
       <Wrapper>
         <Item>
-          <Image />
+          <Image img={item.url} />
           <ItemInfo>
-            <Title>무려 10,000원 짜리 커피 연필</Title>
+            <Title>{item.title}</Title>
             <Price>10,000원</Price>
             <Carbon>
               줄인탄소량 nnn CO<sub>2</sub>
@@ -42,7 +49,12 @@ export const ItemDetail = () => {
 
               {/* */}
               {/* 상품 id props로 보내기 */}
-              <LikeButton id={itemId} />
+              <LikeButton
+                id={item.id}
+                title={item.title}
+                url={item.url}
+                heart={item.heart}
+              />
               {/* */}
               {/* */}
             </ButtonWrapper>
@@ -69,12 +81,16 @@ const Item = styled.div`
   padding: 2rem;
 `;
 
-const Image = styled.div`
-  background-color: var(--gray);
-  border: 0.1rem solid var(--gray);
+const Image = styled.div<ImageProps>`
+  /* background-color: var(--gray);
+  border: 0.1rem solid var(--gray); */
   width: 16rem;
   height: 13rem;
   flex-shrink: 0;
+
+  background-image: url(${(props) => props.img});
+  background-size: cover;
+  background-position: center;
 `;
 
 const ItemInfo = styled.div`

@@ -50,7 +50,10 @@ export const Product = () => {
       .get(`https://jsonplaceholder.typicode.com/photos?albumId=${id}`)
       .then((res) => {
         // setItemList(res.data.slice(0, 10));
-        setItemList(res.data.slice((currentPage - 1) * 8, currentPage * 8));
+        const itemlist = res.data.map((item: ItemType) => {
+          return { ...item, heart: false };
+        });
+        setItemList(itemlist.slice((currentPage - 1) * 8, currentPage * 8));
       })
       .catch((err) => {
         console.log(err);
