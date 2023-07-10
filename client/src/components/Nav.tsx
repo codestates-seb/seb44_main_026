@@ -15,9 +15,11 @@ export const Nav = () => {
 
   const selectMenuHandler = (menu: string) => {
     setCurrentMenu(menu);
-    if (isShop) {
+    if (isShop && menu === 'NEW') {
       // 상품목록 페이지로 이동
       navigate('/product');
+    } else if (isShop && menu === 'BEST') {
+      navigate('/like');
     } else if (!isShop && menu === '챌린지') {
       // 커뮤니티-챌린지 페이지로 이동
       // navigate('/챌린지');

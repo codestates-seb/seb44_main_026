@@ -6,13 +6,14 @@ interface ItemProps {
   id: number;
   title: string;
   url: string;
+  heart: boolean;
 }
 
 interface ImageProps {
   img: string;
 }
 
-export const Item = ({ id, title, url }: ItemProps) => {
+export const Item = ({ id, title, url, heart }: ItemProps) => {
   const navigate = useNavigate();
 
   const selectItemHandler = (id: number) => {
@@ -29,7 +30,7 @@ export const Item = ({ id, title, url }: ItemProps) => {
           <Review>리뷰 00개</Review>
         </ItemInfo>
 
-        <LikeButton id={id} />
+        <LikeButton id={id} heart={heart} />
       </ItemInfoWrapper>
     </ItemWrapper>
   );

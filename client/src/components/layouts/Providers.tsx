@@ -4,6 +4,7 @@ import { NotFound } from 'pages/NotFound';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import { Product } from 'pages/Product';
 import { ItemDetail } from 'pages/ItemDetail';
+import { LikeProducts } from 'pages/LikeProducts';
 
 const router = createBrowserRouter([
   {
@@ -14,6 +15,7 @@ const router = createBrowserRouter([
       { index: true, element: <Home /> },
       { path: 'product', element: <Product /> },
       { path: 'product/:id', element: <ItemDetail /> },
+      { path: 'like', element: <LikeProducts /> },
     ],
   },
 ]);

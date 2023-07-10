@@ -23,6 +23,7 @@ interface ItemType {
   thumbnailUrl: string;
   title: string;
   url: string;
+  heart: boolean;
 }
 
 export const Product = () => {
@@ -68,6 +69,7 @@ export const Product = () => {
               id={item.id}
               title={item.title}
               url={item.url}
+              heart={item.heart}
             />
           ))}
         </ItemList>

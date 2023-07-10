@@ -6,19 +6,32 @@ import { useState } from 'react';
 
 interface LikeButtonProps {
   id: number;
+  heart?: boolean;
 }
 
 interface StyleLikeProps {
   color: string;
 }
 
-export const LikeButton = ({ id }: LikeButtonProps) => {
-  const [isLike, setIsLike] = useState(false);
+export const LikeButton = ({ id, heart }: LikeButtonProps) => {
+  const [isLike, setIsLike] = useState(heart);
 
-  const onLikeHandler = () => {
+  const onLikeHandler = (id: number) => {
     setIsLike(!isLike);
 
+    const likeItems = JSON.parse(localStorage.getItem('likeItems') || '[]');
+
     // 관심상품 여부 저장
+    if (isLike) {
+      const filterArr = likeItems.filter(
+        (obj: { id: number; heart: boolean }) => obj.id !== id,
+      );
+      localStorage.setItem('likeItems', JSON.stringify(filterArr));
+    } else {
+      likeItems.push({ id: id, heart: !isLike });
+      localStorage.setItem('likeItems', JSON.stringify(likeItems));
+    }
+    console.log(likeItems);
   };
 
   return (
@@ -26,13 +39,13 @@ export const LikeButton = ({ id }: LikeButtonProps) => {
       {isLike ? (
         <Heart
           icon={solidHeart}
-          onClick={() => onLikeHandler()}
+          onClick={() => onLikeHandler(id)}
           color={`var(--red)`}
         />
       ) : (
         <Heart
           icon={regularHeart}
-          onClick={() => onLikeHandler()}
+          onClick={() => onLikeHandler(id)}
           color={`var(--gray)`}
         />
       )}
