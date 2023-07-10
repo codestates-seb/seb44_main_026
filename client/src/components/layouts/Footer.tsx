@@ -1,13 +1,13 @@
 import { styled } from 'styled-components';
 import { Link } from 'react-router-dom';
 const StyledFooterContainer = styled.div`
-  position: fixed;
   bottom: 0;
   left: 0;
   width: 100%;
   display: flex;
   background-color: #40513b;
   padding: 1rem;
+  margin-top: 3rem;
 `;
 
 const StyledTeaMember = styled.ul`
@@ -63,13 +63,13 @@ export const Footer = () => {
             <StyledListItem>
               백도담ㅣGitHub:
               <StyledGitid to={'https://github.com/BAEKDODAM'}>
-                @LinaKK
+                @BAEKDODAM
               </StyledGitid>
             </StyledListItem>
             <StyledListItem>
               김리나ㅣGitHub:
               <StyledGitid to={'https://github.com/LinaKK'}>
-                @BAEKDODAM
+                @LinaKK
               </StyledGitid>
             </StyledListItem>
           </StyledItemList>

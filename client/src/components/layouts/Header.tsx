@@ -1,8 +1,10 @@
 import { styled } from 'styled-components';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import logo from '../../assets/img/logo.png';
 import cart from '../../assets/img/cart.png';
 import user from '../../assets/img/user.png';
+import { SearchBar } from '../../feature/SearchBar';
+
 const StyledHeaderContainer = styled.nav`
   display: flex;
   background-color: var(--white);
@@ -38,12 +40,20 @@ const StyledNavContainer = styled.div`
   flex: 1;
 `;
 const StyledButton = styled.button`
-  background-color: #9dc08b;
+  background-color: var(--green-100);
   margin-right: 10px;
   width: 4rem;
   height: 2.5rem;
   border: 1px solid var(--white);
   color: var(--white);
+  &:hover {
+    cursor: pointer;
+    font-weight: bold;
+  }
+
+  &.focused {
+    font-weight: bold;
+  }
 `;
 const StyledSpan = styled.span`
   &:hover {
@@ -55,22 +65,38 @@ const StyledSpan = styled.span`
     font-weight: bold;
   }
 `;
-
+const StyledPadding = styled.div`
+  padding-right: 7rem;
+`;
 const BeforeLogin = () => {
+  const navigation = useNavigate();
+  const handleLogin = () => {
+    navigation('/login');
+  };
+  const handlesignup = () => {
+    navigation('/signup');
+  };
   return (
     <>
-      <StyledButton>로그인</StyledButton>
-      <StyledButton>회원가입</StyledButton>
+      <StyledPadding />
+      <StyledButton onClick={handleLogin}>로그인</StyledButton>
+      <StyledButton onClick={handlesignup}>회원가입</StyledButton>
     </>
   );
 };
 
 const AfterLogin = () => {
+  const navigation = useNavigate();
+
+  const handlelogout = () => {
+    navigation('/login');
+  };
   return (
     <>
+      <StyledPadding />
       <StyledLoginLogo src={cart}></StyledLoginLogo>
       <StyledLoginLogo src={user}></StyledLoginLogo>
-      <StyledButton>로그아웃</StyledButton>
+      <StyledButton onClick={handlelogout}>로그아웃</StyledButton>
     </>
   );
 };
@@ -93,6 +119,7 @@ export const Header = () => {
           {/* 나래 라우팅 주소 입력*/}
         </StyledChoicePage>
         <StyledNavContainer>
+          <SearchBar></SearchBar>
           {isLogin ? <AfterLogin /> : <BeforeLogin />}
         </StyledNavContainer>
         {/* 로그인, 회원가입 버튼 자리*/}
