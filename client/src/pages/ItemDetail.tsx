@@ -1,29 +1,39 @@
 import { styled } from 'styled-components';
 import { Nav } from 'components/Nav';
 import { LikeButton } from 'feature/LikeButton';
+import { ReviewList } from 'feature/ReviewList';
 import { useLocation } from 'react-router-dom';
+import { useState } from 'react';
+import TextareaAutosize from 'react-textarea-autosize';
 
 interface ImageProps {
   img: string;
 }
 
 export const ItemDetail = () => {
-  // const itemId = 1;
   const location = useLocation();
   const item = location.state;
+
+  const [review, setReview] = useState('');
+
+  const reviewHandler = (e: React.FormEvent<HTMLTextAreaElement>) => {
+    setReview(e.currentTarget.value);
+  };
+
+  const SubmitReviewHandler = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+  };
 
   return (
     <>
       <Nav />
       <Wrapper>
-        <Item>
+        <ItemWrapper>
           <Image img={item.url} />
           <ItemInfo>
             <Title>{item.title}</Title>
             <Price>10,000원</Price>
-            <Carbon>
-              줄인탄소량 nnn CO<sub>2</sub>
-            </Carbon>
+            <Carbon>100포인트</Carbon>
             <Detail>
               100% 천연 커피 점토만을 사용하여 만들어진 연필입니다 ! 100% 천연
               커피 점토만을 사용하여 만들어진 연필입니다 ! 100% 천연 커피
@@ -47,20 +57,29 @@ export const ItemDetail = () => {
                 구매하기
               </BuyButton>
 
-              {/* */}
-              {/* 상품 id props로 보내기 */}
               <LikeButton
                 id={item.id}
                 title={item.title}
                 url={item.url}
                 heart={item.heart}
               />
-              {/* */}
-              {/* */}
             </ButtonWrapper>
           </ItemInfo>
-        </Item>
+        </ItemWrapper>
         {/* 리뷰 표시 */}
+        <ReviewWrapper>
+          리뷰 2개
+          <InputWrapper onSubmit={SubmitReviewHandler}>
+            <Input
+              maxRows={4}
+              value={review}
+              placeholder="리뷰를 작성해보세요!"
+              onChange={reviewHandler}
+            />
+            <InputButton type="submit">등록</InputButton>
+          </InputWrapper>
+          <ReviewList />
+        </ReviewWrapper>
       </Wrapper>
     </>
   );
@@ -74,7 +93,11 @@ const Wrapper = styled.main`
   margin: 1rem;
   padding: 1rem;
 `;
-const Item = styled.div`
+
+// item detail style
+//
+
+const ItemWrapper = styled.div`
   display: flex;
 
   border-bottom: 0.1rem solid var(--gray);
@@ -82,8 +105,6 @@ const Item = styled.div`
 `;
 
 const Image = styled.div<ImageProps>`
-  /* background-color: var(--gray);
-  border: 0.1rem solid var(--gray); */
   width: 16rem;
   height: 13rem;
   flex-shrink: 0;
@@ -120,16 +141,67 @@ const ButtonWrapper = styled.div`
   display: flex;
   align-items: center;
 `;
+
 const BuyButton = styled.button`
   cursor: pointer;
 
   background-color: var(--green-100);
-  border: 0.1rem solid var(--green-100);
+  border: none;
   border-radius: 0.5rem;
 
   font-size: 1.25rem;
   color: var(--white);
 
   width: 100%;
-  padding: 0.75rem;
+  height: 3rem;
+
+  &:hover {
+    background-color: var(--green-200);
+  }
+`;
+
+// review style
+//
+const ReviewWrapper = styled.div`
+  padding: 2rem;
+`;
+const InputWrapper = styled.form`
+  display: flex;
+  align-items: center;
+
+  margin: 1rem 0;
+`;
+
+const Input = styled(TextareaAutosize)`
+  width: 90%;
+  /* max-height: 3rem; */
+  padding: 1rem;
+  border-radius: 0.5rem;
+  border: none;
+  box-shadow: rgba(0, 0, 0, 0.3) 1px 1px 4px;
+
+  resize: none;
+
+  &::placeholder {
+    color: var(--gray);
+  }
+`;
+
+const InputButton = styled.button`
+  cursor: pointer;
+
+  background-color: var(--green-100);
+  border: none;
+  border-radius: 0.5rem;
+
+  font-size: 1.25rem;
+  color: var(--white);
+
+  width: 7rem;
+  height: 3rem;
+  margin-left: 1rem;
+
+  &:hover {
+    background-color: var(--green-200);
+  }
 `;

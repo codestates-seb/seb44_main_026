@@ -25,7 +25,6 @@ export const LikeButton = ({ id, title, url, heart }: ItemType) => {
       likeItems.push({ id: id, title: title, url: url, heart: !isLike });
       localStorage.setItem('likeItems', JSON.stringify(likeItems));
     }
-    console.log(likeItems);
   };
 
   return (
