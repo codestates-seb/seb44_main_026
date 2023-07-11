@@ -118,7 +118,7 @@ const StyledAutoContainer = styled.div`
     }
     .ad-icon-right {
       position: absolute;
-      margin-left: 58.1rem;
+      margin-left: 68.3rem;
       z-index: 99;
       font-size: 2rem;
       color: white;
@@ -127,11 +127,12 @@ const StyledAutoContainer = styled.div`
 `;
 
 const HeadLine = styled.div`
-  margin-bottom: 1rem;
+  margin-bottom: 1.5rem;
+  margin-top: 2rem;
 `;
 
 const DivConatiner = styled.div`
-  width: 60rem;
+  width: 70rem;
   height: 20rem;
   border-radius: 1rem;
   background-color: green;
@@ -141,15 +142,15 @@ const DivConatiner = styled.div`
 `;
 
 const StyledContainer = styled.div<{ display: number }>`
-  width: 500rem;
+  width: 700rem;
   transition: 1s;
   transform: ${(props) =>
-    props.display ? `translate(${-(props.display * 60)}rem)` : null};
+    props.display ? `translate(${-(props.display * 70)}rem)` : null};
 `;
 
 const SingleContainer = styled.div`
   img {
-    width: 60rem;
+    width: 70rem;
     height: 20rem;
     object-fit: cover;
   }

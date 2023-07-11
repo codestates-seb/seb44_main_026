@@ -40,28 +40,32 @@ const ChallengeDetail = () => {
       <HeadLine>
         <h1>🦄 참여하기</h1>
       </HeadLine>
-      <ItemContainer>
-        {loading && <img src={loadimg}></img>}
-        <TitleContainer>
-          <div className="detail-title">{title}</div>
-          <div className="detail-writer">작성자:김철수 Date</div>
-        </TitleContainer>
-        {!loading && <hr />}
-        <BodyContainer>{body}</BodyContainer>
-      </ItemContainer>
-      <CommentContainer>
-        <CommentTitle>참여 댓글 {commentCount}개</CommentTitle>
-        <InputItem setComment={setComment} value={comment} />
-        {dummyComment.map((item: any, index: any) => (
-          <CommentBox
-            name={item.memberId}
-            body={item.body}
-            point={item.point}
-            createdAt={item.createdAt}
-            key={index}
-          ></CommentBox>
-        ))}
-      </CommentContainer>
+      {loading ? (
+        <img src={loadimg} className="loading"></img>
+      ) : (
+        <>
+          <ItemContainer>
+            <TitleContainer>
+              <div className="detail-title">{title}</div>
+              <div className="detail-writer">작성자:김철수 Date</div>
+            </TitleContainer>
+            <BodyContainer>{body}</BodyContainer>
+          </ItemContainer>
+          <CommentContainer>
+            <CommentTitle>참여 댓글 {commentCount}개</CommentTitle>
+            <InputItem setComment={setComment} value={comment} />
+            {dummyComment.map((item: any, index: any) => (
+              <CommentBox
+                name={item.memberId}
+                body={item.body}
+                point={item.point}
+                createdAt={item.createdAt}
+                key={index}
+              ></CommentBox>
+            ))}
+          </CommentContainer>
+        </>
+      )}
     </DivContainer>
   );
 };
@@ -71,6 +75,11 @@ export default ChallengeDetail;
 const DivContainer = styled.div`
   margin: 0 auto;
   width: 80%;
+  .loading {
+    display: flex;
+    margin: 0 auto;
+    padding: 10rem;
+  }
 `;
 
 const HeadLine = styled.div`

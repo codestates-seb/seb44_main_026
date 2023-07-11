@@ -42,6 +42,7 @@ const MyProfile = () => {
 
   const GotoEdit = () => {
     setIsEdit(!isEdit);
+    window.scrollTo(0, 0);
   };
 
   return (
@@ -52,7 +53,7 @@ const MyProfile = () => {
         <>
           {!isEdit && (
             <Banner>
-              <Slide direction={'left'} duration={1000}>
+              <Slide direction={'left'} duration={1000} triggerOnce={true}>
                 <h1>Welcome ! {userName} 😊</h1>
               </Slide>
             </Banner>
@@ -103,8 +104,6 @@ export default MyProfile;
 const DivContainer = styled.div`
   h2 {
     margin-left: 5rem;
-    margin-bottom: 1rem;
-    margin-top: 1rem;
   }
 
   .loading {
