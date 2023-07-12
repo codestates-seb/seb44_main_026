@@ -45,11 +45,15 @@ export const LikeButton = ({ id, title, url, heart }: ItemType) => {
     </>
   );
 };
+
 const Heart = styled(FontAwesomeIcon)<StyleLikeProps>`
   cursor: pointer;
 
   width: 2rem;
   height: 2rem;
   color: ${(props) => props.color};
-  padding: 1rem;
+
+  position: absolute;
+  bottom: 0;
+  right: 0;
 `;

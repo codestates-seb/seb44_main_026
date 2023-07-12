@@ -21,12 +21,15 @@ export const Item = ({ id, title, url, heart }: ItemType) => {
       <Image img={url} onClick={() => selectItemHandler(id)} />
       <ItemInfoWrapper>
         <ItemInfo>
-          <Title onClick={() => selectItemHandler(id)}>{title}</Title>
-          <Price>10000원</Price>
-          <Review>리뷰 00개</Review>
+          <div className="title" onClick={() => selectItemHandler(id)}>
+            {title}
+          </div>
+          <div className="price">10000원</div>
+          <div className="review">리뷰 00개</div>
         </ItemInfo>
-
-        <LikeButton id={id} title={title} url={url} heart={heart} />
+        <div className="likebutton">
+          <LikeButton id={id} title={title} url={url} heart={heart} />
+        </div>
       </ItemInfoWrapper>
     </ItemWrapper>
   );
@@ -39,22 +42,19 @@ const ItemWrapper = styled.li`
   background-color: var(--white);
 
   width: 18rem;
-  height: 21rem;
-
+  height: 22rem;
   padding: 1rem;
 
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
   align-items: center;
 `;
 
 const Image = styled.div<ImageProps>`
-  border: 0.1rem solid var(--gray);
   cursor: pointer;
 
   width: 16rem;
-  height: 13rem;
+  min-height: 13rem;
 
   background-image: url(${(props) => props.img});
   background-size: cover;
@@ -63,22 +63,26 @@ const Image = styled.div<ImageProps>`
 
 const ItemInfoWrapper = styled.div`
   width: 100%;
+  height: 100%;
+  word-break: normal;
+  margin-top: 0.5rem;
 
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   justify-content: space-between;
-  align-items: end;
-  word-break: normal;
+
+  .likebutton {
+    position: relative;
+  }
 `;
 
-const ItemInfo = styled.div``;
+const ItemInfo = styled.div`
+  & > * {
+    margin-bottom: 0.3rem;
+  }
 
-const Title = styled.div`
-  cursor: pointer;
-`;
-const Price = styled.div`
-  padding-top: 0.3rem;
-`;
-const Review = styled.div`
-  padding-top: 0.3rem;
+  .title {
+    cursor: pointer;
+    font-weight: bold;
+  }
 `;

@@ -57,10 +57,11 @@ export const ReviewList = () => {
 const Review = styled.li`
   list-style: none;
 
-  border: 0.1rem solid var(--gray);
+  border: none;
+  box-shadow: rgba(0, 0, 0, 0.3) 1px 1px 4px;
   border-radius: 0.5rem;
-  padding: 1rem;
 
+  padding: 1rem;
   margin: 1rem 0;
 `;
 
@@ -100,16 +101,17 @@ const DeleteButton = styled.button`
   cursor: pointer;
 
   border: none;
-  background-color: transparent;
-  color: var(--green-100);
+  border-radius: 0.5rem;
+
+  background-color: var(--green-100);
+  color: var(--white);
 
   width: 3rem;
   padding: 0.5rem;
   margin-left: 0.5rem;
 
   &:hover {
-    border: 0.1rem solid var(--gray);
-    border-radius: 0.5rem;
+    background-color: var(--green-200);
   }
 `;
 

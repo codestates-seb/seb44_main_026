@@ -31,10 +31,10 @@ export const ItemDetail = () => {
         <ItemWrapper>
           <Image img={item.url} />
           <ItemInfo>
-            <Title>{item.title}</Title>
-            <Price>10,000원</Price>
-            <Carbon>100포인트</Carbon>
-            <Detail>
+            <h1 className="title">{item.title}</h1>
+            <div className="price">10,000원</div>
+            <div className="point">100포인트</div>
+            <p className="detail">
               100% 천연 커피 점토만을 사용하여 만들어진 연필입니다 ! 100% 천연
               커피 점토만을 사용하여 만들어진 연필입니다 ! 100% 천연 커피
               점토만을 사용하여 만들어진 연필입니다 ! 100% 천연 커피 점토만을
@@ -51,18 +51,20 @@ export const ItemDetail = () => {
               커피 점토만을 사용하여 만들어진 연필입니다 ! 100% 천연 커피
               점토만을 사용하여 만들어진 연필입니다 ! 100% 천연 커피 점토만을
               사용하여 만들어진 연필입니다 !
-            </Detail>
+            </p>
             <ButtonWrapper>
               <BuyButton onClick={() => window.open('https://www.naver.com/')}>
                 구매하기
               </BuyButton>
 
-              <LikeButton
-                id={item.id}
-                title={item.title}
-                url={item.url}
-                heart={item.heart}
-              />
+              <div className="likebutton">
+                <LikeButton
+                  id={item.id}
+                  title={item.title}
+                  url={item.url}
+                  heart={item.heart}
+                />
+              </div>
             </ButtonWrapper>
           </ItemInfo>
         </ItemWrapper>
@@ -96,7 +98,6 @@ const Wrapper = styled.main`
 
 // item detail style
 //
-
 const ItemWrapper = styled.div`
   display: flex;
 
@@ -120,26 +121,27 @@ const ItemInfo = styled.div`
   > * {
     margin-bottom: 0.5rem;
   }
-`;
 
-const Title = styled.h1`
-  font-weight: bold;
-  font-size: 1.5rem;
-`;
-const Price = styled.div``;
+  .title {
+    font-weight: bold;
+    font-size: 1.5rem;
+  }
 
-const Carbon = styled.div`
-  font-weight: bold;
-  color: var(--green-300);
-`;
-
-const Detail = styled.p`
-  word-break: normal;
+  .point {
+    font-weight: bold;
+    color: var(--green-300);
+  }
 `;
 
 const ButtonWrapper = styled.div`
   display: flex;
   align-items: center;
+
+  .likebutton {
+    position: relative;
+    padding: 1rem;
+    margin-left: 1rem;
+  }
 `;
 
 const BuyButton = styled.button`
@@ -174,7 +176,6 @@ const InputWrapper = styled.form`
 
 const Input = styled(TextareaAutosize)`
   width: 90%;
-  /* max-height: 3rem; */
   padding: 1rem;
   border-radius: 0.5rem;
   border: none;

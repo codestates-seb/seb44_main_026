@@ -66,7 +66,8 @@ const NavWrapper = styled.nav`
   z-index: 1;
 
   background-color: var(--white);
-  border-bottom: 0.1rem solid var(--gray);
+  /* border-bottom: 0.1rem solid var(--gray); */
+  box-shadow: 0 4px 4px -2px var(--gray);
 `;
 
 const MenuWrapper = styled.ul`
