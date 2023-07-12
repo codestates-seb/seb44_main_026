@@ -20,7 +20,9 @@ const SlideItem: React.FC<SItemProps> = ({ item }) => {
         <img src={sample} />
       </div>
       <div className="text-container">
-        <div>{item.productName}</div>
+        <div className="slide-name">
+          <h3>{item.productName}</h3>
+        </div>
         <div>{item.detail}</div>
       </div>
     </StyledWrapper>
@@ -33,9 +35,12 @@ const StyledWrapper = styled.div`
   display: flex;
   margin: 1rem;
   width: 100%;
-  background-color: aliceblue;
   .text-container {
     display: flex;
+    padding: 1rem;
     flex-direction: column;
+  }
+  .slide-name {
+    margin-bottom: 0.5rem;
   }
 `;
