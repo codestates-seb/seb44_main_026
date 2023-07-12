@@ -17,7 +17,6 @@ export const ReviewList = () => {
     axios
       .get(`https://jsonplaceholder.typicode.com/posts/1/comments`)
       .then((res) => {
-        console.log(res.data);
         const list = res.data.map((el: ReviewType) => {
           return {
             id: el.id,
@@ -46,7 +45,8 @@ export const ReviewList = () => {
           </UserInfo>
           <Content>
             <ReviewBody>{review.body}</ReviewBody>
-            <DeleteButton>삭제</DeleteButton>
+            <Button>수정</Button>
+            <Button>삭제</Button>
           </Content>
         </Review>
       ))}
@@ -97,7 +97,7 @@ const ReviewBody = styled.div`
   width: 100%;
 `;
 
-const DeleteButton = styled.button`
+const Button = styled.button`
   cursor: pointer;
 
   border: none;
