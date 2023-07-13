@@ -13,30 +13,21 @@ const GlobalStyle = createGlobalStyle`
   &:root{
     --black: hsl(0, 0%, 0%);
     --white: hsl(0, 0%, 100%);
-    --green-100: rgba(157, 192, 139, 1)
-    --green-200: hsl(126,23,49,100%);
-    --green-300: hsl(106,16,27,100%);
-    --red: hsl(0, 100%, 43%);
-    --gray: hsl(0, 0%, 85%);
+    --green-100 : hsl(100, 30%, 65%); 
+    --green-200 : hsl(126, 23%, 49%);
+    --green-300 : hsl(106, 16%, 27%);
+    --red : hsl(0, 100%, 43%);
+    --gray : hsl(0, 0%, 85%);
 
   } 
 }
-`;
-const MainWrapper = styled.div`
-  max-width: 1264px;
-  width: 100%;
-  display: flex;
-  margin: 0 auto;
-  flex: 1;
 `;
 
 const App = () => (
   <div>
     <GlobalStyle />
     <Header />
-    <MainWrapper>
-      <Outlet />
-    </MainWrapper>
+    <Outlet />
     <Footer />
   </div>
 );
