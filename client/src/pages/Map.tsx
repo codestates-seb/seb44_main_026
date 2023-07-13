@@ -1,5 +1,11 @@
 import styled from 'styled-components';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
+import API from '../api/index';
+declare global {
+  interface Window {
+    kakao: any;
+  }
+}
 const StyledMapContainer = styled.div`
   display: flex;
   justify-content: center;
@@ -41,6 +47,25 @@ const StyledAddButton = styled.button`
 `;
 
 export const Map = () => {
+  const [content, setContent] = useState(''); // 가게 이름
+  const [latitude, setLatitude] = useState(0); // 위도 상태 변수
+  const [longitude, setLongitude] = useState(0); // 경도 상태 변수
+  const [map, setMap] = useState(null); // 지도 상태
+  const getMapData = async () => {
+    try {
+      const res = await API.GET(' 지도 url');
+      console.log(res);
+      setContent(res.data.placeName);
+      setLatitude(res.data.lat);
+      setLongitude(res.data.longi);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+  useEffect(() => {
+    window.scrollTo(0, 0);
+    getMapData();
+  }, []);
   useEffect(() => {
     const mapContainer = document.getElementById('map'); // 지도를 표시할 div
     const mapOption = {
@@ -50,6 +75,29 @@ export const Map = () => {
 
     // 지도를 생성합니다
     const map = new window.kakao.maps.Map(mapContainer, mapOption);
+
+    // 마커가 표시될 위치입니다
+    const markerPosition = new window.kakao.maps.LatLng(33.450701, 126.570667);
+    //const markerPosition = new window.kakao.maps.LatLng(latitude, longitude);  api에서 받아온 좌표 데이터
+
+    // 마커를 생성합니다
+    const marker = new window.kakao.maps.Marker({
+      position: markerPosition,
+    });
+
+    // 마커가 지도 위에 표시되도록 설정합니다
+    marker.setMap(map);
+
+    const iwPosition = new window.kakao.maps.LatLng(33.450701, 126.570667); //인포윈도우 표시 위치입니다
+    //const iwPosition = new window.kakao.maps.LatLng(latitude, longitude);api에서 받아온 좌표 데이터
+    // 인포윈도우를 생성합니다
+    const infowindow = new window.kakao.maps.InfoWindow({
+      position: iwPosition,
+      content: '우리집',
+    });
+
+    // 마커 위에 인포윈도우를 표시합니다. 두번째 파라미터인 marker를 넣어주지 않으면 지도 위에 표시됩니다
+    infowindow.open(map, marker);
   }, []);
   return (
     <>
