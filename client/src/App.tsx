@@ -3,7 +3,7 @@ import { Header } from 'components/layouts/Header';
 import { Outlet } from 'react-router-dom';
 import { Footer } from 'components/layouts/Footer';
 import { Nav } from 'components/Nav';
-
+import styled from 'styled-components';
 const GlobalStyle = createGlobalStyle`
 * {
   box-sizing: border-box;
@@ -33,13 +33,25 @@ const GlobalStyle = createGlobalStyle`
 }
 `;
 
+const AppWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+`;
+
+const ContentWrapper = styled.div`
+  flex: 1;
+`;
+
 const App = () => (
-  <div>
+  <AppWrapper>
     <GlobalStyle />
     <Header />
-    <Outlet />
+    <ContentWrapper>
+      <Outlet />
+    </ContentWrapper>
     <Footer />
-  </div>
+  </AppWrapper>
 );
 
 export default App;
