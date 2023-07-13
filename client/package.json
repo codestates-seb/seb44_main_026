@@ -66,5 +66,6 @@
     "eslint-config-prettier": "^8.8.0",
     "eslint-plugin-prettier": "^4.2.1",
     "prettier": "^2.8.8"
-  }
+  },
+  "homepage": "https://codestates-seb.github.io/seb44_main_026/"
 }
