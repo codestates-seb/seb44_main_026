@@ -8,6 +8,8 @@ import MainPage from 'pages/MainPage';
 import ChallengeDetail from 'pages/ChallengeDetail';
 import AddChallenge from 'pages/AddChallenge';
 import MyProfile from 'pages/MyProfile';
+import { ItemDetail } from 'pages/ItemDetail';
+import { LikeProducts } from 'pages/LikeProducts';
 
 const router = createBrowserRouter([
   {
@@ -22,6 +24,8 @@ const router = createBrowserRouter([
       { path: 'challenge/write', element: <AddChallenge /> },
       { path: 'main', element: <MainPage /> },
       { path: 'mypage', element: <MyProfile /> },
+      { path: 'product/:id', element: <ItemDetail /> },
+      { path: 'like', element: <LikeProducts /> },
     ],
   },
 ]);

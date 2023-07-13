@@ -29,7 +29,6 @@ const App = () => (
   <div>
     <GlobalStyle />
     <Header />
-    <Nav />
     <Outlet />
     <Footer />
   </div>

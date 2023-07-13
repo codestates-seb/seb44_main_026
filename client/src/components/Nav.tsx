@@ -15,9 +15,11 @@ export const Nav = () => {
 
   const selectMenuHandler = (menu: string) => {
     setCurrentMenu(menu);
-    if (isShop) {
+    if (isShop && menu === 'NEW') {
       // 상품목록 페이지로 이동
-      navigate('/itemlist');
+      navigate('/product');
+    } else if (isShop && menu === 'BEST') {
+      navigate('/like');
     } else if (!isShop && menu === '챌린지') {
       // 커뮤니티-챌린지 페이지로 이동
       // navigate('/챌린지');
@@ -64,7 +66,8 @@ const NavWrapper = styled.nav`
   z-index: 1;
 
   background-color: var(--white);
-  border-bottom: 0.1rem solid var(--gray);
+  /* border-bottom: 0.1rem solid var(--gray); */
+  box-shadow: 0 4px 4px -2px var(--gray);
 `;
 
 const MenuWrapper = styled.ul`
