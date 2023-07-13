@@ -15,13 +15,21 @@ const StyledSearchBar = styled.input`
   box-sizing: border-box;
   border: 0.063rem solid var(--gray);
   border-radius: 0.625rem;
-  color: var(--gray);
+  color: var(--black);
 `;
-export const SearchBar = () => {
+interface Props {
+  value: string;
+  onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+}
+export const SearchBar = ({ value, onChange }: Props) => {
   return (
     <div>
       <StyledSearch>
-        <StyledSearchBar placeholder="검색어를 입력하세요"></StyledSearchBar>
+        <StyledSearchBar
+          placeholder="검색어를 입력하세요"
+          value={value}
+          onChange={onChange}
+        ></StyledSearchBar>
       </StyledSearch>
     </div>
   );

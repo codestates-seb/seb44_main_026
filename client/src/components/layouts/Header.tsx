@@ -3,7 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import logo from '../../assets/img/logo.png';
 import cart from '../../assets/img/cart.png';
 import user from '../../assets/img/user.png';
-import { SearchBar } from '../../feature/SearchBar';
+// import { SearchBar } from '../../feature/SearchBar';
 
 const StyledHeaderContainer = styled.nav`
   display: flex;
@@ -119,7 +119,7 @@ export const Header = () => {
           {/* 나래 라우팅 주소 입력*/}
         </StyledChoicePage>
         <StyledNavContainer>
-          <SearchBar></SearchBar>
+          {/* <SearchBar></SearchBar> */}
           {isLogin ? <AfterLogin /> : <BeforeLogin />}
         </StyledNavContainer>
         {/* 로그인, 회원가입 버튼 자리*/}

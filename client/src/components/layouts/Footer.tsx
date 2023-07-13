@@ -29,49 +29,62 @@ const StyledGitid = styled(Link)`
   text-align: left;
   color: var(--white);
   text-decoration: none;
-  padding-left: 0.625rem;
+  padding-left: 0.624rem;
 `;
+interface TeamMember {
+  name: string;
+  githubId: string;
+  githubUrl: string;
+}
 
+const Teammembers: TeamMember[] = [
+  {
+    name: '김수성',
+    githubId: '@KimSuSung0326',
+    githubUrl: 'https://github.com/KimSuSung0326',
+  },
+  {
+    name: '백승효',
+    githubId: '@hyo-4',
+    githubUrl: 'https://github.com/hyo-4',
+  },
+  {
+    name: '김영윤',
+    githubId: ' @youngyun213',
+    githubUrl: 'https://github.com/youngyun213',
+  },
+  {
+    name: '최서우',
+    githubId: ' @wooseoboy',
+    githubUrl: 'https://github.com/wooseoboy',
+  },
+  {
+    name: '백도담',
+    githubId: ' @BAEKDODAM',
+    githubUrl: 'https://github.com/BAEKDODAM',
+  },
+  {
+    name: '김리나',
+    githubId: ' @LinaKK',
+    githubUrl: 'https://github.com/LinaKK',
+  },
+];
 export const Footer = () => {
   return (
     <div>
       <StyledFooterContainer>
         <StyledTeaMember>
           <StyledItemList>
-            <StyledListItem>
-              김수성ㅣGitHub:
-              <StyledGitid to={'https://github.com/KimSuSung0326'}>
-                @KimSuSung0326
-              </StyledGitid>
-            </StyledListItem>
-            <StyledListItem>
-              백승효ㅣGitHub:
-              <StyledGitid to={'https://github.com/hyo-4'}>@hyo-4</StyledGitid>
-            </StyledListItem>
-            <StyledListItem>
-              김영윤ㅣGitHub:
-              <StyledGitid to={'https://github.com/youngyun213'}>
-                @youngyun213
-              </StyledGitid>
-            </StyledListItem>
-            <StyledListItem>
-              최서우ㅣGitHub:
-              <StyledGitid to={'https://github.com/wooseoboy'}>
-                @wooseoboy
-              </StyledGitid>
-            </StyledListItem>
-            <StyledListItem>
-              백도담ㅣGitHub:
-              <StyledGitid to={'https://github.com/BAEKDODAM'}>
-                @BAEKDODAM
-              </StyledGitid>
-            </StyledListItem>
-            <StyledListItem>
-              김리나ㅣGitHub:
-              <StyledGitid to={'https://github.com/LinaKK'}>
-                @LinaKK
-              </StyledGitid>
-            </StyledListItem>
+            {Teammembers.map((member) => {
+              return (
+                <StyledListItem key={member.name}>
+                  {member.name}ㅣGitHub:
+                  <StyledGitid to={member.githubUrl}>
+                    {member.githubId}
+                  </StyledGitid>
+                </StyledListItem>
+              );
+            })}
           </StyledItemList>
         </StyledTeaMember>
       </StyledFooterContainer>

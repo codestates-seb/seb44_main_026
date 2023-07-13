@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { useEffect } from 'react';
 const StyledMapContainer = styled.div`
   display: flex;
   justify-content: center;
@@ -11,9 +12,12 @@ const StyledMapItem = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  border: 1px solid red;
-  width: 50rem;
-  height: 55rem;
+  width: 80rem;
+  height: 60rem;
+
+  div {
+    border-radius: 1rem;
+  }
 `;
 
 const StyledNav = styled.nav`
@@ -37,6 +41,16 @@ const StyledAddButton = styled.button`
 `;
 
 export const Map = () => {
+  useEffect(() => {
+    const mapContainer = document.getElementById('map'); // 지도를 표시할 div
+    const mapOption = {
+      center: new window.kakao.maps.LatLng(33.450701, 126.570667), // 지도의 중심좌표
+      level: 3, // 지도의 확대 레벨
+    };
+
+    // 지도를 생성합니다
+    const map = new window.kakao.maps.Map(mapContainer, mapOption);
+  }, []);
   return (
     <>
       <StyledNav>
@@ -44,7 +58,9 @@ export const Map = () => {
         <StyledAddButton>나도 등록하기</StyledAddButton>
       </StyledNav>
       <StyledMapContainer>
-        <StyledMapItem>지도 들어갈 자리</StyledMapItem>
+        <StyledMapItem>
+          <div id="map" style={{ width: '80rem', height: '60rem' }}></div>
+        </StyledMapItem>
       </StyledMapContainer>
     </>
   );
