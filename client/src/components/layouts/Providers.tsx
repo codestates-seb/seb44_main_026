@@ -1,7 +1,11 @@
 import { Home } from 'pages/Home';
 import App from '../../App';
 import { NotFound } from 'pages/NotFound';
-import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+import {
+  createBrowserRouter,
+  RouterProvider,
+  createHashRouter,
+} from 'react-router-dom';
 
 import { Login } from 'pages/Login';
 import { SignUp } from 'pages/SignUp';
@@ -17,7 +21,7 @@ import MyProfile from 'pages/MyProfile';
 import { ItemDetail } from 'pages/ItemDetail';
 import { LikeProducts } from 'pages/LikeProducts';
 
-const router = createBrowserRouter([
+const router = createHashRouter([
   {
     path: '/',
     element: <App />,
@@ -27,10 +31,10 @@ const router = createBrowserRouter([
       { path: 'addmap', element: <AddMap /> },
       { index: true, element: <MainPage /> },
       { path: 'product', element: <Product /> },
-      { path: '/challenge', element: <ChallengePage /> },
+      { path: 'challenge', element: <ChallengePage /> },
       { path: 'challenge/:id', element: <ChallengeDetail /> },
       { path: 'challenge/write', element: <AddChallenge /> },
-      { path: '/main', element: <MainPage /> },
+      { path: 'main', element: <MainPage /> },
       { path: 'mypage', element: <MyProfile /> },
       { path: 'product/:id', element: <ItemDetail /> },
       { path: 'like', element: <LikeProducts /> },
