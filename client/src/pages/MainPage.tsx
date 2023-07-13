@@ -4,6 +4,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowUp } from '@fortawesome/free-solid-svg-icons';
+import { Nav } from 'components/Nav';
 
 const MainPage = () => {
   const scrollToTop = () => {
@@ -13,15 +14,18 @@ const MainPage = () => {
     });
   };
   return (
-    <StyledContainer>
-      <AutoSlide />
-      <MainSlide />
-      <div className="scroll-container">
-        <button id="top" onClick={scrollToTop} type="button">
-          <FontAwesomeIcon icon={faArrowUp} />
-        </button>
-      </div>
-    </StyledContainer>
+    <>
+      <Nav />
+      <StyledContainer>
+        <AutoSlide />
+        <MainSlide />
+        <div className="scroll-container">
+          <button id="top" onClick={scrollToTop} type="button">
+            <FontAwesomeIcon icon={faArrowUp} />
+          </button>
+        </div>
+      </StyledContainer>
+    </>
   );
 };
 
