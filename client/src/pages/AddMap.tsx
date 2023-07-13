@@ -23,7 +23,7 @@ const StyledNav = styled.nav`
   display: flex;
   align-items: center;
 
-  height: 5rem;
+  height: 5.1rem;
 `;
 
 const StyledTitle = styled.h2`

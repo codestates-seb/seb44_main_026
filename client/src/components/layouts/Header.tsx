@@ -43,7 +43,7 @@ const StyledButton = styled.button`
   background-color: var(--green-100);
   margin-right: 10px;
   width: 4rem;
-  height: 2.5rem;
+  height: 2.51rem;
   border: 1px solid var(--white);
   color: var(--white);
   &:hover {

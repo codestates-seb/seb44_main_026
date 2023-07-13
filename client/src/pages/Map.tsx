@@ -31,7 +31,7 @@ const StyledAddButton = styled.button`
   background-color: var(--green-100);
   color: var(--white);
   border-radius: 0.4rem;
-  border: 1px solid rgba(218, 218, 218, 1);
+  border: 1px solid rgba(217, 218, 218, 1);
   width: 7rem;
   height: 3rem;
 `;

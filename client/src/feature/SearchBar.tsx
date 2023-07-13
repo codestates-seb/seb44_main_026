@@ -10,7 +10,7 @@ const StyledSearchBar = styled.input`
   height: 2.6rem;
   background-image: url(${search});
   background-repeat: no-repeat;
-  background-position: 0.313rem center;
+  background-position: 0.312rem center;
   padding-left: 2.5rem;
   box-sizing: border-box;
   border: 0.063rem solid var(--gray);
