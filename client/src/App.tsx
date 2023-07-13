@@ -16,11 +16,18 @@ const GlobalStyle = createGlobalStyle`
     --green-100 : hsl(100, 30%, 65%); 
     --green-200 : hsl(126, 23%, 49%);
     --green-300 : hsl(106, 16%, 27%);
+
     --green-400 : #4A4543;
     --red : hsl(0, 100%, 43%);
     --gray : hsl(0, 0%, 85%);
     --gray-200 : #808080;
     --gray-300 : rgba(218, 218, 218, 1);
+
+    --red : hsl(0, 100%, 43%);
+    --gray : hsl(0, 0%, 85%);
+    --gray-100 : hsl(0, 0%, 70%);
+    --gray-200 : hsl(0, 0%, 50%);
+
 
   } 
 }
@@ -30,7 +37,10 @@ const App = () => (
   <div>
     <GlobalStyle />
     <Header />
+
     <Nav />
+
+
     <Outlet />
     <Footer />
   </div>

@@ -113,7 +113,7 @@ export const Header = () => {
             <StyledSpan>그린</StyledSpan>
           </StyledGreen>
           ㅣ{/* 그린 라우팅 주소 입력*/}
-          <StyledNare to={'/'}>
+          <StyledNare to={'/challenge'}>
             <StyledSpan>나래</StyledSpan>
           </StyledNare>
           {/* 나래 라우팅 주소 입력*/}
