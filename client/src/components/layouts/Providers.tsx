@@ -17,18 +17,15 @@ import MyProfile from 'pages/MyProfile';
 import { ItemDetail } from 'pages/ItemDetail';
 import { LikeProducts } from 'pages/LikeProducts';
 
-
 const router = createBrowserRouter([
   {
     path: '/',
     element: <App />,
     errorElement: <NotFound />,
     children: [
-      { index: true, element: <Home /> },
-
       { path: 'map', element: <Map /> },
       { path: 'addmap', element: <AddMap /> },
-
+      { index: true, element: <MainPage /> },
       { path: 'product', element: <Product /> },
       { path: 'challenge', element: <ChallengePage /> },
       { path: 'challenge/:id', element: <ChallengeDetail /> },
@@ -37,7 +34,6 @@ const router = createBrowserRouter([
       { path: 'mypage', element: <MyProfile /> },
       { path: 'product/:id', element: <ItemDetail /> },
       { path: 'like', element: <LikeProducts /> },
-
     ],
   },
   { path: 'login', element: <Login /> },
