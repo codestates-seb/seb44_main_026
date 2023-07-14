@@ -2,19 +2,23 @@ import ChallengeList from 'components/Challenge/ChallengeList';
 import React from 'react';
 import { styled } from 'styled-components';
 import { useNavigate } from 'react-router-dom';
+import { Nav } from 'components/Nav';
 const ChallengePage = () => {
   const navigate = useNavigate();
   const gotoWrite = () => {
     navigate('/challenge/write');
   };
   return (
-    <StyledWrapper>
-      <HeadLine>
-        <h1>☘️ 챌린지</h1>
-        <WriteButton onClick={gotoWrite}>글 작성하기</WriteButton>
-      </HeadLine>
-      <ChallengeList />
-    </StyledWrapper>
+    <>
+      <Nav />
+      <StyledWrapper>
+        <HeadLine>
+          <h1>☘️ 챌린지</h1>
+          <WriteButton onClick={gotoWrite}>글 작성하기</WriteButton>
+        </HeadLine>
+        <ChallengeList />
+      </StyledWrapper>
+    </>
   );
 };
 

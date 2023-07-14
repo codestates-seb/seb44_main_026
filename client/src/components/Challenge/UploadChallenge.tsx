@@ -2,6 +2,8 @@ import { styled } from 'styled-components';
 import TextareaAutosize from 'react-textarea-autosize';
 import React, { useState } from 'react';
 import axios from 'axios';
+import { faFileExport } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 export const UploadChallenge = () => {
   const [review, setReview] = useState('');
@@ -70,7 +72,9 @@ export const UploadChallenge = () => {
             </Preview>
           ))}
         </PreviewWrapper>
-        <FileUploadButton htmlFor="file">사진 추가하기</FileUploadButton>
+        <FileUploadButton htmlFor="file">
+          <FontAwesomeIcon icon={faFileExport} />
+        </FileUploadButton>
         <input
           type="file"
           id="file"
@@ -104,7 +108,7 @@ const FileUploadButton = styled.label`
   color: var(--green-100);
   width: 7rem;
   padding: 0.5rem;
-  font-size: 0.75rem;
+  font-size: 1.3rem;
   display: flex;
   justify-content: center;
   align-items: center;
