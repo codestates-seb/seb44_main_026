@@ -21,8 +21,8 @@ const StyledMapItem = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 50rem;
-  height: 55rem;
+  width: 100%;
+  height: 100%;
   flex-direction: column;
 `;
 
@@ -126,7 +126,7 @@ export const AddMap = () => {
       </StyledNav>
       <StyledMapContainer>
         <StyledMapItem>
-          <div id="map" style={{ width: '50rem', height: '50rem' }}></div>
+          <div id="map" style={{ width: '65%', height: '60%' }}></div>
         </StyledMapItem>
         <StyledMapItem>
           <StyledPadding>
