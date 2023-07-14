@@ -3,7 +3,11 @@ import TextareaAutosize from 'react-textarea-autosize';
 import React, { useState } from 'react';
 import axios from 'axios';
 
-export const UploadReview = () => {
+interface UploadReviewProps {
+  id: string;
+}
+
+export const UploadReview = ({ id }: UploadReviewProps) => {
   const [review, setReview] = useState('');
   const [imageFiles, setImageFiles] = useState([]);
   const [preview, setPreview] = useState([]);
@@ -39,16 +43,11 @@ export const UploadReview = () => {
     e.preventDefault();
 
     const formData = new FormData();
-    formData.append('data', review); // JSON.stringify ??
-    imageFiles.forEach((file) => formData.append('files', file));
-
-    // formData값 확인
-    for (const [key, value] of formData.entries()) {
-      console.log(key, value);
-    }
+    formData.append('content', review); // JSON.stringify ??
+    imageFiles.forEach((file) => formData.append('image', file));
 
     return axios
-      .post(`url`, formData, {
+      .post(`/green/review/${id}`, formData, {
         headers: {
           // Authorization: accessToken,
           // 'Content-Type': 'multipart/form-data',
@@ -60,6 +59,11 @@ export const UploadReview = () => {
       })
       .catch((err) => {
         console.log(err);
+
+        // formData값 확인
+        for (const [key, value] of formData.entries()) {
+          console.log(key, value);
+        }
       });
   };
 
@@ -80,8 +84,8 @@ export const UploadReview = () => {
         </InputWrapper>
         <PreviewWrapper>
           {preview.map((image, index) => (
-            <Preview>
-              <img className="previewImg" key={index} src={image} />
+            <Preview key={image}>
+              <img className="previewImg" src={image} />
               <div className="delete" onClick={() => deleteFileHandler(index)}>
                 삭제
               </div>

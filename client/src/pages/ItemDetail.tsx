@@ -4,6 +4,7 @@ import { UploadReview } from 'feature/UploadReview';
 import { ReviewList } from 'feature/ReviewList';
 import { LikeButton } from 'feature/LikeButton';
 import { useLocation } from 'react-router-dom';
+import axios from 'axios';
 
 interface ImageProps {
   img: string;
@@ -12,6 +13,36 @@ interface ImageProps {
 export const ItemDetail = () => {
   const location = useLocation();
   const item = location.state;
+
+  // const [currentItem, setCurrentItem] = useState({});
+
+  const onBuyHandler = () => {
+    window.open('https://www.naver.com/');
+
+    // const point = {
+    //   point: currentItem.point,
+    // };
+
+    // axios
+    //   .patch(`url`, JSON.stringify(point))
+    //   .then((res) => {
+    //     //성공
+    //   })
+    //   .catch((err) => {
+    //     console.log(err);
+    //   });
+  };
+
+  // useEffect(() => {
+  //   axios
+  //     .get(`/green/${productId}`)
+  //     .then((res) => {
+  //       setCurrentItem(res.data);
+  //     })
+  //     .catch((err) => {
+  //       console.log(err);
+  //     });
+  // }, []);
 
   return (
     <>
@@ -42,9 +73,7 @@ export const ItemDetail = () => {
               사용하여 만들어진 연필입니다 !
             </p>
             <ButtonWrapper>
-              <BuyButton onClick={() => window.open('https://www.naver.com/')}>
-                구매하기
-              </BuyButton>
+              <BuyButton onClick={() => onBuyHandler()}>구매하기</BuyButton>
 
               <div className="likebutton">
                 <LikeButton
@@ -59,7 +88,7 @@ export const ItemDetail = () => {
         </div>
         {/* 리뷰 표시 */}
         <div className="reviewWrapper">
-          <UploadReview />
+          <UploadReview id={item.id} />
           <ReviewList />
         </div>
       </Wrapper>

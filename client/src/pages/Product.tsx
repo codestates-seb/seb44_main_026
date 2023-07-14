@@ -10,10 +10,14 @@ import { ItemList } from 'feature/ItemList';
 
 // api 명세서 - 응답
 // interface ItemType {
+//   productId?: number;
 //   productName: string;
 //   price: number;
 //   image: string;
 //   category: string;
+//   point: number;
+//   detail?: string;
+//   storeLink?: string;
 // }
 
 // 임시
@@ -58,6 +62,21 @@ export const Product = () => {
       .catch((err) => {
         console.log(err);
       });
+
+    // axios
+    //   .get(`/green`, {
+    //     params: {
+    //       page: currentPage,
+    //       size: 10,
+    //       category: filter,
+    //     },
+    //   })
+    //   .then((res) => {
+    //     setItemList(res.data);
+    //   })
+    //   .catch((err) => {
+    //     console.log(err);
+    //   });
   }, [filter, currentPage]);
 
   return (
@@ -66,7 +85,6 @@ export const Product = () => {
       <ProductWrapper>
         <Category />
         <ItemList itemlist={itemList} />
-
         <Pagination
           total={totalPages}
           page={currentPage}

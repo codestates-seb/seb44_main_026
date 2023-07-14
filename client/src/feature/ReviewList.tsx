@@ -3,6 +3,7 @@ import { styled } from 'styled-components';
 import axios from 'axios';
 import moment from 'moment';
 import 'moment/locale/ko';
+import { Pagination } from './Pagination';
 
 interface ReviewType {
   id: number;
@@ -12,44 +13,83 @@ interface ReviewType {
 
 export const ReviewList = () => {
   const [reviewList, setReviewList] = useState<ReviewType[]>([]);
+  const [currentPage, setCurrentPage] = useState(1);
 
-  useEffect(() => {
-    axios
-      .get(`https://jsonplaceholder.typicode.com/posts/1/comments`)
-      .then((res) => {
-        const list = res.data.map((el: ReviewType) => {
-          return {
-            id: el.id,
-            name: el.name,
-            body: el.body,
-          };
-          setReviewList(list);
-        });
-        setReviewList(res.data);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }, []);
+  const onEditReview = () => {
+    console.log('edit');
+    // return axios
+    //   .patch(`/gree/review/${id}`, {
+    //     headers: {
+    //       Authorization: accessToken,
+    //     },
+    //   })
+    //   .then((res) => {
+    //     // 성공
+    //     console.log(res.data);
+    //   })
+    //   .catch((err) => {
+    //     console.log(err);
+
+    //     // formData값 확인
+    //     for (const [key, value] of formData.entries()) {
+    //       console.log(key, value);
+    //     }
+    //   });
+  };
+
+  const onDeleteReview = () => {
+    console.log('delete');
+
+    // return axios
+    //   .delete(`/gree/review/${id}`, {
+    //     headers: {
+    //       Authorization: accessToken,
+    //     },
+    //   })
+    //   .then((res) => {
+    //     // 성공
+    //   })
+    //   .catch((err) => {
+    //     console.log(err);
+    //   });
+  };
+
+  // useEffect(() => {
+  //   axios
+  //     .get(`/green/review/${id}`)
+  //     .then((res) => {
+  //       setReviewList(res.data);
+  //     })
+  //     .catch((err) => {
+  //       console.log(err);
+  //     });
+  // }, []);
 
   return (
     <ul>
-      {dummyComment.map((review: Comment) => (
-        <Review>
-          <UserInfo>
-            <div className="userName">{`🐥 ${review.memberId}`}</div>
-            <div className="point">{`🏆 ${review.point}P`}</div>
-            <div className="reviewDate">
-              {`⏱️ ${moment(review.createdAt).fromNow()}`}
-            </div>
-          </UserInfo>
-          <Content>
-            <ReviewBody>{review.body}</ReviewBody>
-            <Button>수정</Button>
-            <Button>삭제</Button>
-          </Content>
-        </Review>
-      ))}
+      {dummyComment
+        .slice((currentPage - 1) * 3, currentPage * 3)
+        .map((review: Comment) => (
+          <Review>
+            <UserInfo>
+              <div className="userName">{`🐥 ${review.memberId}`}</div>
+              <div className="point">{`🏆 ${review.point}P`}</div>
+              <div className="reviewDate">
+                {`⏱️ ${moment(review.createdAt).fromNow()}`}
+              </div>
+            </UserInfo>
+            <Content>
+              <ReviewBody>{review.body}</ReviewBody>
+              <Button onClick={() => onEditReview()}>수정</Button>
+              <Button onClick={() => onDeleteReview()}>삭제</Button>
+            </Content>
+          </Review>
+        ))}
+      <Pagination
+        total={Math.ceil(dummyComment.length / 3)}
+        page={currentPage}
+        setPage={setCurrentPage}
+      />
     </ul>
   );
 };
