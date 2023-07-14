@@ -88,6 +88,7 @@ export const AddMap = () => {
 
         axios
           .post('url', postData, {
+            // url에 서버 주도 들어가야 함!!!
             headers: {
               // Authorization: accessToken,
             },

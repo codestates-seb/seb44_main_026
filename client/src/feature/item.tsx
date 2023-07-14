@@ -11,7 +11,7 @@ export const Item = ({ id, title, url, heart }: ItemType) => {
   const navigate = useNavigate();
 
   const selectItemHandler = (id: number) => {
-    navigate(`/product/${id}`, {
+    navigate(`/item/${id}`, {
       state: { id: id, title: title, url: url, heart: heart },
     });
   };

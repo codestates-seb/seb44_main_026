@@ -1,5 +1,6 @@
 import { GreenButton } from 'feature/GreenButton';
 import { Link, useNavigate } from 'react-router-dom';
+import { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import logo from '../assets/img/logo.png';
 const StyledLoginContainer = styled.div`
@@ -47,10 +48,14 @@ const StyledSignUpLink = styled(Link)`
   }
 `;
 
-const handleLoginChange = () => {
-  alert('로그인버튼 눌림');
-};
 export const SignUp = () => {
+  const [nickname, setNickname] = useState(''); // 이메일
+  const [email, setEmail] = useState(''); // 이메일
+  const [password, setPassword] = useState(''); // 비밀번호
+  const [errors, setErrors] = useState([]); //에러
+  const handleSignupChange = () => {
+    alert('로그인버튼 눌림');
+  };
   return (
     <>
       <StyledLoginContainer>
@@ -67,13 +72,7 @@ export const SignUp = () => {
           <StyledPw>Password</StyledPw>
           <StyledInputPw type="password"></StyledInputPw>
         </StyledLoginMain>
-        <GreenButton onClick={handleLoginChange}>Login</GreenButton>
-        <StyledexplainSignUp>
-          Don’t have an account?
-          <StyledSignUpLink to={'/'}>
-            <span>Sign Up</span>
-          </StyledSignUpLink>
-        </StyledexplainSignUp>
+        <GreenButton onClick={handleSignupChange}>SignUp</GreenButton>
       </StyledLoginContainer>
     </>
   );
