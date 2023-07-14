@@ -1,5 +1,5 @@
 import React from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import API from '../api/index';
 import { useEffect, useState } from 'react';
 import { styled } from 'styled-components';
@@ -10,6 +10,7 @@ import CommentBox from 'components/Challenge/Detail/CommentBox';
 
 const ChallengeDetail = () => {
   const id = useParams().id; //챌린지 아이디
+  const navigate = useNavigate();
   const [title, setTitle] = useState('');
   const [body, setBody] = useState('');
   const [loading, setloading] = useState(false); //데이터 받아올 때 로딩
@@ -35,6 +36,10 @@ const ChallengeDetail = () => {
     getChallenge();
   }, []);
 
+  const goToEdit = () => {
+    navigate(`/challenge/edit/${id}`);
+  };
+
   return (
     <DivContainer>
       <HeadLine>
@@ -46,8 +51,16 @@ const ChallengeDetail = () => {
         <>
           <ItemContainer>
             <TitleContainer>
-              <div className="detail-title">{title}</div>
-              <div className="detail-writer">작성자:김철수 Date</div>
+              <div className="detail-title">
+                <h2>{title}</h2>
+              </div>
+              <div className="subtitle-container">
+                <div className="detail-writer">작성자:김철수</div>
+                <div className="edit-page" onClick={goToEdit}>
+                  수정하기
+                </div>
+                <div className="delete-page">삭제하기</div>
+              </div>
             </TitleContainer>
             <BodyContainer>{body}</BodyContainer>
           </ItemContainer>
@@ -113,11 +126,34 @@ const TitleContainer = styled.div`
     margin-left: 3rem;
     font-size: 21px;
   }
+  .edit-page {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-left: 5%;
+    &:hover {
+      color: var(--green-100);
+    }
+  }
+  .delete-page {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-left: 1rem;
+    &:hover {
+      color: var(--green-100);
+    }
+  }
   .detail-writer {
     display: flex;
     font-size: 13px;
     margin: 0.5rem 0rem;
     margin-left: 3rem;
+  }
+  .subtitle-container {
+    display: flex;
+    margin-top: 0.5rem;
+    font-size: 13px;
   }
 `;
 
@@ -125,7 +161,7 @@ const BodyContainer = styled.div`
   display: flex;
   margin: 1rem;
   margin-left: 3rem;
-  font-size: 16px;
+  font-size: 21px;
 `;
 
 const CommentContainer = styled.div``;

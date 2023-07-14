@@ -38,6 +38,7 @@ const WriteButton = styled.div`
   width: 10%;
   align-items: center;
   font-size: 13px;
+  cursor: pointer;
   justify-content: center;
   border-radius: 0.5rem;
   color: white;
