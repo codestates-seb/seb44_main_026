@@ -4,6 +4,7 @@ import { Outlet } from 'react-router-dom';
 import { Footer } from 'components/layouts/Footer';
 import { Nav } from 'components/Nav';
 import styled from 'styled-components';
+
 const GlobalStyle = createGlobalStyle`
 * {
   box-sizing: border-box;
