@@ -40,6 +40,10 @@ const ChallengeDetail = () => {
     navigate(`/challenge/edit/${id}`);
   };
 
+  const delChallenge = () => {
+    navigate('/challenge');
+  };
+
   return (
     <DivContainer>
       <HeadLine>
@@ -59,7 +63,9 @@ const ChallengeDetail = () => {
                 <div className="edit-page" onClick={goToEdit}>
                   수정하기
                 </div>
-                <div className="delete-page">삭제하기</div>
+                <div className="delete-page" onClick={delChallenge}>
+                  삭제하기
+                </div>
               </div>
             </TitleContainer>
             <BodyContainer>{body}</BodyContainer>

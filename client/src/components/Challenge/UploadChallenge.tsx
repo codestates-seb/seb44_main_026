@@ -2,7 +2,7 @@ import { styled } from 'styled-components';
 import TextareaAutosize from 'react-textarea-autosize';
 import React, { useState } from 'react';
 import axios from 'axios';
-import { faFileExport } from '@fortawesome/free-solid-svg-icons';
+import { faCloudArrowUp } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 export const UploadChallenge = () => {
@@ -73,7 +73,7 @@ export const UploadChallenge = () => {
           ))}
         </PreviewWrapper>
         <FileUploadButton htmlFor="file">
-          <FontAwesomeIcon icon={faFileExport} />
+          <FontAwesomeIcon icon={faCloudArrowUp} />
         </FileUploadButton>
         <input
           type="file"
