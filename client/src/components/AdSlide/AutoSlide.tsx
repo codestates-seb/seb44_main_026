@@ -8,6 +8,7 @@ import {
   faChevronRight,
 } from '@fortawesome/free-solid-svg-icons';
 import SlideButton from './SlideButton';
+import { useNavigate } from 'react-router-dom';
 
 const AutoSlide: React.FC = () => {
   const [slideIndex, setslideIndex] = useState(0); //slider index
@@ -17,6 +18,7 @@ const AutoSlide: React.FC = () => {
   const afterSlide = slideArr[0];
   const copiedArr = [...slideArr];
   const COPIED_NUM = copiedArr.length;
+  const navigate = useNavigate();
   const outRef = useRef<HTMLDivElement>(null);
   const slideRef = useRef<HTMLDivElement>(null);
 
@@ -79,7 +81,12 @@ const AutoSlide: React.FC = () => {
           <StyledContainer display={slideIndex}>
             <SingleContainer ref={slideRef}>
               {copiedArr.map((item, index) => (
-                <img src={item[0]} alt="banner" key={index} />
+                <img
+                  src={item[0]}
+                  alt="banner"
+                  key={index}
+                  onClick={() => navigate('product/new')}
+                />
               ))}
             </SingleContainer>
           </StyledContainer>
@@ -104,24 +111,25 @@ const AutoSlide: React.FC = () => {
 export default AutoSlide;
 
 const StyledAutoContainer = styled.div`
-  margin: 1rem 0rem;
   .ad-slider {
     display: flex;
     position: relative;
     align-items: center;
     .ad-icon-left {
       position: absolute;
-      z-index: 99;
-      margin-left: 0.5rem;
+      z-index: 999;
       font-size: 2rem;
+      padding-left: 5%;
       color: white;
+      cursor: pointer;
     }
     .ad-icon-right {
       position: absolute;
-      margin-left: 78.3rem;
-      z-index: 99;
+      margin-left: 95%;
+      z-index: 999;
       font-size: 2rem;
       color: white;
+      cursor: pointer;
     }
   }
 `;
@@ -129,30 +137,37 @@ const StyledAutoContainer = styled.div`
 const HeadLine = styled.div`
   margin-bottom: 1.5rem;
   margin-top: 2rem;
+  margin-left: 1rem;
 `;
 
 const DivConatiner = styled.div`
-  width: 80rem;
-  height: 30rem;
+  width: 100%;
+  height: 25rem;
   border-radius: 1rem;
-  background-color: green;
   overflow: hidden;
+  background-color: white;
   margin: 0 auto;
   box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px,
     rgba(60, 64, 67, 0.15) 0px 2px 6px 2px;
+  @media (min-width: 1700px) {
+    height: 30rem;
+  }
 `;
 
 const StyledContainer = styled.div<{ display: number }>`
-  width: 400rem;
+  width: 600%;
   transition: 1s;
   transform: ${(props) =>
-    props.display ? `translate(${-(props.display * 80)}rem)` : null};
+    props.display ? `translate(${-(props.display * 16.7)}%)` : null};
 `;
 
 const SingleContainer = styled.div`
   img {
-    width: 80rem;
-    height: 30rem;
+    width: 100vw;
+    height: 25rem;
     object-fit: cover;
+    @media (min-width: 1700px) {
+      height: 30rem;
+    }
   }
 `;
