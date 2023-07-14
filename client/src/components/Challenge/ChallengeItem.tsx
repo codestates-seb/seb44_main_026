@@ -31,6 +31,7 @@ const ItemWrapper = styled.div`
   box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
   padding: 2rem;
   font-size: 1rem;
+  cursor: pointer;
   margin-top: 1rem;
   border-radius: 1rem;
   width: 100%;

@@ -15,7 +15,7 @@ const NewChallenge: React.FC<EditorProps> = ({ contents, setContents }) => {
   return (
     <DivContainer>
       <EditorComponent contents={contents} setContents={setContents} />
-      <div dangerouslySetInnerHTML={{ __html: contents }}></div>
+      {/*<div dangerouslySetInnerHTML={{ __html: contents }}></div> */}
     </DivContainer>
   );
 };
