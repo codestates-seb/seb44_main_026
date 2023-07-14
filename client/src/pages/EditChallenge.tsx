@@ -1,13 +1,15 @@
 import NewChallenge from 'feature/NewChallenge';
 import React from 'react';
 import { styled } from 'styled-components';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { InputTitle } from 'components/Challenge/Detail/Comment';
 import UploadFile from 'components/UploadFile/NewFile';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
+import API from '../api/index';
 import { UploadChallenge } from 'components/Challenge/UploadChallenge';
 
-const AddChallenge = () => {
+const EditChallenge: React.FC = () => {
+  const id = useParams().id; //챌린지 아이디
   const nav = useNavigate();
   const [title, setTitle] = useState('');
   const [contents, setContents] = useState('');
@@ -15,7 +17,7 @@ const AddChallenge = () => {
   const [newfile, setnewFile] = useState<File | null>(null); //새로업로드할 파일
 
   const goToChallenge = () => {
-    nav('/challenge');
+    nav(`/challenge/${id}`);
   };
 
   /*
@@ -44,7 +46,7 @@ const AddChallenge = () => {
     }
   };
   
-  //수정할때 데이터 받아서 세팅
+
   const getDataurl = async () => {
     try {
       const res = await API.GET(`주소`);
@@ -61,6 +63,23 @@ const AddChallenge = () => {
   }, []);
 */
 
+  const getMyChallenge = async () => {
+    try {
+      const res = await API.GET(
+        `https://jsonplaceholder.typicode.com/posts/${id}`,
+      );
+      console.log(res);
+      setTitle(res.data.title);
+      setContents(res.data.body);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+  useEffect(() => {
+    window.scrollTo(0, 0);
+    getMyChallenge();
+  }, []);
+
   return (
     <>
       <InputContainer>
@@ -74,18 +93,18 @@ const AddChallenge = () => {
           setFileurl={setFileurl}
           newfile={newfile}
           setnewFile={setnewFile}
-  />*/}
+        /> */}
         <UploadChallenge />
       </InputContainer>
       <ButtonContainer>
-        <SubmitContainer>등록</SubmitContainer>
+        <SubmitContainer>수정</SubmitContainer>
         <CancelContainer onClick={goToChallenge}>취소</CancelContainer>
       </ButtonContainer>
     </>
   );
 };
 
-export default AddChallenge;
+export default EditChallenge;
 
 const InputContainer = styled.div`
   width: 85%;
