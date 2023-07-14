@@ -36,7 +36,7 @@ const router = createHashRouter([
       { path: 'challenge/write', element: <AddChallenge /> },
       // { path: 'main', element: <MainPage /> },
       { path: 'mypage', element: <MyProfile /> },
-      { path: 'product/:id', element: <ItemDetail /> },
+      { path: 'item/:id', element: <ItemDetail /> },
       { path: 'like', element: <LikeProducts /> },
     ],
   },
