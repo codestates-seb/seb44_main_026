@@ -136,8 +136,8 @@ const StyledAutoContainer = styled.div`
 
 const HeadLine = styled.div`
   margin-bottom: 1.5rem;
-  margin-top: 2rem;
-  margin-left: 1rem;
+  margin-top: 3rem;
+  margin-left: 2rem;
 `;
 
 const DivConatiner = styled.div`
@@ -158,7 +158,7 @@ const StyledContainer = styled.div<{ display: number }>`
   width: 600%;
   transition: 1s;
   transform: ${(props) =>
-    props.display ? `translate(${-(props.display * 16.7)}%)` : null};
+    props.display ? `translate(${-(props.display * 16.68)}%)` : null};
 `;
 
 const SingleContainer = styled.div`
