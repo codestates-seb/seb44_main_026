@@ -5,6 +5,7 @@ import { ReviewList } from 'feature/ReviewList';
 import { LikeButton } from 'feature/LikeButton';
 import { useLocation } from 'react-router-dom';
 import axios from 'axios';
+import { useEffect, useState } from 'react';
 
 interface ImageProps {
   img: string;
@@ -14,6 +15,7 @@ export const ItemDetail = () => {
   const location = useLocation();
   const item = location.state;
 
+  //
   // const [currentItem, setCurrentItem] = useState({});
 
   const onBuyHandler = () => {
@@ -33,16 +35,16 @@ export const ItemDetail = () => {
     //   });
   };
 
-  // useEffect(() => {
-  //   axios
-  //     .get(`/green/${productId}`)
-  //     .then((res) => {
-  //       setCurrentItem(res.data);
-  //     })
-  //     .catch((err) => {
-  //       console.log(err);
-  //     });
-  // }, []);
+  useEffect(() => {
+    // axios
+    //   .get(`/green/${productId}`)
+    //   .then((res) => {
+    //     setCurrentItem(res.data);
+    //   })
+    //   .catch((err) => {
+    //     console.log(err);
+    //   });
+  }, []);
 
   return (
     <>
@@ -88,8 +90,11 @@ export const ItemDetail = () => {
         </div>
         {/* 리뷰 표시 */}
         <div className="reviewWrapper">
-          <UploadReview id={item.id} />
-          <ReviewList />
+          리뷰 2개
+          <FormWrapper>
+            <UploadReview id={item.id} />
+          </FormWrapper>
+          <ReviewList id={item.id} />
         </div>
       </Wrapper>
     </>
@@ -170,4 +175,17 @@ const BuyButton = styled.button`
   &:hover {
     background-color: var(--green-200);
   }
+`;
+
+const FormWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+
+  border: 0.1rem solid var(--gray);
+  border-radius: 0.5rem;
+  border: none;
+  box-shadow: rgba(0, 0, 0, 0.3) 1px 1px 4px;
+
+  padding: 1rem;
+  margin: 1rem 0;
 `;

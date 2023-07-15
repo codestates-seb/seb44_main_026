@@ -1,41 +1,32 @@
 import { useEffect, useState } from 'react';
 import { styled } from 'styled-components';
 import axios from 'axios';
+import { Pagination } from './Pagination';
+import { UploadReview } from './UploadReview';
 import moment from 'moment';
 import 'moment/locale/ko';
-import { Pagination } from './Pagination';
 
-interface ReviewType {
-  id: number;
-  name: string;
+export interface ReviewType {
+  memberId: string;
   body: string;
+  point: number;
+  createdAt: string;
+
+  // content: string;
+  // createdAt: string;
+  // image: string;
+  // name: string;
+  // point: number;
 }
 
-export const ReviewList = () => {
-  const [reviewList, setReviewList] = useState<ReviewType[]>([]);
+interface ReviewListProps {
+  id: number;
+}
+
+export const ReviewList = ({ id }: ReviewListProps) => {
+  const [reviewList, setReviewList] = useState<ReviewType[]>(dummyComment);
   const [currentPage, setCurrentPage] = useState(1);
-
-  const onEditReview = () => {
-    console.log('edit');
-    // return axios
-    //   .patch(`/gree/review/${id}`, {
-    //     headers: {
-    //       Authorization: accessToken,
-    //     },
-    //   })
-    //   .then((res) => {
-    //     // 성공
-    //     console.log(res.data);
-    //   })
-    //   .catch((err) => {
-    //     console.log(err);
-
-    //     // formData값 확인
-    //     for (const [key, value] of formData.entries()) {
-    //       console.log(key, value);
-    //     }
-    //   });
-  };
+  const [isEdit, setIsEdit] = useState(false);
 
   const onDeleteReview = () => {
     console.log('delete');
@@ -67,24 +58,41 @@ export const ReviewList = () => {
 
   return (
     <ul>
-      {dummyComment
+      {reviewList
         .slice((currentPage - 1) * 3, currentPage * 3)
-        .map((review: Comment) => (
-          <Review>
-            <UserInfo>
-              <div className="userName">{`🐥 ${review.memberId}`}</div>
-              <div className="point">{`🏆 ${review.point}P`}</div>
-              <div className="reviewDate">
-                {`⏱️ ${moment(review.createdAt).fromNow()}`}
-              </div>
-            </UserInfo>
-            <Content>
-              <ReviewBody>{review.body}</ReviewBody>
-              <Button onClick={() => onEditReview()}>수정</Button>
-              <Button onClick={() => onDeleteReview()}>삭제</Button>
-            </Content>
-          </Review>
-        ))}
+        .map((review: ReviewType) => {
+          // <Review key={review.memberId} id={id} {...review} />
+
+          const { memberId, body, point, createdAt } = review;
+          return (
+            <ReviewWrapper key={memberId}>
+              <UserInfo>
+                <div className="userName">{`🐥 ${memberId}`}</div>
+                <div className="point">{`🏆 ${point}P`}</div>
+                <div className="reviewDate">{`⏱️ ${moment(
+                  createdAt,
+                ).fromNow()}`}</div>
+              </UserInfo>
+              {isEdit ? (
+                <ContentWrapper>
+                  <UploadReview
+                    id={id}
+                    isEdit={isEdit}
+                    setIsEdit={setIsEdit}
+                    memberId={memberId}
+                    content={body}
+                  />
+                </ContentWrapper>
+              ) : (
+                <ContentWrapper>
+                  <div className="content">{body}</div>
+                  <Button onClick={() => setIsEdit(true)}>수정</Button>
+                  <Button onClick={() => onDeleteReview()}>삭제</Button>
+                </ContentWrapper>
+              )}
+            </ReviewWrapper>
+          );
+        })}
       <Pagination
         total={Math.ceil(dummyComment.length / 3)}
         page={currentPage}
@@ -94,7 +102,7 @@ export const ReviewList = () => {
   );
 };
 
-const Review = styled.li`
+const ReviewWrapper = styled.li`
   list-style: none;
 
   border: none;
@@ -126,32 +134,30 @@ const UserInfo = styled.div`
   }
 `;
 
-const Content = styled.div`
+const ContentWrapper = styled.div`
   display: flex;
-  justify-content: space-between;
   align-items: center;
   margin: 0.5rem 0;
-`;
 
-const ReviewBody = styled.div`
-  width: 100%;
+  .content {
+    width: 100%;
+  }
 `;
 
 const Button = styled.button`
   cursor: pointer;
 
   border: none;
-  border-radius: 0.5rem;
 
-  background-color: var(--green-100);
-  color: var(--white);
+  background-color: transparent;
+  color: var(--gray);
 
   width: 3rem;
   padding: 0.5rem;
-  margin-left: 0.5rem;
+  margin-left: 0.3rem;
 
   &:hover {
-    background-color: var(--green-200);
+    color: var(--green-200);
   }
 `;
 
@@ -160,14 +166,7 @@ const Button = styled.button`
 ///
 //
 
-interface Comment {
-  memberId: string;
-  body: string;
-  point: number;
-  createdAt: string;
-}
-
-const dummyComment: Comment[] = [
+const dummyComment: ReviewType[] = [
   {
     memberId: '참여자1',
     body: '챌린지 참여합니다!챌린지 참여합니다!챌린지 참여합니다!챌린지 참여합니다!챌린지 참여합니다!챌린지 참여합니다!챌린지 참여합니다!챌린지 참여합니다!챌린지 참여합니다!챌린지 참여합니다!',
