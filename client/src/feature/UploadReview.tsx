@@ -2,6 +2,8 @@ import { styled } from 'styled-components';
 import TextareaAutosize from 'react-textarea-autosize';
 import React, { useState } from 'react';
 import axios from 'axios';
+import { faCloudArrowUp } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 interface UploadReviewProps {
   id: number;
@@ -145,7 +147,8 @@ export const UploadReview = ({
         </PreviewWrapper>
 
         <FileUploadButton htmlFor={memberId || 'file'}>
-          사진 추가하기
+          사진 업로드
+          <FontAwesomeIcon icon={faCloudArrowUp} />
         </FileUploadButton>
         <input
           type="file"
@@ -234,7 +237,8 @@ const FileUploadButton = styled.label`
   font-size: 0.75rem;
 
   display: flex;
-  justify-content: center;
+  justify-content: space-evenly;
+
   align-items: center;
 
   cursor: pointer;

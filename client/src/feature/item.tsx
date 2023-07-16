@@ -37,9 +37,10 @@ export const Item = ({ id, title, url, heart }: ItemType) => {
 
 const ItemWrapper = styled.li`
   list-style: none;
-  border: 0.1rem solid var(--gray);
   border-radius: 0.5rem;
   background-color: var(--white);
+  border: none;
+  box-shadow: rgba(0, 0, 0, 0.3) 1px 1px 4px;
 
   width: 18rem;
   height: 22rem;

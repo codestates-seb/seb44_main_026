@@ -19,7 +19,7 @@ export const ItemList = ({ itemlist }: ItemListProps) => {
 
 const ListWrapper = styled.ul`
   display: grid;
-  grid-template-columns: repeat(4, minmax(18rem, max-content));
+  grid-template-columns: repeat(3, minmax(18rem, max-content));
   justify-content: center;
   gap: 1rem;
   margin: 2rem;
