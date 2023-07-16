@@ -35,12 +35,14 @@ public class ChallengeDto {
     @Getter
     @Builder
     public static class Response {
+        private long challengeId;
+        private long memberId;
         @NotBlank
         private String title;
         @NotBlank
         private String content;
         private String createdAt;
         private String image;
-        private String memberId;
+        private String name;
     }
 }

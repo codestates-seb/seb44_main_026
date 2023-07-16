@@ -46,8 +46,8 @@ public class ControllerTest {
     @MockBean
     private ChallengeMapper mapper;
 
-    @DisplayName("post challenge test")
-    @Test // challenge 생성 테스트
+    @DisplayName("create challenge test")
+    @Test
     void postChallengeTest() throws Exception {
         // given : 테스트용 request body 생성
         ChallengeDto.Post post =  new ChallengeDto.Post("title", "ex");

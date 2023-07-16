@@ -5,6 +5,7 @@ import greenNare.challenge.dto.ChallengeDto;
 import greenNare.challenge.entity.Challenge;
 import greenNare.challenge.mapper.ChallengeMapper;
 import greenNare.challenge.service.ChallengeService;
+import greenNare.place.entity.Place;
 import greenNare.utils.UriCreator;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
@@ -43,6 +44,7 @@ public class ChallengeController {
                                         @Positive @RequestParam int size) {
         //Page<Challenge> pageChallenges = challengeService.findMembers(page-1, size);
         String response = "";
+        //String writer = challengeService.findWriter()
         return ResponseEntity.ok(new SingleResponseDto<>(response));
     }
 
@@ -56,17 +58,22 @@ public class ChallengeController {
     public ResponseEntity postChallenge(@Valid @RequestPart(required = false) ChallengeDto.Post requestBody,
                                         @RequestPart(required = false) MultipartFile image
                                         /*@RequestHeader("Authorization") String token*/) throws Exception, IOException {
+        //Place createdPlace = placeService.createPlace(mapper.placePostDtoToPlace(placePostDto));
+        //return new ResponseEntity<>(new SingleResponseDto<>(createdPlace), HttpStatus.CREATED);
+
+
         Challenge createdChallenge = challengeService.createChallenge(mapper.challengePostDtoToChallenge(requestBody));
         Challenge saveImg  = challengeService.saveImage(createdChallenge, image);
 
         ChallengeDto.Response response = mapper.challengeToChallengeResponseDto(saveImg);//, token);
 
-        URI location = UriCreator.createUri(CHALLENGE_DEFAULT_URL+"/challenge/", createdChallenge.getChallengeId());
-        HttpHeaders headers = new HttpHeaders();
-        headers.setLocation(location);
+
+        //URI location = UriCreator.createUri(CHALLENGE_DEFAULT_URL+"/challenge/", createdChallenge.getChallengeId());
+        //HttpHeaders headers = new HttpHeaders();
+        //headers.setLocation(location);
 
         //return ResponseEntity.status(HttpStatus.CREATED).headers(headers).body(new SingleResponseDto<>(response));
-        return new ResponseEntity<>(new SingleResponseDto<>(response), headers, HttpStatus.CREATED);
+        return new ResponseEntity<>(new SingleResponseDto<>(saveImg), HttpStatus.CREATED);
     }
 
     @PatchMapping("/{challengeId}") // 챌린지 수정

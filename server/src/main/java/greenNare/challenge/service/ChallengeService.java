@@ -39,7 +39,7 @@ public class ChallengeService {
         if(Objects.isNull(file)) {
             return challenge;
         }
-        String projectPath = System.getProperty("user.dir")+"/images";
+        String projectPath = System.getProperty("user.dir")+"\\src\\main\\resources\\static\\images";
 
         UUID uuid = UUID.randomUUID();
         String fileName = uuid + "_" + file.getOriginalFilename();
@@ -47,7 +47,7 @@ public class ChallengeService {
         File saveFile = new File(projectPath, fileName);
         file.transferTo(saveFile);
 
-        String image = "/user/images/" + fileName;
+        String image = "/images/" + fileName;
 
         challenge.setImage(image);
         return challengeRepository.save(challenge);
