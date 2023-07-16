@@ -27,7 +27,7 @@ import java.net.URI;
 @RequestMapping("/nare")
 @Validated
 @Slf4j
-@EnableWebMvc
+//@EnableWebMvc
 public class ChallengeController {
     private final static String CHALLENGE_DEFAULT_URL = "/nare";
     private final ChallengeService challengeService;
