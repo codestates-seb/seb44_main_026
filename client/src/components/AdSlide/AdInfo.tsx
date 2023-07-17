@@ -16,7 +16,7 @@ export const slideArr = [
     '광고4',
   ],
   [
-    'https://product-image.kurly.com/cdn-cgi/image/quality=85/banner/main/pc/img/b983c92d-0bec-472a-9b52-911f3fd9374f.jpg',
+    'https://lh3.google.com/u/0/d/1R02X_CEn75eTgFZQsXJMm4y3gICeXbc4=w1920-h944-iv1',
     '광고5',
   ],
 ];
