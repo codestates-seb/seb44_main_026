@@ -31,6 +31,7 @@ const StyledSlide = styled.div`
 
 const HeadLine = styled.div`
   margin-bottom: 1rem;
+  margin-top: 3rem;
   h1 {
     display: flex;
     justify-content: center;

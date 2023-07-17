@@ -21,6 +21,28 @@ const AutoSlide: React.FC = () => {
   const navigate = useNavigate();
   const outRef = useRef<HTMLDivElement>(null);
   const slideRef = useRef<HTMLDivElement>(null);
+  const scrollRef = useRef<HTMLDivElement | null>(null);
+  const [isDrag, setIsDrag] = useState<boolean>(false);
+  const [startX, setStartX] = useState<number | undefined>();
+  const [endX, setEndX] = useState<number | undefined>();
+
+  const onDragStart = (e: React.MouseEvent) => {
+    e.preventDefault();
+    setIsDrag(true);
+    setStartX(e.pageX + (scrollRef.current?.scrollLeft ?? 0));
+    console.log(e.pageX);
+    console.log(scrollRef.current.scrollLeft);
+  };
+  const onDragEnd = () => {
+    setIsDrag(false);
+  };
+
+  const onDragMove = (e: React.MouseEvent) => {
+    if (isDrag) {
+      console.log(e.clientX);
+      scrollRef.current.scrollLeft = e.clientX;
+    }
+  };
 
   useInterval(
     () => setslideIndex((slideIndex) => slideIndex + 1),
@@ -67,26 +89,28 @@ const AutoSlide: React.FC = () => {
   }, [currentInterval]); //마우스 올리면 interval 초기화
 
   return (
-    <StyledAutoContainer>
+    <StyledAutoContainer ref={outRef}>
       <HeadLine>
         <h2>🌎 알아서 챙겨주는 나만의 환경 트레이너 🌎</h2>
       </HeadLine>
-      <div className="ad-slider" ref={outRef}>
+      <div className="ad-slider">
         <FontAwesomeIcon
           icon={faChevronLeft}
           className="ad-icon-left"
           onClick={slideDown}
         />
         <DivConatiner>
-          <StyledContainer display={slideIndex}>
-            <SingleContainer ref={slideRef}>
+          <StyledContainer
+            display={slideIndex}
+            onMouseDown={onDragStart}
+            onMouseMove={onDragMove}
+            onMouseLeave={onDragEnd}
+            onMouseUp={onDragEnd}
+            ref={scrollRef}
+          >
+            <SingleContainer>
               {copiedArr.map((item, index) => (
-                <img
-                  src={item[0]}
-                  alt="banner"
-                  key={index}
-                  onClick={() => navigate('product/new')}
-                />
+                <img src={item[0]} alt="banner" key={index} />
               ))}
             </SingleContainer>
           </StyledContainer>
@@ -136,8 +160,8 @@ const StyledAutoContainer = styled.div`
 
 const HeadLine = styled.div`
   margin-bottom: 1.5rem;
-  margin-top: 2rem;
-  margin-left: 1rem;
+  margin-top: 3rem;
+  margin-left: 2rem;
 `;
 
 const DivConatiner = styled.div`
@@ -158,7 +182,7 @@ const StyledContainer = styled.div<{ display: number }>`
   width: 600%;
   transition: 1s;
   transform: ${(props) =>
-    props.display ? `translate(${-(props.display * 16.7)}%)` : null};
+    props.display ? `translate(${-(props.display * 16.68)}%)` : null};
 `;
 
 const SingleContainer = styled.div`
