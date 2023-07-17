@@ -1,6 +1,6 @@
 import { styled } from 'styled-components';
 import TextareaAutosize from 'react-textarea-autosize';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { faCloudArrowUp } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -23,6 +23,7 @@ export const UploadReview = ({
   const [review, setReview] = useState(content || '');
   const [imageFiles, setImageFiles] = useState([]);
   const [preview, setPreview] = useState([]);
+  const [errorMessage, setErrorMessage] = useState('');
 
   const reviewHandler = (e: React.FormEvent<HTMLTextAreaElement>) => {
     setReview(e.currentTarget.value);
@@ -53,6 +54,12 @@ export const UploadReview = ({
 
   const submitReviewHandler = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
+    if (!review) {
+      return setErrorMessage('내용을 작성해 주세요!');
+    } else {
+      setErrorMessage('');
+    }
 
     const formData = new FormData();
     formData.append('content', review); // JSON.stringify ??
@@ -106,6 +113,12 @@ export const UploadReview = ({
     }
   };
 
+  useEffect(() => {
+    if (review) {
+      setErrorMessage('');
+    }
+  }, [review]);
+
   return (
     <>
       <Form onSubmit={submitReviewHandler}>
@@ -135,6 +148,9 @@ export const UploadReview = ({
             </button>
           )}
         </InputWrapper>
+        {errorMessage ? (
+          <div className="errorMessage">{errorMessage}</div>
+        ) : null}
         <PreviewWrapper>
           {preview.map((image, index) => (
             <Preview key={index}>
@@ -197,6 +213,13 @@ const Form = styled.form`
     &:hover {
       background-color: var(--green-200);
     }
+  }
+
+  .errorMessage {
+    color: var(--red);
+    font-size: 0.75rem;
+    /* margin-top: 0.5rem; */
+    padding: 0.5rem;
   }
 `;
 

@@ -1,27 +1,25 @@
 import { styled } from 'styled-components';
 import { useAtom, useAtomValue } from 'jotai';
-import { isShopAtom, menuAtom } from 'jotai/atom';
-import { useNavigate } from 'react-router-dom';
+import { menuAtom } from 'jotai/atom';
+import { useNavigate, useLocation } from 'react-router-dom';
+import { useEffect } from 'react';
 
 export const Nav = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   // 마켓, 커뮤니티 여부 -> 추후 수정
-  const isShop = useAtomValue(isShopAtom);
   const [currentMenu, setCurrentMenu] = useAtom(menuAtom);
 
-  const shopMenuArr = ['NEW', 'BEST', 'SALE'];
+  const shopMenuArr = ['상품', '관심상품'];
   const communityMenuArr = ['챌린지', '그린나래지도'];
 
   const selectMenuHandler = (menu: string) => {
     setCurrentMenu(menu);
-    if (menu === 'NEW') {
+    if (menu === '상품') {
       // 상품목록 페이지로 이동
-      navigate('/product/new');
-    } else if (menu === 'BEST') {
-      // navigate('/product/best');
-      navigate('/like');
-    } else if (menu === 'SALE') {
-      navigate('/product/sale');
+      navigate('/product/all');
+    } else if (menu === '관심상품') {
+      navigate('/product/like');
     } else if (menu === '챌린지') {
       // 커뮤니티-챌린지 페이지로 이동
       navigate('/challenge');
@@ -31,10 +29,42 @@ export const Nav = () => {
     }
   };
 
+  let menuList;
+
+  if (
+    location.pathname === '/' ||
+    location.pathname.includes('product') ||
+    location.pathname.includes('like')
+  ) {
+    menuList = shopMenuArr.map((menu) => (
+      <Menu
+        key={menu}
+        className={currentMenu === menu ? 'focused' : null}
+        onClick={() => selectMenuHandler(menu)}
+      >
+        {menu}
+      </Menu>
+    ));
+  } else {
+    menuList = communityMenuArr.map((menu) => (
+      <Menu
+        key={menu}
+        className={currentMenu === menu ? 'focused' : null}
+        onClick={() => selectMenuHandler(menu)}
+      >
+        {menu}
+      </Menu>
+    ));
+  }
+  useEffect(() => {
+    //
+  }, [currentMenu]);
+
   return (
     <NavWrapper>
       <MenuWrapper>
-        {isShop
+        {menuList}
+        {/* {isShop
           ? shopMenuArr.map((menu) => {
               return (
                 <Menu
@@ -56,7 +86,7 @@ export const Nav = () => {
                   {menu}
                 </Menu>
               );
-            })}
+            })} */}
       </MenuWrapper>
     </NavWrapper>
   );

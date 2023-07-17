@@ -1,6 +1,7 @@
 import { styled } from 'styled-components';
 import { Nav } from 'components/Nav';
 import { ItemList } from 'feature/ItemList';
+import { TopScrollButton } from 'feature/TopScrollButton';
 import { useEffect, useState } from 'react';
 
 export const LikeProducts = () => {
@@ -17,6 +18,7 @@ export const LikeProducts = () => {
         <Title>관심 상품</Title>
         <ItemList itemlist={likeItems} />
       </ProductWrapper>
+      <TopScrollButton />
     </>
   );
 };

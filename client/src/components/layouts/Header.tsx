@@ -5,7 +5,7 @@ import cart from '../../assets/img/cart.png';
 import user from '../../assets/img/user.png';
 // import { SearchBar } from '../../feature/SearchBar';
 import { useSetAtom } from 'jotai';
-import { isShopAtom } from 'jotai/atom';
+import { menuAtom } from 'jotai/atom';
 
 const StyledHeaderContainer = styled.nav`
   display: flex;
@@ -105,18 +105,20 @@ const AfterLogin = () => {
 
 export const Header = () => {
   const isLogin = false; // 로그인 상태 구현전 임시 변수입니다.
-  const setIsShop = useSetAtom(isShopAtom);
+  const setCurrentMenu = useSetAtom(menuAtom);
   return (
     <div>
       <StyledHeaderContainer>
         <StyledLogo src={logo}></StyledLogo>
         <StyledChoicePage>
           <StyledGreen to={'/'}>
-            <StyledSpan onClick={() => setIsShop(true)}>그린</StyledSpan>
+            <StyledSpan onClick={() => setCurrentMenu('')}>그린</StyledSpan>
           </StyledGreen>
           ㅣ{/* 그린 라우팅 주소 입력*/}
           <StyledNare to={'/challenge'}>
-            <StyledSpan onClick={() => setIsShop(false)}>나래</StyledSpan>
+            <StyledSpan onClick={() => setCurrentMenu('챌린지')}>
+              나래
+            </StyledSpan>
           </StyledNare>
           {/* 나래 라우팅 주소 입력*/}
         </StyledChoicePage>
