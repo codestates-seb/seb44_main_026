@@ -40,12 +40,14 @@ public class ChallengeController {
         this.challengeService = challengeService;
         this.mapper = mapper;
     }
-
+/*
     @GetMapping("/challenge") // 챌린지 전체 조회
     public ResponseEntity getChallenges(final Pageable pageable) {
-        Page<ChallengeDto.Response> response = challengeService.getAllChallengeWithUsername(pageable);
+        Page<Object[]> response = challengeService.getAllChallengeWithUsername(pageable);
         return ResponseEntity.ok(new SingleResponseDto<>(response));
     }
+
+ */
 
     @GetMapping("/{challengeId}") // 챌린지 상세 조회
     public ResponseEntity getChallenge(@PathVariable("challengeId") long challengeId) {

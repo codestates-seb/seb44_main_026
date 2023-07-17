@@ -58,8 +58,8 @@ public class ChallengeService {
         return challengeRepository.save(challenge);
         //return challenge;
     }
-
-    public Page<ChallengeDto.Response> getAllChallengeWithUsername(Pageable pageable) {
+/*
+    public Page<Object[]> getAllChallengeWithUsername(Pageable pageable) {
         return challengeRepository.getAllChallengeWithUsername(pageable);
         /*Page<Challenge> challengeList =  challengeRepository.findAll(PageRequest.of(page, size,
                 Sort.by("challengeId").descending()));
@@ -73,9 +73,9 @@ public class ChallengeService {
                         challenge.getImage()
                 ))
 
-         */
+
     }
-    /*
+
     public String findWriter(long challengeId) {
         //Optional<Challenge> challenge = challengeRepository.findById(challengeId);
         Challenge challenge = challengeRepository.findById(challengeId).orElse(null);
