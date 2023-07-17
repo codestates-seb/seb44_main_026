@@ -7,6 +7,7 @@ import { useAtomValue } from 'jotai';
 import { filterAtom } from 'jotai/atom';
 import { Pagination } from 'feature/Pagination';
 import { ItemList } from 'feature/ItemList';
+import { TopScrollButton } from 'feature/TopScrollButton';
 
 // api 명세서 - 응답
 // interface ItemType {
@@ -91,6 +92,7 @@ export const Product = () => {
           setPage={setCurrentPage}
         />
       </ProductWrapper>
+      <TopScrollButton />
     </>
   );
 };

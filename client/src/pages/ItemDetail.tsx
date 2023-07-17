@@ -6,6 +6,7 @@ import { LikeButton } from 'feature/LikeButton';
 import { useLocation } from 'react-router-dom';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
+import { TopScrollButton } from 'feature/TopScrollButton';
 
 interface ImageProps {
   img: string;
@@ -97,6 +98,7 @@ export const ItemDetail = () => {
           <ReviewList id={item.id} />
         </div>
       </Wrapper>
+      <TopScrollButton />
     </>
   );
 };
