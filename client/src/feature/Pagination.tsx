@@ -1,18 +1,25 @@
 import { styled } from 'styled-components';
-import { Dispatch, SetStateAction } from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faAngleRight } from '@fortawesome/free-solid-svg-icons';
+import { faAngleLeft } from '@fortawesome/free-solid-svg-icons';
+// import { Dispatch, SetStateAction } from 'react';
 
 interface PaginationProps {
   total: number;
   page: number;
-  setPage: Dispatch<SetStateAction<number>>;
+  setPage: React.Dispatch<React.SetStateAction<number>>;
 }
 
 export const Pagination = ({ total, page, setPage }: PaginationProps) => {
   return (
     <PaginationWrapper>
       {page > 1 ? (
-        <Button onClick={() => setPage(page - 1)} disabled={page <= 1}>
-          pre
+        <Button
+          className="angle"
+          onClick={() => setPage(page - 1)}
+          disabled={page <= 1}
+        >
+          <FontAwesomeIcon icon={faAngleLeft} />
         </Button>
       ) : null}
 
@@ -28,7 +35,9 @@ export const Pagination = ({ total, page, setPage }: PaginationProps) => {
           </Button>
         ))}
       {page < total ? (
-        <Button onClick={() => setPage(page + 1)}>next</Button>
+        <Button className="angle" onClick={() => setPage(page + 1)}>
+          <FontAwesomeIcon icon={faAngleRight} />
+        </Button>
       ) : null}
     </PaginationWrapper>
   );
@@ -43,11 +52,14 @@ const PaginationWrapper = styled.nav`
 `;
 
 const Button = styled.button`
-  border: 0.1rem solid var(--gray);
+  border: none;
   background-color: var(--white);
   width: 2rem;
   height: 2rem;
   cursor: pointer;
+
+  border-radius: 50%;
+  margin: 0 0.25rem;
 
   &:hover {
     background-color: var(--green-100);
@@ -57,5 +69,15 @@ const Button = styled.button`
   &.focused {
     background-color: var(--green-200);
     color: var(--white);
+  }
+
+  &.angle {
+    border: none;
+  }
+
+  &.angle:hover {
+    background-color: transparent;
+
+    color: var(--green-100);
   }
 `;

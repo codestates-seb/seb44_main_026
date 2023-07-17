@@ -4,6 +4,7 @@ import { faHeart as solidHeart } from '@fortawesome/free-solid-svg-icons';
 import { faHeart as regularHeart } from '@fortawesome/free-regular-svg-icons';
 import { useState } from 'react';
 import { ItemType } from 'pages/Product';
+import axios from 'axios';
 
 interface StyleLikeProps {
   color: string;
@@ -25,6 +26,28 @@ export const LikeButton = ({ id, title, url, heart }: ItemType) => {
       likeItems.push({ id: id, title: title, url: url, heart: !isLike });
       localStorage.setItem('likeItems', JSON.stringify(likeItems));
     }
+
+    // if (!isLike) {
+    //   axios
+    //     .post(`/green/${id}`, {
+    //       headers: {
+    //         Authorization: accessToken,
+    //       },
+    //     })
+    //     .catch((err) => {
+    //       console.log(err);
+    //     });
+    // } else {
+    //   axios
+    //     .delete(`/green/${id}`, {
+    //       headers: {
+    //         Authorization: accessToken,
+    //       },
+    //     })
+    //     .catch((err) => {
+    //       console.log(err);
+    //     });
+    // }
   };
 
   return (

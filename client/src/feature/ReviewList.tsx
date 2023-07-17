@@ -1,133 +1,63 @@
 import { useEffect, useState } from 'react';
 import { styled } from 'styled-components';
 import axios from 'axios';
-import moment from 'moment';
-import 'moment/locale/ko';
+import { Pagination } from './Pagination';
+import { Review } from './Review';
 
-interface ReviewType {
-  id: number;
-  name: string;
+export interface ReviewType {
+  memberId: string;
   body: string;
+  point: number;
+  createdAt: string;
+
+  // content: string;
+  // createdAt: string;
+  // image: string;
+  // name: string;
+  // point: number;
 }
 
-export const ReviewList = () => {
-  const [reviewList, setReviewList] = useState<ReviewType[]>([]);
+interface ReviewListProps {
+  id: number;
+}
 
-  useEffect(() => {
-    axios
-      .get(`https://jsonplaceholder.typicode.com/posts/1/comments`)
-      .then((res) => {
-        const list = res.data.map((el: ReviewType) => {
-          return {
-            id: el.id,
-            name: el.name,
-            body: el.body,
-          };
-          setReviewList(list);
-        });
-        setReviewList(res.data);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }, []);
+export const ReviewList = ({ id }: ReviewListProps) => {
+  const [reviewList, setReviewList] = useState<ReviewType[]>(dummyComment);
+  const [currentPage, setCurrentPage] = useState(1);
+
+  // useEffect(() => {
+  //   axios
+  //     .get(`/green/review/${id}`)
+  //     .then((res) => {
+  //       setReviewList(res.data);
+  //     })
+  //     .catch((err) => {
+  //       console.log(err);
+  //     });
+  // }, []);
 
   return (
     <ul>
-      {dummyComment.map((review: Comment) => (
-        <Review>
-          <UserInfo>
-            <div className="userName">{`🐥 ${review.memberId}`}</div>
-            <div className="point">{`🏆 ${review.point}P`}</div>
-            <div className="reviewDate">
-              {`⏱️ ${moment(review.createdAt).fromNow()}`}
-            </div>
-          </UserInfo>
-          <Content>
-            <ReviewBody>{review.body}</ReviewBody>
-            <Button>수정</Button>
-            <Button>삭제</Button>
-          </Content>
-        </Review>
-      ))}
+      {reviewList
+        .slice((currentPage - 1) * 3, currentPage * 3)
+        .map((review: ReviewType) => (
+          <Review key={review.memberId} id={id} {...review} />
+        ))}
+      <Pagination
+        total={Math.ceil(dummyComment.length / 3)}
+        page={currentPage}
+        setPage={setCurrentPage}
+      />
     </ul>
   );
 };
-
-const Review = styled.li`
-  list-style: none;
-
-  border: none;
-  box-shadow: rgba(0, 0, 0, 0.3) 1px 1px 4px;
-  border-radius: 0.5rem;
-
-  padding: 1rem;
-  margin: 1rem 0;
-`;
-
-const UserInfo = styled.div`
-  display: flex;
-
-  & > * {
-    margin-right: 1rem;
-  }
-
-  .userName {
-    font-weight: bold;
-  }
-
-  .point {
-    font-weight: bold;
-    color: var(--green-200);
-  }
-
-  .reviewDate {
-    color: var(--gray);
-  }
-`;
-
-const Content = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin: 0.5rem 0;
-`;
-
-const ReviewBody = styled.div`
-  width: 100%;
-`;
-
-const Button = styled.button`
-  cursor: pointer;
-
-  border: none;
-  border-radius: 0.5rem;
-
-  background-color: var(--green-100);
-  color: var(--white);
-
-  width: 3rem;
-  padding: 0.5rem;
-  margin-left: 0.5rem;
-
-  &:hover {
-    background-color: var(--green-200);
-  }
-`;
 
 ////
 ////
 ///
 //
 
-interface Comment {
-  memberId: string;
-  body: string;
-  point: number;
-  createdAt: string;
-}
-
-const dummyComment: Comment[] = [
+const dummyComment: ReviewType[] = [
   {
     memberId: '참여자1',
     body: '챌린지 참여합니다!챌린지 참여합니다!챌린지 참여합니다!챌린지 참여합니다!챌린지 참여합니다!챌린지 참여합니다!챌린지 참여합니다!챌린지 참여합니다!챌린지 참여합니다!챌린지 참여합니다!',
