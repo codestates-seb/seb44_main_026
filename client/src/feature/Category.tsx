@@ -5,23 +5,44 @@ import { filterAtom } from 'jotai/atom';
 export const Category = () => {
   const [currentFilter, setCurrentFilter] = useAtom(filterAtom);
 
-  const filterArr = ['전체', '욕실', '주방', '생활', '문구', '위생'];
-
-  const selectFilterHandler = (filter: string) => {
-    setCurrentFilter(filter);
-  };
+  const Category = [
+    {
+      name: '전체',
+      data: 'all',
+    },
+    {
+      name: '욕실',
+      data: 'bathroom',
+    },
+    {
+      name: '주방',
+      data: 'kitchen',
+    },
+    {
+      name: '생활',
+      data: 'living',
+    },
+    {
+      name: '문구',
+      data: 'stationery',
+    },
+    {
+      name: '위생',
+      data: 'hygiene',
+    },
+  ];
 
   return (
     <Wrapper>
       <CategoryWrapper>
-        {filterArr.map((filter) => {
+        {Category.map((filter) => {
           return (
             <Filter
-              key={filter}
-              className={currentFilter === filter ? 'focused' : null}
-              onClick={() => selectFilterHandler(filter)}
+              key={filter.data}
+              className={currentFilter === filter.data ? 'focused' : null}
+              onClick={() => setCurrentFilter(filter.data)}
             >
-              {filter}
+              {filter.name}
             </Filter>
           );
         })}
