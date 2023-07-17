@@ -1,14 +1,19 @@
 package greenNare.challenge.service;
 
+import greenNare.challenge.dto.ChallengeDto;
 import greenNare.challenge.entity.Challenge;
 import greenNare.challenge.repository.ChallengeRepository;
 import greenNare.config.SecurityConfiguration;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.Member;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -54,5 +59,34 @@ public class ChallengeService {
         //return challenge;
     }
 
+    public Page<ChallengeDto.Response> getAllChallengeWithUsername(Pageable pageable) {
+        return challengeRepository.getAllChallengeWithUsername(pageable);
+        /*Page<Challenge> challengeList =  challengeRepository.findAll(PageRequest.of(page, size,
+                Sort.by("challengeId").descending()));
+        challengeList.stream()
+                .map(challenge -> new ChallengeDto.Response(
+                        challenge.getChallengeId(),
+                        challenge.getMemberId(),
+                        challenge.getTitle(),
+                        challenge.getContent(),
+                        challenge.getCreatedAt(),
+                        challenge.getImage()
+                ))
 
+         */
+    }
+    /*
+    public String findWriter(long challengeId) {
+        //Optional<Challenge> challenge = challengeRepository.findById(challengeId);
+        Challenge challenge = challengeRepository.findById(challengeId).orElse(null);
+        if (challenge != null) {
+            Member member = challenge.getMember();
+            if (member != null) {
+                return member.getUsername();
+            }
+        }
+        return null;
+    }
+
+     */
 }

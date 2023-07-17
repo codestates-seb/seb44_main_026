@@ -44,5 +44,9 @@ public class ChallengeDto {
         private String createdAt;
         private String image;
         private String name;
+
+        public void setName(String name) {
+            this.name = name;
+        }
     }
 }

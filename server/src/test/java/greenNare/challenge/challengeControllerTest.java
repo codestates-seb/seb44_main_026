@@ -6,12 +6,16 @@ import greenNare.challenge.dto.ChallengeDto;
 import greenNare.challenge.entity.Challenge;
 import greenNare.challenge.mapper.ChallengeMapper;
 import greenNare.challenge.service.ChallengeService;
+import greenNare.place.entity.Place;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.web.servlet.MockMvc;
@@ -20,6 +24,9 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 
 import java.io.FileInputStream;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import static org.hamcrest.Matchers.*;
 import static org.mockito.BDDMockito.given;
@@ -62,7 +69,7 @@ public class challengeControllerTest {
         //requestBody.add("requestBody", content);
 
         //FileInputStream fileInputStream = new FileInputStream(path);
-        //MockMultipartFile image1 =  new MockMultipartFile("image","image.png", "png",fileInputStream);
+        //MockMultipartFile image1 = new MockMultipartFile("image","image.png", "png",fileInputStream);
         mockMvc.perform(
                 multipart("/nare/challenge")
                         .file(image)
@@ -76,5 +83,16 @@ public class challengeControllerTest {
                 .andDo(print());
         verify(challengeService).createChallenge(mapper.challengePostDtoToChallenge(challengePostDto));
         verify(challengeService).saveImage(mockChallenge1, image);
+    }
+
+    @Test
+    @DisplayName("get challenge test")
+    void getChallengeTest() throws Exception {
+        Pageable pageable = PageRequest.ofSize(10).withPage(1);
+        List<Place> mockPlaces = new ArrayList<>(Arrays.asList(new Place(1, 1, "place1", 1.1, 2.2), new Place(2,2,"place2",2.2,3.3)));
+
+        //Page<ChallengeDto.Response> mockChallenges = Arrays.asList(new Challenge(1,1,"title","content","image"));
+
+        //given(challengeService.getAllChallengeWithUsername(pageable)).willReturn(mockChallenges);
     }
 }

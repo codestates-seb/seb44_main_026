@@ -10,6 +10,7 @@ import greenNare.utils.UriCreator;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,6 +24,7 @@ import javax.validation.Valid;
 import javax.validation.constraints.Positive;
 import java.io.IOException;
 import java.net.URI;
+import java.util.List;
 
 @RestController
 @RequestMapping("/nare")
@@ -40,11 +42,8 @@ public class ChallengeController {
     }
 
     @GetMapping("/challenge") // 챌린지 전체 조회
-    public ResponseEntity getChallenges(@Positive @RequestParam int page,
-                                        @Positive @RequestParam int size) {
-        //Page<Challenge> pageChallenges = challengeService.findMembers(page-1, size);
-        String response = "";
-        //String writer = challengeService.findWriter()
+    public ResponseEntity getChallenges(final Pageable pageable) {
+        Page<ChallengeDto.Response> response = challengeService.getAllChallengeWithUsername(pageable);
         return ResponseEntity.ok(new SingleResponseDto<>(response));
     }
 
@@ -56,17 +55,13 @@ public class ChallengeController {
 
     @PostMapping("/challenge") // 챌린지 생성
     public ResponseEntity postChallenge(@Valid @RequestPart(required = false) ChallengeDto.Post requestBody,
-                                        @RequestPart(required = false) MultipartFile image
-                                        /*@RequestHeader("Authorization") String token*/) throws Exception, IOException {
-        //Place createdPlace = placeService.createPlace(mapper.placePostDtoToPlace(placePostDto));
-        //return new ResponseEntity<>(new SingleResponseDto<>(createdPlace), HttpStatus.CREATED);
-
-
+                                        @RequestPart(required = false) MultipartFile image,
+                                        @RequestHeader(value = "Authorization", required = false) String token) throws Exception, IOException {
         Challenge createdChallenge = challengeService.createChallenge(mapper.challengePostDtoToChallenge(requestBody));
         Challenge saveImg  = challengeService.saveImage(createdChallenge, image);
 
         ChallengeDto.Response response = mapper.challengeToChallengeResponseDto(saveImg);//, token);
-
+        //response.setName(challengeService.findWriter(response.getChallengeId()));
 
         //URI location = UriCreator.createUri(CHALLENGE_DEFAULT_URL+"/challenge/", createdChallenge.getChallengeId());
         //HttpHeaders headers = new HttpHeaders();
@@ -78,13 +73,14 @@ public class ChallengeController {
 
     @PatchMapping("/{challengeId}") // 챌린지 수정
     public ResponseEntity patchChallenge(@Valid @RequestPart(required = false) ChallengeDto.Patch requestBody,
-                                         @RequestPart(required = false) MultipartFile image){
+                                         @RequestPart(required = false) MultipartFile image,
+                                         @RequestHeader(value = "Authorization", required = false) String token){
         String response = "";
         return ResponseEntity.ok(new SingleResponseDto<>(response));
     }
 
     @DeleteMapping("/{challengeId}") // 챌린지 삭제
-    public ResponseEntity deleteChallenge(){
+    public ResponseEntity deleteChallenge(@RequestHeader(value = "Authorization", required = false) String token){
         String response = "";
         return ResponseEntity.ok(new SingleResponseDto<>(response));
     }

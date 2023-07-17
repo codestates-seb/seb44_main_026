@@ -16,6 +16,8 @@ public class Challenge extends Auditable {
     @Column(nullable = false)
     private long ChallengeId;
 
+    //@ManyToOne
+    //@joinColumn
     @Column(nullable = false)
     private long memberId;
 
