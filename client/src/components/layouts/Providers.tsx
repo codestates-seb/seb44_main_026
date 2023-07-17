@@ -20,6 +20,7 @@ import AddChallenge from 'pages/AddChallenge';
 import MyProfile from 'pages/MyProfile';
 import { ItemDetail } from 'pages/ItemDetail';
 import { LikeProducts } from 'pages/LikeProducts';
+import EditChallenge from 'pages/EditChallenge';
 
 const router = createHashRouter([
   {
@@ -30,14 +31,15 @@ const router = createHashRouter([
       { path: 'map', element: <Map /> },
       { path: 'addmap', element: <AddMap /> },
       { index: true, element: <MainPage /> },
-      { path: 'product/:menu', element: <Product /> },
+      { path: 'product/:category', element: <Product /> },
       { path: 'challenge', element: <ChallengePage /> },
       { path: 'challenge/:id', element: <ChallengeDetail /> },
+      { path: 'challenge/edit/:id', element: <EditChallenge /> },
       { path: 'challenge/write', element: <AddChallenge /> },
       // { path: 'main', element: <MainPage /> },
       { path: 'mypage', element: <MyProfile /> },
-      { path: 'product/:id', element: <ItemDetail /> },
-      { path: 'like', element: <LikeProducts /> },
+      { path: 'product/detail/:id', element: <ItemDetail /> },
+      { path: 'product/like', element: <LikeProducts /> },
     ],
   },
   { path: 'login', element: <Login /> },

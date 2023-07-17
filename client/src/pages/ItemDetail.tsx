@@ -4,6 +4,9 @@ import { UploadReview } from 'feature/UploadReview';
 import { ReviewList } from 'feature/ReviewList';
 import { LikeButton } from 'feature/LikeButton';
 import { useLocation } from 'react-router-dom';
+import axios from 'axios';
+import { useEffect, useState } from 'react';
+import { TopScrollButton } from 'feature/TopScrollButton';
 
 interface ImageProps {
   img: string;
@@ -12,6 +15,37 @@ interface ImageProps {
 export const ItemDetail = () => {
   const location = useLocation();
   const item = location.state;
+
+  //
+  // const [currentItem, setCurrentItem] = useState({});
+
+  const onBuyHandler = () => {
+    window.open('https://www.naver.com/');
+
+    // const point = {
+    //   point: currentItem.point,
+    // };
+
+    // axios
+    //   .patch(`url`, JSON.stringify(point))
+    //   .then((res) => {
+    //     //성공
+    //   })
+    //   .catch((err) => {
+    //     console.log(err);
+    //   });
+  };
+
+  useEffect(() => {
+    // axios
+    //   .get(`/green/${productId}`)
+    //   .then((res) => {
+    //     setCurrentItem(res.data);
+    //   })
+    //   .catch((err) => {
+    //     console.log(err);
+    //   });
+  }, []);
 
   return (
     <>
@@ -42,9 +76,7 @@ export const ItemDetail = () => {
               사용하여 만들어진 연필입니다 !
             </p>
             <ButtonWrapper>
-              <BuyButton onClick={() => window.open('https://www.naver.com/')}>
-                구매하기
-              </BuyButton>
+              <BuyButton onClick={() => onBuyHandler()}>구매하기</BuyButton>
 
               <div className="likebutton">
                 <LikeButton
@@ -59,10 +91,14 @@ export const ItemDetail = () => {
         </div>
         {/* 리뷰 표시 */}
         <div className="reviewWrapper">
-          <UploadReview />
-          <ReviewList />
+          리뷰 2개
+          <FormWrapper>
+            <UploadReview id={item.id} />
+          </FormWrapper>
+          <ReviewList id={item.id} />
         </div>
       </Wrapper>
+      <TopScrollButton />
     </>
   );
 };
@@ -141,4 +177,17 @@ const BuyButton = styled.button`
   &:hover {
     background-color: var(--green-200);
   }
+`;
+
+const FormWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+
+  border: 0.1rem solid var(--gray);
+  border-radius: 0.5rem;
+  border: none;
+  box-shadow: rgba(0, 0, 0, 0.3) 1px 1px 4px;
+
+  padding: 1rem;
+  margin: 1rem 0;
 `;

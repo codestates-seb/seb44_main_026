@@ -1,16 +1,22 @@
 export const slideArr = [
-  ['https://i.ytimg.com/vi/1GRiDXRk2mY/maxresdefault.jpg', '광고1'],
   [
-    'https://d1orkkc34keaka.cloudfront.net/images/2021/03/09/1615263639_Ykkpqxzum6LNSfZcIsundOTdTCdGusMEChPxMErn.jpeg',
+    'https://wmp-blog.wonderscdn.app/log/content/26b5cf8f-7283-4173-b593-0c288b0f522d_1681701704069.png',
+    '광고1',
+  ],
+  [
+    'https://shoppulmuone.cdn.ntruss.com/BOS/dp/2023/07/13/0B79A4B3B6894EF6A96F.jpg',
     '광고2',
   ],
   [
-    'https://skinnonews.com/wp-content/uploads/2019/06/190624_OC%EB%B3%84_%EC%B9%9C%ED%99%98%EA%B2%BD%EC%BA%A0%ED%8E%98%EC%9D%B8_%EC%95%84%EA%B7%B8%EC%9C%84%EA%B7%B8%EC%84%A4%EB%AA%85.jpg',
+    'https://img.freepik.com/free-photo/hands-showing-recycling-balloons-word_53876-30800.jpg?w=1380&t=st=1689325247~exp=1689325847~hmac=1d3e9564f98830dae978b09ab9706660197e9756d2cb3349e3fa710feadc2c72',
     '광고3',
   ],
   [
-    'https://wmp-blog.wonderscdn.app/log/content/26b5cf8f-7283-4173-b593-0c288b0f522d_1681701704069.png',
+    'https://shoppulmuone.cdn.ntruss.com/BOS/dp/2023/06/28/9B9A3F4B89034A399CD3.jpg',
     '광고4',
   ],
-  ['https://t1.daumcdn.net/cfile/tistory/9991E7475D493DD00D', '광고5'],
+  [
+    'https://lh3.google.com/u/0/d/1R02X_CEn75eTgFZQsXJMm4y3gICeXbc4=w1920-h944-iv1',
+    '광고5',
+  ],
 ];

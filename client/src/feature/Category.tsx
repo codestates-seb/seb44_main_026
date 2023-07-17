@@ -5,23 +5,44 @@ import { filterAtom } from 'jotai/atom';
 export const Category = () => {
   const [currentFilter, setCurrentFilter] = useAtom(filterAtom);
 
-  const filterArr = ['전체', '욕실', '주방', '생활', '문구', '위생'];
-
-  const selectFilterHandler = (filter: string) => {
-    setCurrentFilter(filter);
-  };
+  const Category = [
+    {
+      name: '전체',
+      data: 'all',
+    },
+    {
+      name: '욕실',
+      data: 'bathroom',
+    },
+    {
+      name: '주방',
+      data: 'kitchen',
+    },
+    {
+      name: '생활',
+      data: 'living',
+    },
+    {
+      name: '문구',
+      data: 'stationery',
+    },
+    {
+      name: '위생',
+      data: 'hygiene',
+    },
+  ];
 
   return (
     <Wrapper>
       <CategoryWrapper>
-        {filterArr.map((filter) => {
+        {Category.map((filter) => {
           return (
             <Filter
-              key={filter}
-              className={currentFilter === filter ? 'focused' : null}
-              onClick={() => selectFilterHandler(filter)}
+              key={filter.data}
+              className={currentFilter === filter.data ? 'focused' : null}
+              onClick={() => setCurrentFilter(filter.data)}
             >
-              {filter}
+              {filter.name}
             </Filter>
           );
         })}
@@ -37,9 +58,10 @@ const Wrapper = styled.div`
 `;
 
 const CategoryWrapper = styled.ul`
-  border: 0.1rem solid var(--gray);
+  border: none;
+  box-shadow: rgba(0, 0, 0, 0.3) 1px 1px 4px;
   border-radius: 0.5rem;
-  width: 60rem;
+  min-width: 56rem;
 
   display: flex;
   flex-direction: row;
@@ -47,7 +69,6 @@ const CategoryWrapper = styled.ul`
 
   overflow: hidden;
   list-style: none;
-  /* margin: 1rem; */
 `;
 
 const Filter = styled.li`
@@ -57,10 +78,10 @@ const Filter = styled.li`
   justify-content: center;
   align-items: center;
 
-  width: 10rem;
+  flex-grow: 1;
   height: 2rem;
 
-  border-left: 0.1rem solid var(--gray);
+  border: none;
   font-size: 0.875rem;
 
   &:hover {

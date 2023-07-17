@@ -1,23 +1,41 @@
 import { styled } from 'styled-components';
 import TextareaAutosize from 'react-textarea-autosize';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import { faCloudArrowUp } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-export const UploadReview = () => {
-  const [review, setReview] = useState('');
+interface UploadReviewProps {
+  id: number;
+  isEdit?: boolean;
+  setIsEdit?: React.Dispatch<React.SetStateAction<boolean>>;
+  memberId?: string;
+  content?: string;
+}
+
+export const UploadReview = ({
+  id,
+  isEdit,
+  setIsEdit,
+  memberId,
+  content,
+}: UploadReviewProps) => {
+  const [review, setReview] = useState(content || '');
   const [imageFiles, setImageFiles] = useState([]);
   const [preview, setPreview] = useState([]);
+  const [errorMessage, setErrorMessage] = useState('');
 
   const reviewHandler = (e: React.FormEvent<HTMLTextAreaElement>) => {
     setReview(e.currentTarget.value);
   };
-
   const uploadFileHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = Array.from(e.target.files);
     const addFiles = [...imageFiles, ...files];
     setImageFiles(addFiles);
 
-    const previewArray = addFiles.map((data) => URL.createObjectURL(data));
+    const previewArray = addFiles.map((data) =>
+      window.URL.createObjectURL(data),
+    );
     setPreview(previewArray);
 
     e.target.value = '';
@@ -32,41 +50,78 @@ export const UploadReview = () => {
       ...preview.slice(0, index),
       ...preview.slice(index + 1, preview.length),
     ]);
-    //
   };
 
   const submitReviewHandler = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    const formData = new FormData();
-    formData.append('data', review); // JSON.stringify ??
-    imageFiles.forEach((file) => formData.append('files', file));
-
-    // formData값 확인
-    for (const [key, value] of formData.entries()) {
-      console.log(key, value);
+    if (!review) {
+      return setErrorMessage('내용을 작성해 주세요!');
+    } else {
+      setErrorMessage('');
     }
 
-    return axios
-      .post(`url`, formData, {
-        headers: {
-          // Authorization: accessToken,
-          // 'Content-Type': 'multipart/form-data',
-        },
-      })
-      .then((res) => {
-        // 성공
-        console.log(res.data);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    const formData = new FormData();
+    formData.append('content', review); // JSON.stringify ??
+    imageFiles.forEach((file) => formData.append('image', file));
+
+    if (isEdit) {
+      return axios
+        .patch(`/green/review/${id}`, formData, {
+          headers: {
+            // Authorization: accessToken,
+            // 'Content-Type': 'multipart/form-data',
+          },
+        })
+        .then((res) => {
+          // 성공
+          console.log(res.data);
+        })
+        .catch((err) => {
+          console.log(err);
+          console.log('edit');
+
+          // formData값 확인
+          for (const [key, value] of formData.entries()) {
+            console.log(key, value);
+          }
+
+          console.log(memberId);
+        });
+    } else {
+      return axios
+        .post(`/green/review/${id}`, formData, {
+          headers: {
+            // Authorization: accessToken,
+            // 'Content-Type': 'multipart/form-data',
+          },
+        })
+        .then((res) => {
+          // 성공
+          console.log(res.data);
+        })
+        .catch((err) => {
+          console.log(err);
+
+          console.log('upload');
+          // formData값 확인
+          for (const [key, value] of formData.entries()) {
+            console.log(key, value);
+          }
+          console.log(memberId);
+        });
+    }
   };
+
+  useEffect(() => {
+    if (review) {
+      setErrorMessage('');
+    }
+  }, [review]);
 
   return (
     <>
-      리뷰 2개
-      <FormWrapper onSubmit={submitReviewHandler}>
+      <Form onSubmit={submitReviewHandler}>
         <InputWrapper>
           <Input
             maxRows={4}
@@ -74,53 +129,104 @@ export const UploadReview = () => {
             placeholder="리뷰를 작성해보세요!"
             onChange={reviewHandler}
           />
-          <Button type="submit" className="submit">
-            등록
-          </Button>
+          {isEdit ? (
+            <>
+              <button type="submit" className="editButton">
+                확인
+              </button>
+              <button
+                type="button"
+                className="editButton"
+                onClick={() => setIsEdit(false)}
+              >
+                취소
+              </button>
+            </>
+          ) : (
+            <button type="submit" className="submitButton">
+              등록
+            </button>
+          )}
         </InputWrapper>
+        {errorMessage ? (
+          <div className="errorMessage">{errorMessage}</div>
+        ) : null}
         <PreviewWrapper>
           {preview.map((image, index) => (
-            <Preview>
-              <img className="previewImg" key={index} src={image} />
+            <Preview key={index}>
+              <img className="previewImg" src={image} />
               <div className="delete" onClick={() => deleteFileHandler(index)}>
                 삭제
               </div>
             </Preview>
           ))}
         </PreviewWrapper>
-        <FileUploadButton htmlFor="file">사진 추가하기</FileUploadButton>
-        <input
-          type="file"
-          id="file"
-          accept="image/*"
-          multiple
-          onChange={uploadFileHandler}
-        />
-      </FormWrapper>
+
+        <FileUploadButton>
+          사진 업로드
+          <FontAwesomeIcon icon={faCloudArrowUp} />
+          <input
+            type="file"
+            accept="image/*"
+            multiple
+            onChange={uploadFileHandler}
+            className="inputfile"
+          />
+        </FileUploadButton>
+      </Form>
     </>
   );
 };
 
-const FormWrapper = styled.form`
-  display: flex;
-  flex-direction: column;
+const Form = styled.form`
+  width: 100%;
 
-  border: 0.1rem solid var(--gray);
-  border-radius: 0.5rem;
-  border: none;
-  box-shadow: rgba(0, 0, 0, 0.3) 1px 1px 4px;
-
-  padding: 1rem;
-  margin: 1rem 0;
-
-  #file {
+  .inputfile {
     display: none;
+  }
+
+  .editButton {
+    cursor: pointer;
+    border: none;
+    background-color: transparent;
+    color: var(--gray);
+
+    width: 3rem;
+    padding: 0.5rem;
+    margin-left: 0.3rem;
+
+    &:hover {
+      color: var(--green-200);
+    }
+  }
+
+  .submitButton {
+    cursor: pointer;
+    border: none;
+    background-color: var(--green-100);
+    color: var(--white);
+    border-radius: 0.5rem;
+    width: 5rem;
+    margin-left: 1rem;
+    padding: 1rem;
+
+    &:hover {
+      background-color: var(--green-200);
+    }
+  }
+
+  .errorMessage {
+    color: var(--red);
+    font-size: 0.75rem;
+    /* margin-top: 0.5rem; */
+    padding: 0.5rem;
   }
 `;
 
 const InputWrapper = styled.div`
   width: 100%;
   display: flex;
+  align-items: center;
 `;
 
 const Input = styled(TextareaAutosize)`
@@ -128,13 +234,18 @@ const Input = styled(TextareaAutosize)`
 
   padding: 1rem;
   border-radius: 0.5rem;
-  border: none;
-  box-shadow: rgba(0, 0, 0, 0.3) 1px 1px 4px;
-
+  /* border: none;
+  box-shadow: rgba(0, 0, 0, 0.3) 1px 1px 4px; */
+  border: 0.1rem solid var(--gray);
   resize: none;
 
   &::placeholder {
     color: var(--gray);
+  }
+
+  &:focus {
+    border-color: var(--green-200);
+    outline: none;
   }
 `;
 
@@ -148,7 +259,8 @@ const FileUploadButton = styled.label`
   font-size: 0.75rem;
 
   display: flex;
-  justify-content: center;
+  justify-content: space-evenly;
+
   align-items: center;
 
   cursor: pointer;
@@ -195,23 +307,5 @@ const Preview = styled.div`
   }
   &:hover .previewImg {
     opacity: 0.3;
-  }
-`;
-
-const Button = styled.button`
-  cursor: pointer;
-
-  color: var(--white);
-  background-color: var(--green-100);
-  border: none;
-  border-radius: 0.5rem;
-  font-size: 1.25rem;
-
-  min-width: 7rem;
-  height: 3rem;
-  margin-left: 1rem;
-
-  &:hover {
-    background-color: var(--green-200);
   }
 `;

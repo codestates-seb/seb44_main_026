@@ -11,7 +11,7 @@ export const Item = ({ id, title, url, heart }: ItemType) => {
   const navigate = useNavigate();
 
   const selectItemHandler = (id: number) => {
-    navigate(`/product/${id}`, {
+    navigate(`/product/detail/${id}`, {
       state: { id: id, title: title, url: url, heart: heart },
     });
   };
@@ -37,9 +37,10 @@ export const Item = ({ id, title, url, heart }: ItemType) => {
 
 const ItemWrapper = styled.li`
   list-style: none;
-  border: 0.1rem solid var(--gray);
   border-radius: 0.5rem;
   background-color: var(--white);
+  border: none;
+  box-shadow: rgba(0, 0, 0, 0.3) 1px 1px 4px;
 
   width: 18rem;
   height: 22rem;

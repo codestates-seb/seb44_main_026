@@ -38,6 +38,7 @@ const StyledWrapper = styled.div`
   .text-container {
     display: flex;
     padding: 1rem;
+    width: 100%;
     flex-direction: column;
   }
   .slide-name {

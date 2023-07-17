@@ -7,13 +7,18 @@ import { useAtomValue } from 'jotai';
 import { filterAtom } from 'jotai/atom';
 import { Pagination } from 'feature/Pagination';
 import { ItemList } from 'feature/ItemList';
+import { TopScrollButton } from 'feature/TopScrollButton';
 
 // api 명세서 - 응답
 // interface ItemType {
+//   productId?: number;
 //   productName: string;
 //   price: number;
 //   image: string;
 //   category: string;
+//   point: number;
+//   detail?: string;
+//   storeLink?: string;
 // }
 
 // 임시
@@ -39,12 +44,12 @@ export const Product = () => {
   useEffect(() => {
     let id = 1;
 
-    if (filter === '전체') id = 1;
-    else if (filter === '욕실') id = 2;
-    else if (filter === '주방') id = 3;
-    else if (filter === '생활') id = 4;
-    else if (filter === '주방') id = 5;
-    else if (filter === '위생') id = 6;
+    if (filter === 'all') id = 1;
+    else if (filter === 'bathroom') id = 2;
+    else if (filter === 'kitchen') id = 3;
+    else if (filter === 'living') id = 4;
+    else if (filter === 'stationery') id = 5;
+    else if (filter === 'hygiene') id = 6;
 
     axios
       .get(`https://jsonplaceholder.typicode.com/photos?albumId=${id}`)
@@ -58,6 +63,21 @@ export const Product = () => {
       .catch((err) => {
         console.log(err);
       });
+
+    // axios
+    //   .get(`/green`, {
+    //     params: {
+    //       page: currentPage,
+    //       size: 10,
+    //       category: filter,
+    //     },
+    //   })
+    //   .then((res) => {
+    //     setItemList(res.data);
+    //   })
+    //   .catch((err) => {
+    //     console.log(err);
+    //   });
   }, [filter, currentPage]);
 
   return (
@@ -66,13 +86,13 @@ export const Product = () => {
       <ProductWrapper>
         <Category />
         <ItemList itemlist={itemList} />
-
         <Pagination
           total={totalPages}
           page={currentPage}
           setPage={setCurrentPage}
         />
       </ProductWrapper>
+      <TopScrollButton />
     </>
   );
 };

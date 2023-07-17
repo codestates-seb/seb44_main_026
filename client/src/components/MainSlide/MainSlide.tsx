@@ -31,6 +31,7 @@ const StyledSlide = styled.div`
 
 const HeadLine = styled.div`
   margin-bottom: 1rem;
+  margin-top: 3rem;
   h1 {
     display: flex;
     justify-content: center;
@@ -46,6 +47,7 @@ const DivConatiner = styled.div`
   width: 80%;
   margin: 0 auto;
   align-items: center;
+  overflow: hidden;
   justify-content: center;
   background-color: white;
   box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px,
