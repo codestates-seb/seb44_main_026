@@ -4,6 +4,7 @@ import ChallengeItem from './ChallengeItem';
 import API from '../../api/index';
 import { useEffect, useState } from 'react';
 import loadimg from '../../assets/img/loading.gif';
+import { Pagination } from '../../feature/Pagination';
 
 const ChallengeList = () => {
   const [challengeList, setChallengeList] = useState([]);
@@ -15,20 +16,13 @@ const ChallengeList = () => {
     try {
       setLoading(true);
       const res = await API.GET('https://jsonplaceholder.typicode.com/posts');
-      setChallengeList([...res.data]);
+      const newData = [...res.data];
+      setChallengeList(newData.slice((currentPage - 1) * 10, currentPage * 10));
     } catch (err) {
       console.log(err);
       setChallengeList([]);
     }
     setLoading(false);
-  };
-
-  const indexOfLast = currentPage * postPerPage;
-  const indexOfFirst = indexOfLast - postPerPage;
-  const currentPosts = (posts: any) => {
-    let currentPosts = 0;
-    currentPosts = posts.slice(indexOfFirst, indexOfLast);
-    return currentPosts;
   };
 
   useEffect(() => {
@@ -37,6 +31,8 @@ const ChallengeList = () => {
 
   useEffect(() => {
     console.log(currentPage);
+    getChallenge();
+    window.scrollTo(0, 0);
   }, [currentPage]);
 
   useEffect(() => {
@@ -53,6 +49,7 @@ const ChallengeList = () => {
       {challengeList.map((item) => (
         <ChallengeItem item={item} key={item.id} />
       ))}
+      <Pagination total={10} page={currentPage} setPage={setCurrentPage} />
     </ListWrapper>
   );
 };
