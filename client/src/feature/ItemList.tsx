@@ -10,7 +10,8 @@ export const ItemList = ({ itemlist }: ItemListProps) => {
   return (
     <ListWrapper>
       {itemlist.map((item: ItemType) => (
-        <Item {...item} />
+        <Item key={item.id} {...item} />
+        //id -> productId 로 수정할 것
       ))}
     </ListWrapper>
   );
@@ -18,7 +19,7 @@ export const ItemList = ({ itemlist }: ItemListProps) => {
 
 const ListWrapper = styled.ul`
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(18rem, max-content));
+  grid-template-columns: repeat(3, minmax(18rem, max-content));
   justify-content: center;
   gap: 1rem;
   margin: 2rem;

@@ -37,9 +37,10 @@ const Wrapper = styled.div`
 `;
 
 const CategoryWrapper = styled.ul`
-  border: 0.1rem solid var(--gray);
+  border: none;
+  box-shadow: rgba(0, 0, 0, 0.3) 1px 1px 4px;
   border-radius: 0.5rem;
-  width: 60rem;
+  min-width: 56rem;
 
   display: flex;
   flex-direction: row;
@@ -47,7 +48,6 @@ const CategoryWrapper = styled.ul`
 
   overflow: hidden;
   list-style: none;
-  /* margin: 1rem; */
 `;
 
 const Filter = styled.li`
@@ -57,10 +57,10 @@ const Filter = styled.li`
   justify-content: center;
   align-items: center;
 
-  width: 10rem;
+  flex-grow: 1;
   height: 2rem;
 
-  border-left: 0.1rem solid var(--gray);
+  border: none;
   font-size: 0.875rem;
 
   &:hover {
