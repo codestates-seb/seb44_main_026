@@ -8,5 +8,4 @@ export const modalAtom = atom(false);
 export const UserIdAtom = atom('');
 export const AccessTokenAtom = atom('');
 export const RefreshTokenAtom = atom('');
-export const menuAtom = atom('');
-
+//export const menuAtom = atom('');

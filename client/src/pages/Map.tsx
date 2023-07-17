@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import { useEffect, useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import API from '../api/index';
 declare global {
   interface Window {
@@ -44,6 +45,11 @@ const StyledAddButton = styled.button`
   border: 1px solid rgba(217, 218, 218, 1);
   width: 7rem;
   height: 3rem;
+`;
+
+const StyledLink = styled(Link)`
+  color: white;
+  text-decoration: none;
 `;
 
 export const Map = () => {
@@ -103,7 +109,9 @@ export const Map = () => {
     <>
       <StyledNav>
         <StyledTitle>🗺 지도보기</StyledTitle>
-        <StyledAddButton>나도 등록하기</StyledAddButton>
+        <StyledAddButton>
+          <StyledLink to={'/addmap'}>나도 등록하기</StyledLink>
+        </StyledAddButton>
       </StyledNav>
       <StyledMapContainer>
         <StyledMapItem>
