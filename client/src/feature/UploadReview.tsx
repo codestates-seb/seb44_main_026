@@ -146,18 +146,17 @@ export const UploadReview = ({
           ))}
         </PreviewWrapper>
 
-        <FileUploadButton htmlFor={memberId || 'file'}>
+        <FileUploadButton>
           사진 업로드
           <FontAwesomeIcon icon={faCloudArrowUp} />
+          <input
+            type="file"
+            accept="image/*"
+            multiple
+            onChange={uploadFileHandler}
+            className="inputfile"
+          />
         </FileUploadButton>
-        <input
-          type="file"
-          id={memberId || 'file'}
-          accept="image/*"
-          multiple
-          onChange={uploadFileHandler}
-          className="inputfile"
-        />
       </Form>
     </>
   );
