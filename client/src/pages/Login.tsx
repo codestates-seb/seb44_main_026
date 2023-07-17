@@ -1,7 +1,13 @@
 import { GreenButton } from 'feature/GreenButton';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
-import { useEffect, useState } from 'react';
+import { Children, useEffect, useState } from 'react';
+import axios from 'axios';
+import { AxiosResponse, AxiosError } from 'axios';
+import { useAtom } from 'jotai';
+import { AccessTokenAtom, RefreshTokenAtom, UserIdAtom } from 'jotai/atom';
+import { useNavigate } from 'react-router-dom';
+
 const StyledLoginContainer = styled.div`
   display: flex;
   justify-content: center;
@@ -82,8 +88,30 @@ export const Login = () => {
   const [email, setEmail] = useState(''); // 이메일
   const [password, setPassword] = useState(''); // 비밀번호
   const [errors, setErrors] = useState([]); //에러
+  const [loginAccToken, setLoginAccToken] = useAtom(AccessTokenAtom); // Jotai atom 사용
+  const [loginRefToken, setLoginRefToken] = useAtom(RefreshTokenAtom); // Jotai atom 사용
+  const [loginUserId, setLoginUserId] = useAtom(UserIdAtom); // Jotai atom 사용
+  const navigate = useNavigate();
+  interface LoginResponse {
+    authorization: string;
+    refresh: string;
+  }
 
+  interface UserData {
+    userId: string;
+  }
+
+  interface LoginData {
+    accessToken: string;
+    refreshToken: string;
+    userId: string;
+  }
   const handleLoginChange = () => {
+    const postData = {
+      email: email, // 이메일
+      password: password, // 비밀번호
+    };
+
     // 오류 메시지 초기화
     setErrors([]);
 
@@ -92,11 +120,68 @@ export const Login = () => {
       setErrors((err) => [...err, 'Email_empty']);
       // 이메일 형식이 아닐때
     } else if (!email.includes('@')) {
-      setErrors((prevErrors) => [...prevErrors, 'Email_invalid']);
+      setErrors((err) => [...err, 'Email_invalid']);
     }
+
     // 비밀번호가 틀릴경우
     if (!password) {
       setErrors((err) => [...err, 'PassWord_empty']);
+    } else {
+      // post 요청 보내기
+      axios
+        .post('url', postData, {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        })
+        .then((response: AxiosResponse) => {
+          if (
+            // 헤더에 토큰이 포함된다면 로그인 성공
+            response.headers['authorization'] &&
+            response.headers['refresh']
+          ) {
+            const authorizationHeader = response.headers['authorization'];
+            const refreshToken = response.headers['refresh'];
+
+            const accessToken = authorizationHeader.split(' ')[1]; // Bearer 분리
+
+            const userData: UserData = response.data;
+            const { userId } = userData;
+            console.log(userId);
+
+            // 토큰 저장
+            localStorage.setItem('accessToken', accessToken);
+            localStorage.setItem('refreshToken', refreshToken);
+            localStorage.setItem('userId', userId);
+
+            // 상태 업데이트
+            const loginData: LoginData = {
+              accessToken,
+              refreshToken,
+              userId,
+            };
+            setLoginAccToken(loginData.accessToken);
+            setLoginRefToken(loginData.refreshToken);
+            setLoginUserId(loginData.userId);
+            // 페이지 이동
+            navigate('/');
+          } else if (response.status === 401) {
+            // 로그인 실패 했을 경우
+            return response.data.then((data: { message: string }) => {
+              if (data.message === 'Member not found : Unauthorized') {
+                setErrors((err) => [...err, 'NotMember']);
+              } else if (data.message === 'Unauthorized') {
+                setErrors((err) => [...err, 'WrongPassword']);
+                throw new Error('비밀번호가 잘못되었습니다.');
+              } else {
+                throw new Error('로그인에 실패했습니다.');
+              }
+            });
+          }
+        })
+        .catch((error: AxiosError) => {
+          console.error('로그인 요청 중 오류가 발생했습니다.', error);
+        });
     }
   };
 
@@ -136,10 +221,7 @@ export const Login = () => {
             onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
               setPassword(e.target.value)
             }
-            error={
-              errors.includes('PassWord_empty') ||
-              errors.includes('WrongPassword')
-            }
+            error={errors.includes('PassWord_empty')}
           />
           {errors.includes('Password_empty') && (
             <ErrorMessage>Password cannot be empty.</ErrorMessage>
@@ -150,6 +232,7 @@ export const Login = () => {
         </StyledLoginMain>
 
         <GreenButton onClick={handleLoginChange}>Login</GreenButton>
+
         <StyledexplainSignUp>
           Don’t have an account?
           <StyledSignUpLink to={'/signup'}>
