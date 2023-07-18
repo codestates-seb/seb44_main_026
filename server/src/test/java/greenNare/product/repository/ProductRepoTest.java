@@ -26,9 +26,9 @@ public class ProductRepoTest {
     @Test
     public void getProductsTest() {
         //given
-        Product product1 = new Product("칫솔1", "칫솔입니다", 100, "a.com", "욕실");
-        Product product2 = new Product("칫솔2", "칫솔입니다", 200, "b.com", "주방");
-        Product product3 = new Product("칫솔3", "칫솔입니다", 300, "c.com", "욕실");
+        Product product1 = new Product("칫솔1", "칫솔입니다", 100, 10, "a.com", "욕실");
+        Product product2 = new Product("칫솔2", "칫솔입니다", 200, 20, "b.com", "주방");
+        Product product3 = new Product("칫솔3", "칫솔입니다", 300, 30, "c.com", "욕실");
 
         entityManager.persist(product1);
         entityManager.persist(product2);

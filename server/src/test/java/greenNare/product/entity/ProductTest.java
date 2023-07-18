@@ -13,12 +13,13 @@ public class ProductTest {
         String productName = null;
         String detail = null;
         int price = 0;
+        int point = 0;
         String storeLink = null;
         String category = null;
 
         //when, then
         assertThrows(NullPointerException.class,
-                () -> new Product(productName, detail, price, storeLink, category));
+                () -> new Product(productName, detail, price, point, storeLink, category));
 
 
     }

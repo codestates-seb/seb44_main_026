@@ -44,9 +44,9 @@ public class ProductServiceTest {
     @BeforeEach //@BeforeAll 사용, static고려
     public void initAll() {
 
-        Product product1 = new Product("칫솔1", "칫솔입니다", 100, "a.com", "욕실");
-        Product product2 = new Product("칫솔2", "칫솔입니다", 200, "b.com", "주방");
-        Product product3 = new Product("칫솔3", "칫솔입니다", 300, "c.com", "욕실");
+        Product product1 = new Product("칫솔1", "칫솔입니다", 100, 10, "a.com", "욕실");
+        Product product2 = new Product("칫솔2", "칫솔입니다", 200, 20, "b.com", "주방");
+        Product product3 = new Product("칫솔3", "칫솔입니다", 300, 30, "c.com", "욕실");
 
         entityManager.persist(product1);
         entityManager.persist(product2);
@@ -60,9 +60,9 @@ public class ProductServiceTest {
     public void getProductsTest() {
         //given
         List<Product> products = Arrays.asList(
-                new Product("칫솔1", "칫솔입니다", 100, "a.com", "욕실"),
-                new Product("칫솔2", "칫솔입니다", 200, "b.com", "주방"),
-                new Product("칫솔3", "칫솔입니다", 300, "c.com", "욕실"));
+                new Product("칫솔1", "칫솔입니다", 100, 10, "a.com", "욕실"),
+                new Product("칫솔2", "칫솔입니다", 200, 20, "b.com", "주방"),
+                new Product("칫솔3", "칫솔입니다", 300, 30, "c.com", "욕실"));
 
         PageRequest pageable = PageRequest.of(1,2, Sort.Direction.DESC,"productId");
         Page<Product> pagenated = new PageImpl<>(products, pageable, products.size());
