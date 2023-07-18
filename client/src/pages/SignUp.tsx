@@ -6,6 +6,7 @@ import logo from '../assets/img/logo.png';
 import { Modal } from 'feature/Modal';
 import { modalAtom } from 'jotai/atom';
 import axios from 'axios';
+import API from '../api/index';
 import { AxiosResponse, AxiosError } from 'axios';
 interface StyledChangeModal {
   modalOpen: boolean;
@@ -85,13 +86,47 @@ export const SignUp = () => {
   const [errors, setErrors] = useState([]); //에러
   const [modal, setModal] = useAtom(modalAtom);
 
-  const handleSignupChange = () => {
-    const postData = {
-      name: nickname, // 닉네임
-      email: email, // 이메일
-      password: password, // 비밀번호
-    };
+  const PostSignUp = async () => {
+    try {
+      const postData = {
+        name: nickname, // 닉네임
+        email: email, // 이메일
+        password: password, // 비밀번호
+      };
 
+      const response = await API.POST({
+        url: 'url',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        data: postData,
+      });
+
+      // 비동기 요청이 성공했을 경우에만 처리
+      if (response.status === 201) {
+        const { memberId }: { memberId: number } = response.data;
+        const postData: { memberId: number } = { memberId };
+        localStorage.setItem('user', JSON.stringify(postData));
+
+        setModal(true);
+      } else if (response.status === 409) {
+        // 회원가입 실패 했을 경우
+        return response.data.then((data: { message: string }) => {
+          if (data.message === 'USER_EXISTS') {
+            setErrors((err) => [...err, 'USER_EXISTS']);
+            throw new Error('이미 등록된 이메일입니다.');
+          } else {
+            throw new Error('회원가입에 실패했습니다.');
+          }
+        });
+      }
+    } catch (error) {
+      console.error('회원가입 요청 중 오류가 발생했습니다.', error);
+      // 오류 발생 시에 대한 처리
+    }
+  };
+
+  const handleSignupChange = () => {
     setErrors([]);
     // 닉네임 조건문
     if (!nickname) {
@@ -118,38 +153,9 @@ export const SignUp = () => {
       setErrors((err) => [...err, 'Password_Displayname_specialChars']);
     } else if (password.length < 8) {
       setErrors((err) => [...err, 'Password_Short']);
-    } else {
-      // post 요청 보내기
-
-      axios
-        .post('url', postData, {
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        })
-        .then((response: AxiosResponse) => {
-          if (response.status === 201) {
-            const { memberId }: { memberId: number } = response.data;
-            const postData: { memberId: number } = { memberId };
-            localStorage.setItem('user', JSON.stringify(postData));
-
-            setModal(true);
-          } else if (response.status === 409) {
-            // 회원가입 실패 했을 경우
-            return response.data.then((data: { message: string }) => {
-              if (data.message === 'USER_EXISTS') {
-                setErrors((err) => [...err, 'USER_EXISTS']);
-                throw new Error('이미 등록된 이메일입니다.');
-              } else {
-                throw new Error('회원가입에 실패했습니다.');
-              }
-            });
-          }
-        })
-        .catch((error: AxiosError) => {
-          console.error('회원가입 요청 중 오류가 발생했습니다.', error);
-        });
     }
+    // POST 요청 보내는 부분
+    PostSignUp();
   };
 
   const handleCloseModal = () => {

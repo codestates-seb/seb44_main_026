@@ -1,7 +1,8 @@
 import styled from 'styled-components';
 import { useEffect, useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
 import API from '../api/index';
+import { Link, useNavigate } from 'react-router-dom';
+import { useSetAtom } from 'jotai';
 declare global {
   interface Window {
     kakao: any;
@@ -51,27 +52,28 @@ const StyledLink = styled(Link)`
   color: white;
   text-decoration: none;
 `;
-
 export const Map = () => {
   const [content, setContent] = useState(''); // 가게 이름
   const [latitude, setLatitude] = useState(0); // 위도 상태 변수
   const [longitude, setLongitude] = useState(0); // 경도 상태 변수
-  const [map, setMap] = useState(null); // 지도 상태
+  const [map, setMap] = useState<any>(null); // 지도 상태
   const getMapData = async () => {
     try {
-      const res = await API.GET(' 지도 url');
-      console.log(res);
+      const res = await API.GET(
+        'http://greennarealb-281283380.ap-northeast-2.elb.amazonaws.com/nare/map',
+      );
+      console.log('GET 요청 성공', res.data);
       setContent(res.data.placeName);
       setLatitude(res.data.lat);
       setLongitude(res.data.longi);
     } catch (err) {
-      console.log(err);
+      console.log('GET 요청 실패', err);
     }
   };
   useEffect(() => {
-    window.scrollTo(0, 0);
     getMapData();
   }, []);
+
   useEffect(() => {
     const mapContainer = document.getElementById('map'); // 지도를 표시할 div
     const mapOption = {
@@ -81,6 +83,13 @@ export const Map = () => {
 
     // 지도를 생성합니다
     const map = new window.kakao.maps.Map(mapContainer, mapOption);
+    setMap(map);
+  }, []);
+
+  useEffect(() => {
+    if (map === null) {
+      return;
+    }
 
     // 마커가 표시될 위치입니다
     const markerPosition = new window.kakao.maps.LatLng(33.450701, 126.570667);
@@ -104,7 +113,7 @@ export const Map = () => {
 
     // 마커 위에 인포윈도우를 표시합니다. 두번째 파라미터인 marker를 넣어주지 않으면 지도 위에 표시됩니다
     infowindow.open(map, marker);
-  }, []);
+  }, [map]);
   return (
     <>
       <StyledNav>

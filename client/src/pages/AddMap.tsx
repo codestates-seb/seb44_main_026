@@ -3,7 +3,7 @@ import NewChallenge from 'feature/NewChallenge';
 import { SearchBar } from 'feature/SearchBar';
 import { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import axios from 'axios';
+import API from '../api/index';
 declare global {
   interface Window {
     kakao: any;
@@ -49,12 +49,32 @@ const StyledPaddingBottom = styled.div`
 `;
 export const AddMap = () => {
   const [address, setAddress] = useState(''); // 지도 주소
-  const [contents, setContents] = useState(''); // 내용
+  const [placeName, setPlaceName] = useState(''); // 내용
   const [map, setMap] = useState(null); // 지도 상태
-  const [latitude, setLatitude] = useState(0); // 위도 상태 변수
-  const [longitude, setLongitude] = useState(0); // 경도 상태 변수
+  const [lat, setLat] = useState(0); // 위도 상태 변수
+  const [longi, setLongi] = useState(0); // 경도 상태 변수
   const handleChangeValue = (e: React.ChangeEvent<HTMLInputElement>) => {
     setAddress(e.target.value);
+  };
+  const PostMapData = async () => {
+    try {
+      const postData = {
+        placeName: placeName, // 가게 이름
+        lat: lat, // 위도
+        longi: longi, // 경도
+      };
+      const response = await API.POST({
+        url: 'http://greennarealb-281283380.ap-northeast-2.elb.amazonaws.com/nare/map',
+        data: postData,
+        headers: {
+          Authorization: 'Bearer 여러분의_액세스_토큰', // 필요한 헤더를 추가합니다.
+          'Content-Type': 'application/json', // 필요에 따라 content type을 설정합니다.
+        },
+      });
+      console.log('POST 요청 성공', response.data);
+    } catch (err) {
+      console.log('POST 요철 오류', err);
+    }
   };
 
   const handlechangeregister = () => {
@@ -69,40 +89,15 @@ export const AddMap = () => {
         });
 
         const infowindow = new window.kakao.maps.InfoWindow({
-          content: `<div style="width:150px;text-align:center;padding:6px 0;">${contents}</div>`,
+          content: `<div style="width:150px;text-align:center;padding:6px 0;">${placeName}</div>`,
         });
         infowindow.open(map, marker);
 
         map.setCenter(coords);
-        console.log('위도:', latitude);
-        console.log('경도:', longitude);
-        setLatitude(coords.La); // 위도
-        setLongitude(coords.Ma); // 경도
-
-        // POST 요청 보내기
-        const postData = {
-          placeName: contents, // 가게 이름
-          lat: latitude, // 위도
-          longi: longitude, // 경도
-        };
-
-        axios
-          .post('url', postData, {
-            // url에 서버 주도 들어가야 함!!!
-            headers: {
-              // Authorization: accessToken,
-            },
-          })
-          .then((response) => {
-            console.log('POST 요청 성공:', response.data);
-            // 성공적으로 처리된 후에 원하는 작업 수행
-          })
-          .catch((error) => {
-            console.error('POST 요청 오류:', error);
-            // 오류 발생 시에 대한 처리
-          });
-      } else {
-        console.error('주소 검색 오류:', status);
+        console.log('위도:', lat);
+        console.log('경도:', longi);
+        setLat(coords.La); // 위도
+        setLongi(coords.Ma); // 경도
       }
     });
   };
@@ -117,7 +112,14 @@ export const AddMap = () => {
     // 지도를 생성합니다
     const map = new window.kakao.maps.Map(mapContainer, mapOption);
     setMap(map);
+    //post 요청 보내기
+    PostMapData();
   }, []);
+
+  // useEffect(() => {
+  //   // address 값이 변경될 때마다 handlechangeregister 함수 호출
+  //   handlechangeregister();
+  // }, [address]);
 
   return (
     <>
@@ -133,7 +135,7 @@ export const AddMap = () => {
             <StyledSubTitle>나만의 상점 등록하기</StyledSubTitle>
             <SearchBar onChange={handleChangeValue} value={address}></SearchBar>
             <StyledPaddingBottom />
-            <NewChallenge setContents={setContents} contents={contents} />
+            <NewChallenge setContents={setPlaceName} contents={placeName} />
           </StyledPadding>
           <GreenButton onClick={handlechangeregister}>등록</GreenButton>
         </StyledMapItem>
