@@ -8,6 +8,7 @@ import { filterAtom } from 'jotai/atom';
 import { Pagination } from 'feature/Pagination';
 import { ItemList } from 'feature/ItemList';
 import { TopScrollButton } from 'feature/TopScrollButton';
+import API from '../api/index';
 
 export interface ItemType {
   productId: number;
@@ -28,53 +29,74 @@ export const Product = () => {
   const [totalPages, setTotalPages] = useState();
   const [currentPage, setCurrentPage] = useState(1);
 
+  const getProduct = async () => {
+    try {
+      const res = await API.GET(
+        `http://greennarealb-281283380.ap-northeast-2.elb.amazonaws.com/green?page=${currentPage}&size=${9}&category=${filter}`,
+      );
+
+      const Products = res.data;
+      setItemList(Products.data);
+      setTotalPages(Products.pageInfo.totalPages);
+      setCurrentPage(1);
+      console.log(res.data);
+    } catch (err) {
+      console.log('a');
+      console.log(err);
+    }
+  };
+
   //카테고리 변경 시
   useEffect(() => {
-    axios
-      .get(
-        `http://greennarealb-281283380.ap-northeast-2.elb.amazonaws.com/green`,
-        {
-          params: {
-            page: currentPage,
-            size: 9,
-            category: filter,
-          },
-        },
-      )
-      .then((res) => {
-        const Products = res.data;
-        setItemList(Products.data);
-        setTotalPages(Products.pageInfo.totalPages);
-        setCurrentPage(1);
-        console.log(res.data);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    getProduct();
+    setCurrentPage(1);
+    // axios
+    //   .get(
+    //     `http://greennarealb-281283380.ap-northeast-2.elb.amazonaws.com/green`,
+    //     {
+    //       params: {
+    //         page: currentPage,
+    //         size: 9,
+    //         category: filter,
+    //       },
+    //     },
+    //   )
+    //   .then((res) => {
+    //     const Products = res.data;
+    //     setItemList(Products.data);
+    //     setTotalPages(Products.pageInfo.totalPages);
+    //     setCurrentPage(1);
+    //     console.log(res.data);
+    //   })
+    //   .catch((err) => {
+    //     console.log(err);
+    //   });
   }, [filter]);
 
   //페이지네이션 변경 시
   useEffect(() => {
-    axios
-      .get(
-        `http://greennarealb-281283380.ap-northeast-2.elb.amazonaws.com/green`,
-        {
-          params: {
-            page: currentPage,
-            size: 9,
-            category: filter,
-          },
-        },
-      )
-      .then((res) => {
-        const Products = res.data;
-        setItemList(Products.data);
-        setTotalPages(Products.pageInfo.totalPages);
-        console.log(res.data);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    getProduct();
+
+    // axios
+    //   .get(
+    //     `http://greennarealb-281283380.ap-northeast-2.elb.amazonaws.com/green`,
+    //     {
+    //       params: {
+    //         page: currentPage,
+    //         size: 9,
+    //         category: filter,
+    //       },
+    //     },
+    //   )
+    //   .then((res) => {
+    //     const Products = res.data;
+    //     setItemList(Products.data);
+    //     setTotalPages(Products.pageInfo.totalPages);
+    //     console.log(res.data);
+    //   })
+    //   .catch((err) => {
+    //     console.log(err);
+    //   });
   }, [currentPage]);
 
   return (

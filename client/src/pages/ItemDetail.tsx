@@ -7,6 +7,7 @@ import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { TopScrollButton } from 'feature/TopScrollButton';
+import API from '../api/index';
 
 interface ImageProps {
   img: string;
@@ -26,7 +27,25 @@ export const ItemDetail = () => {
     heart: false,
   });
 
+  const getItemDetail = async () => {
+    const id = location.id;
+
+    try {
+      const res = await API.GET(
+        `http://greennarealb-281283380.ap-northeast-2.elb.amazonaws.com/green/${id}`,
+      );
+
+      const itemDetail = res.data;
+      setCurrentItem(itemDetail.data);
+
+      console.log(res.data);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   useEffect(() => {
+    // getItemDetail();
     const id = location.id;
     axios
       .get(

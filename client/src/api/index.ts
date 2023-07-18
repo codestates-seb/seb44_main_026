@@ -1,7 +1,10 @@
 import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios';
 
 export const axiosClient: AxiosInstance = axios.create({
-  baseURL: 'http://localhost:4000',
+  baseURL:
+    process.env.NODE_ENV === 'development'
+      ? ''
+      : 'http://greennarealb-281283380.ap-northeast-2.elb.amazonaws.com',
 });
 
 axiosClient.defaults.withCredentials = true;

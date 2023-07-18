@@ -1,6 +1,7 @@
 import { styled } from 'styled-components';
-import { useAtom, useAtomValue } from 'jotai';
+import { useAtom, useAtomValue, useSetAtom } from 'jotai';
 import { menuAtom } from 'jotai/atom';
+import { filterAtom } from 'jotai/atom';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useEffect } from 'react';
 
@@ -9,7 +10,7 @@ export const Nav = () => {
   const location = useLocation();
   // 마켓, 커뮤니티 여부 -> 추후 수정
   const [currentMenu, setCurrentMenu] = useAtom(menuAtom);
-
+  const setFilter = useSetAtom(filterAtom);
   const shopMenuArr = ['상품', '관심상품'];
   const communityMenuArr = ['챌린지', '그린나래지도'];
 
@@ -18,6 +19,7 @@ export const Nav = () => {
     if (menu === '상품') {
       // 상품목록 페이지로 이동
       navigate('/product/all');
+      setFilter('all');
     } else if (menu === '관심상품') {
       navigate('/product/like');
     } else if (menu === '챌린지') {
