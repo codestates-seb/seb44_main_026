@@ -1,4 +1,4 @@
-package greenNare.Response;
+package greenNare.exception.Response;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

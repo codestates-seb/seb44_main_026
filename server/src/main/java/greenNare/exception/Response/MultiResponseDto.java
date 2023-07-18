@@ -1,4 +1,4 @@
-package greenNare.Response;
+package greenNare.exception.Response;
 
 import lombok.Getter;
 import org.springframework.data.domain.Page;
