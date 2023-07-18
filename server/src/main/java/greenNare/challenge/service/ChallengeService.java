@@ -54,9 +54,11 @@ public class ChallengeService {
     }
 
     public Challenge saveImage(Challenge challenge, MultipartFile file) throws IOException {
-        if(Objects.isNull(file)) {
+        if (file.isEmpty()) {
+            log.info("patch 요청에 image 없음");
             return challenge;
         }
+        log.info("patch 요청에 image 있음");
         String projectPath = System.getProperty("user.dir")+"\\src\\main\\resources\\static\\images";
         // 상수 값은 모두 변수로 만들기
 
@@ -154,12 +156,15 @@ public class ChallengeService {
         File file = new File(System.getProperty("user.dir")+"/src/main/resources/static"+findChallenge.getImage());
         deleteImage(file);
 
+        findChallenge.setImage(null);
+
         log.info("update image delete");
 
         Optional.ofNullable(challenge.getTitle())
                 .ifPresent(title -> findChallenge.setTitle(title));
         Optional.ofNullable(challenge.getContent())
                 .ifPresent(content -> findChallenge.setContent(content));
+
         Challenge imageSaveChallenge = saveImage(findChallenge, image);
 
         challengeRepository.save(imageSaveChallenge);
