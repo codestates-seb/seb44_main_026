@@ -9,6 +9,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 @Getter
 @Setter
+@Builder
 @Entity
 public class Challenge extends Auditable {
     @Id
