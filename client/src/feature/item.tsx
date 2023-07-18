@@ -29,8 +29,8 @@ export const Item = ({
           <div className="title" onClick={() => selectItemHandler(productId)}>
             {productName}
           </div>
-          <div className="price">{price.toLocaleString()}원</div>
-          <div className="point">{point.toLocaleString()}포인트</div>
+          <div className="price"> {`${price.toLocaleString()} 원`}</div>
+          <div className="point">{`${point.toLocaleString()} 포인트`}</div>
         </ItemInfo>
         <div className="likebutton">
           <LikeButton

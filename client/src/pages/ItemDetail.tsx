@@ -53,10 +53,10 @@ export const ItemDetail = () => {
             <div>
               <h1 className="title">{currentItem.productName}</h1>
               <div className="price">
-                {currentItem.price.toLocaleString()}원
+                {`${currentItem.price.toLocaleString()} 원`}
               </div>
               <div className="point">
-                {currentItem.point.toLocaleString()}포인트
+                {`${currentItem.point.toLocaleString()} 포인트`}
               </div>
               <p className="detail">
                 {currentItem.detail}
