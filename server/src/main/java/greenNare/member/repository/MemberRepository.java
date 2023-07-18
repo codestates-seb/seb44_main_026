@@ -1,6 +1,6 @@
-package member.repository;
+package greenNare.member.repository;
 
-import member.entity.Member;
+import greenNare.member.entity.Member;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 

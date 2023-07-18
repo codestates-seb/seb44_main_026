@@ -1,7 +1,7 @@
-package member.mapper;
+package greenNare.member.mapper;
 
-import member.dto.MemberDto;
-import member.entity.Member;
+import greenNare.member.entity.Member;
+import greenNare.member.dto.MemberDto;
 import org.mapstruct.Mapper;
 
 import java.util.List;
@@ -13,3 +13,4 @@ public interface MemberMapper {
         Member memberPatchToMember(MemberDto.Patch requestBody);
         MemberDto.Response memberToMemberResponse(Member member);
         List<MemberDto.Response> membersToMemberResponses(List<Member> members);
+        ///

@@ -1,4 +1,4 @@
-package member.entity;
+package greenNare.member.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

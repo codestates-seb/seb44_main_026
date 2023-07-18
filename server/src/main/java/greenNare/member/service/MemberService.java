@@ -1,10 +1,9 @@
-package member.service;
+package greenNare.member.service;
 
-import member.entity.Member;
+import greenNare.member.entity.Member;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.List;
 
 @Transactional
 @Service

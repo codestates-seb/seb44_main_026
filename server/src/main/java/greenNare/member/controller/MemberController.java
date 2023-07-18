@@ -1,13 +1,13 @@
-package member.controller;
+package greenNare.member.controller;
 
 
 
 import greenNare.exception.Response.SingleResponseDto;
+import greenNare.member.entity.Member;
+import greenNare.member.mapper.MemberMapper;
 import greenNare.utils.UriCreator;
-import member.dto.MemberDto;
-import member.entity.Member;
-import member.mapper.MemberMapper;
-import member.service.MemberService;
+import greenNare.member.dto.MemberDto;
+import greenNare.member.service.MemberService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

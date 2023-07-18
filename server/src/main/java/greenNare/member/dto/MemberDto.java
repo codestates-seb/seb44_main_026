@@ -1,4 +1,4 @@
-package member.dto;
+package greenNare.member.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
