@@ -25,6 +25,7 @@ spring:
     url: jdbc:h2:mem:test
     username: sa
     driver-class-name: org.h2.Driver
+
   sql:
     init:
       #schema-locations: classpath*:db/h2/schema.sql
@@ -45,3 +46,4 @@ logging:
 #mail:
 #  address:
 #    admin: admin@gmail.com
+
