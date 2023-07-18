@@ -2,6 +2,12 @@ package member.controller;
 
 
 
+import greenNare.exception.Response.SingleResponseDto;
+import greenNare.utils.UriCreator;
+import member.dto.MemberDto;
+import member.entity.Member;
+import member.mapper.MemberMapper;
+import member.service.MemberService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -30,8 +36,10 @@ public class MemberController {
         this.mapper = mapper;
     }
 
+
+
     //회원가입
-    @PostMapping("/join)
+    @PostMapping("/join")
     public ResponseEntity postMember(@Valid @RequestBody MemberDto.Post requestBody) {
         Member member = mapper.memberPostToMember(requestBody);
 
