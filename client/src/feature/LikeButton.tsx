@@ -6,24 +6,48 @@ import { useState } from 'react';
 import { ItemType } from 'pages/Product';
 import axios from 'axios';
 
+interface LikeButtonProps {
+  productId: number;
+  productName: string;
+  detail?: string;
+  price?: number;
+  point?: number;
+  category?: string;
+  storeLink?: string;
+  image?: string;
+  heart?: boolean;
+}
+
 interface StyleLikeProps {
   color: string;
 }
 
-export const LikeButton = ({ id, title, url, heart }: ItemType) => {
+export const LikeButton = ({
+  productId,
+  productName,
+  image,
+  heart,
+}: LikeButtonProps) => {
   const [isLike, setIsLike] = useState(heart);
 
-  const onLikeHandler = (id: number) => {
+  const onLikeHandler = (productId: number) => {
     setIsLike(!isLike);
 
     const likeItems = JSON.parse(localStorage.getItem('likeItems') || '[]');
 
     // 관심상품 여부 저장
     if (isLike) {
-      const filterArr = likeItems.filter((obj: ItemType) => obj.id !== id);
+      const filterArr = likeItems.filter(
+        (obj: LikeButtonProps) => obj.productId !== productId,
+      );
       localStorage.setItem('likeItems', JSON.stringify(filterArr));
     } else {
-      likeItems.push({ id: id, title: title, url: url, heart: !isLike });
+      likeItems.push({
+        productId: productId,
+        productName: productName,
+        image: image,
+        heart: !isLike,
+      });
       localStorage.setItem('likeItems', JSON.stringify(likeItems));
     }
 
@@ -55,13 +79,13 @@ export const LikeButton = ({ id, title, url, heart }: ItemType) => {
       {isLike ? (
         <Heart
           icon={solidHeart}
-          onClick={() => onLikeHandler(id)}
+          onClick={() => onLikeHandler(productId)}
           color={`var(--red)`}
         />
       ) : (
         <Heart
           icon={regularHeart}
-          onClick={() => onLikeHandler(id)}
+          onClick={() => onLikeHandler(productId)}
           color={`var(--gray)`}
         />
       )}

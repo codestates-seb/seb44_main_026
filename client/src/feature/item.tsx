@@ -7,28 +7,38 @@ interface ImageProps {
   img: string;
 }
 
-export const Item = ({ id, title, url, heart }: ItemType) => {
+export const Item = ({ productId, productName, image, heart }: ItemType) => {
   const navigate = useNavigate();
 
-  const selectItemHandler = (id: number) => {
-    navigate(`/product/detail/${id}`, {
-      state: { id: id, title: title, url: url, heart: heart },
+  const selectItemHandler = (productId: number) => {
+    navigate(`/product/detail/${productId}`, {
+      state: {
+        productId: productId,
+        productName: productName,
+        image: image,
+        heart: heart,
+      },
     });
   };
 
   return (
     <ItemWrapper>
-      <Image img={url} onClick={() => selectItemHandler(id)} />
+      <Image img={image} onClick={() => selectItemHandler(productId)} />
       <ItemInfoWrapper>
         <ItemInfo>
-          <div className="title" onClick={() => selectItemHandler(id)}>
-            {title}
+          <div className="title" onClick={() => selectItemHandler(productId)}>
+            {productName}
           </div>
           <div className="price">10000원</div>
           <div className="review">리뷰 00개</div>
         </ItemInfo>
         <div className="likebutton">
-          <LikeButton id={id} title={title} url={url} heart={heart} />
+          <LikeButton
+            productId={productId}
+            productName={productName}
+            image={image}
+            heart={heart}
+          />
         </div>
       </ItemInfoWrapper>
     </ItemWrapper>

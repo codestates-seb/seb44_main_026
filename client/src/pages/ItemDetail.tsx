@@ -3,7 +3,7 @@ import { Nav } from 'components/Nav';
 import { UploadReview } from 'feature/UploadReview';
 import { ReviewList } from 'feature/ReviewList';
 import { LikeButton } from 'feature/LikeButton';
-import { useLocation } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { TopScrollButton } from 'feature/TopScrollButton';
@@ -13,38 +13,34 @@ interface ImageProps {
 }
 
 export const ItemDetail = () => {
-  const location = useLocation();
-  const item = location.state;
-
-  //
-  // const [currentItem, setCurrentItem] = useState({});
-
-  const onBuyHandler = () => {
-    window.open('https://www.naver.com/');
-
-    // const point = {
-    //   point: currentItem.point,
-    // };
-
-    // axios
-    //   .patch(`url`, JSON.stringify(point))
-    //   .then((res) => {
-    //     //성공
-    //   })
-    //   .catch((err) => {
-    //     console.log(err);
-    //   });
-  };
+  const location = useParams();
+  const [currentItem, setCurrentItem] = useState({
+    productId: 0,
+    productName: '',
+    detail: '',
+    price: 0,
+    point: 0,
+    category: '',
+    storeLink: '',
+    image: '',
+    heart: false,
+  });
 
   useEffect(() => {
-    // axios
-    //   .get(`/green/${productId}`)
-    //   .then((res) => {
-    //     setCurrentItem(res.data);
-    //   })
-    //   .catch((err) => {
-    //     console.log(err);
-    //   });
+    const id = location.id;
+    axios
+      .get(
+        `http://greennarealb-281283380.ap-northeast-2.elb.amazonaws.com/green/${id}`,
+      )
+      .then((res) => {
+        console.log(res.data.data);
+
+        const itemDetail = res.data;
+        setCurrentItem(itemDetail.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   }, []);
 
   return (
@@ -52,13 +48,14 @@ export const ItemDetail = () => {
       <Nav />
       <Wrapper>
         <div className="itemWrapper">
-          <Image img={item.url} />
+          <Image img={currentItem.image} />
           <ItemInfo>
-            <h1 className="title">{item.title}</h1>
-            <div className="price">10,000원</div>
-            <div className="point">100포인트</div>
+            <h1 className="title">{currentItem.productName}</h1>
+            <div className="price">{currentItem.price}원</div>
+            <div className="point">{currentItem.point}포인트</div>
             <p className="detail">
-              100% 천연 커피 점토만을 사용하여 만들어진 연필입니다 ! 100% 천연
+              {currentItem.detail}
+              {/* 100% 천연 커피 점토만을 사용하여 만들어진 연필입니다 ! 100% 천연
               커피 점토만을 사용하여 만들어진 연필입니다 ! 100% 천연 커피
               점토만을 사용하여 만들어진 연필입니다 ! 100% 천연 커피 점토만을
               사용하여 만들어진 연필입니다 ! 100% 천연 커피 점토만을 사용하여
@@ -73,17 +70,19 @@ export const ItemDetail = () => {
               ! 100% 천연 커피 점토만을 사용하여 만들어진 연필입니다 ! 100% 천연
               커피 점토만을 사용하여 만들어진 연필입니다 ! 100% 천연 커피
               점토만을 사용하여 만들어진 연필입니다 ! 100% 천연 커피 점토만을
-              사용하여 만들어진 연필입니다 !
+              사용하여 만들어진 연필입니다 ! */}
             </p>
             <ButtonWrapper>
-              <BuyButton onClick={() => onBuyHandler()}>구매하기</BuyButton>
+              <BuyButton onClick={() => window.open(currentItem.storeLink)}>
+                구매하기
+              </BuyButton>
 
               <div className="likebutton">
                 <LikeButton
-                  id={item.id}
-                  title={item.title}
-                  url={item.url}
-                  heart={item.heart}
+                  productId={currentItem.productId}
+                  productName={currentItem.productName}
+                  image={currentItem.image}
+                  heart={currentItem.heart}
                 />
               </div>
             </ButtonWrapper>
@@ -93,9 +92,9 @@ export const ItemDetail = () => {
         <div className="reviewWrapper">
           리뷰 2개
           <FormWrapper>
-            <UploadReview id={item.id} />
+            <UploadReview id={currentItem.productId} />
           </FormWrapper>
-          <ReviewList id={item.id} />
+          <ReviewList id={currentItem.productId} />
         </div>
       </Wrapper>
       <TopScrollButton />
@@ -134,6 +133,7 @@ const Image = styled.div<ImageProps>`
 
 const ItemInfo = styled.div`
   margin-left: 2rem;
+  width: 100%;
 
   > * {
     margin-bottom: 0.5rem;
