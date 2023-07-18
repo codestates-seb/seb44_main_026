@@ -50,12 +50,17 @@ export const ItemDetail = () => {
         <div className="itemWrapper">
           <Image img={currentItem.image} />
           <ItemInfo>
-            <h1 className="title">{currentItem.productName}</h1>
-            <div className="price">{currentItem.price}원</div>
-            <div className="point">{currentItem.point}포인트</div>
-            <p className="detail">
-              {currentItem.detail}
-              {/* 100% 천연 커피 점토만을 사용하여 만들어진 연필입니다 ! 100% 천연
+            <div>
+              <h1 className="title">{currentItem.productName}</h1>
+              <div className="price">
+                {currentItem.price.toLocaleString()}원
+              </div>
+              <div className="point">
+                {currentItem.point.toLocaleString()}포인트
+              </div>
+              <p className="detail">
+                {currentItem.detail}
+                {/* 100% 천연 커피 점토만을 사용하여 만들어진 연필입니다 ! 100% 천연
               커피 점토만을 사용하여 만들어진 연필입니다 ! 100% 천연 커피
               점토만을 사용하여 만들어진 연필입니다 ! 100% 천연 커피 점토만을
               사용하여 만들어진 연필입니다 ! 100% 천연 커피 점토만을 사용하여
@@ -71,7 +76,8 @@ export const ItemDetail = () => {
               커피 점토만을 사용하여 만들어진 연필입니다 ! 100% 천연 커피
               점토만을 사용하여 만들어진 연필입니다 ! 100% 천연 커피 점토만을
               사용하여 만들어진 연필입니다 ! */}
-            </p>
+              </p>
+            </div>
             <ButtonWrapper>
               <BuyButton onClick={() => window.open(currentItem.storeLink)}>
                 구매하기
@@ -82,6 +88,8 @@ export const ItemDetail = () => {
                   productId={currentItem.productId}
                   productName={currentItem.productName}
                   image={currentItem.image}
+                  price={currentItem.price}
+                  point={currentItem.point}
                   heart={currentItem.heart}
                 />
               </div>
@@ -129,24 +137,28 @@ const Image = styled.div<ImageProps>`
   background-image: url(${(props) => props.img});
   background-size: cover;
   background-position: center;
+  background-color: var(--gray);
 `;
 
 const ItemInfo = styled.div`
   margin-left: 2rem;
   width: 100%;
-
-  > * {
-    margin-bottom: 0.5rem;
-  }
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 
   .title {
     font-weight: bold;
     font-size: 1.5rem;
+    margin-bottom: 0.5rem;
   }
-
+  .price {
+    margin-bottom: 0.5rem;
+  }
   .point {
     font-weight: bold;
     color: var(--green-300);
+    margin: 0.5rem 0;
   }
 `;
 

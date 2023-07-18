@@ -7,18 +7,18 @@ interface ImageProps {
   img: string;
 }
 
-export const Item = ({ productId, productName, image, heart }: ItemType) => {
+export const Item = ({
+  productId,
+  productName,
+  price,
+  point,
+  image,
+  heart,
+}: ItemType) => {
   const navigate = useNavigate();
 
   const selectItemHandler = (productId: number) => {
-    navigate(`/product/detail/${productId}`, {
-      state: {
-        productId: productId,
-        productName: productName,
-        image: image,
-        heart: heart,
-      },
-    });
+    navigate(`/product/detail/${productId}`);
   };
 
   return (
@@ -29,14 +29,16 @@ export const Item = ({ productId, productName, image, heart }: ItemType) => {
           <div className="title" onClick={() => selectItemHandler(productId)}>
             {productName}
           </div>
-          <div className="price">10000원</div>
-          <div className="review">리뷰 00개</div>
+          <div className="price">{price.toLocaleString()}원</div>
+          <div className="point">{point.toLocaleString()}포인트</div>
         </ItemInfo>
         <div className="likebutton">
           <LikeButton
             productId={productId}
             productName={productName}
             image={image}
+            price={price}
+            point={point}
             heart={heart}
           />
         </div>
@@ -53,7 +55,7 @@ const ItemWrapper = styled.li`
   box-shadow: rgba(0, 0, 0, 0.3) 1px 1px 4px;
 
   width: 18rem;
-  height: 22rem;
+  height: 20rem;
   padding: 1rem;
 
   display: flex;
@@ -70,6 +72,7 @@ const Image = styled.div<ImageProps>`
   background-image: url(${(props) => props.img});
   background-size: cover;
   background-position: center;
+  background-color: var(--gray);
 `;
 
 const ItemInfoWrapper = styled.div`
@@ -95,5 +98,10 @@ const ItemInfo = styled.div`
   .title {
     cursor: pointer;
     font-weight: bold;
+  }
+
+  .point {
+    font-weight: bold;
+    color: var(--green-300);
   }
 `;

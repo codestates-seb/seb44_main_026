@@ -26,6 +26,8 @@ export const LikeButton = ({
   productId,
   productName,
   image,
+  price,
+  point,
   heart,
 }: LikeButtonProps) => {
   const [isLike, setIsLike] = useState(heart);
@@ -46,6 +48,8 @@ export const LikeButton = ({
         productId: productId,
         productName: productName,
         image: image,
+        price: price,
+        point: point,
         heart: !isLike,
       });
       localStorage.setItem('likeItems', JSON.stringify(likeItems));
