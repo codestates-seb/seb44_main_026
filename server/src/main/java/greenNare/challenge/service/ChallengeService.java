@@ -151,6 +151,11 @@ public class ChallengeService {
     public ChallengeDto.Response updateChallenge(Challenge challenge, long challengeId, MultipartFile image) throws IOException {
         Challenge findChallenge = findVerifideChallenge(challengeId);
 
+        File file = new File(System.getProperty("user.dir")+"/src/main/resources/static"+findChallenge.getImage());
+        deleteImage(file);
+
+        log.info("update image delete");
+
         Optional.ofNullable(challenge.getTitle())
                 .ifPresent(title -> findChallenge.setTitle(title));
         Optional.ofNullable(challenge.getContent())
@@ -159,10 +164,21 @@ public class ChallengeService {
 
         challengeRepository.save(imageSaveChallenge);
         //ChallengeDto.Response response = challengeRepository.findByMemberId(challenge.getMemberId());
-        ChallengeDto.Response challengeResponseDto = ChallengeDto.Response.from(imageSaveChallenge);
-
+        //ChallengeDto.Response challengeResponseDto = ChallengeDto.Response.from(imageSaveChallenge);
+        ChallengeDto.Response response = new ChallengeDto.Response(
+                imageSaveChallenge.getChallengeId(),
+                imageSaveChallenge.getMemberId(),
+                imageSaveChallenge.getTitle(),
+                imageSaveChallenge.getContent(),
+                imageSaveChallenge.getUpdatedAt(),
+                imageSaveChallenge.getCreatedAt(),
+                imageSaveChallenge.getImage(),
+                "name", 10
+                //findUsername(challenge.getMemberId()),
+                //findPoint(challenge.getMemberId())
+        );
         long memberId = imageSaveChallenge.getMemberId();
-        ChallengeDto.Response response = findWriterInfo(memberId, challengeResponseDto);
+        //ChallengeDto.Response response = findWriterInfo(memberId, challengeResponseDto);
 
         return response;
     }
@@ -174,6 +190,8 @@ public class ChallengeService {
         //}
         log.info("##### token empty 통과");
         Challenge findChallenge = findVerifideChallenge(challengeId);
+        File file = new File(System.getProperty("user.dir")+"/src/main/resources/static"+findChallenge.getImage());
+        deleteImage(file);
         log.info("##### find challenge 통과");
         challengeRepository.delete(findChallenge);
     }
@@ -194,7 +212,7 @@ public class ChallengeService {
         log.info(String.valueOf(member.getPoint()));
         return member.getPoint();
     }
-    public Challenge  findVerifideChallenge(long challengeId) {
+    public Challenge findVerifideChallenge(long challengeId) {
         log.info("findVerifiedChallenge challengeId : {}", challengeId);
         Optional<Challenge> optionalChallenge =
                 challengeRepository.findById(challengeId);
@@ -204,5 +222,8 @@ public class ChallengeService {
         log.info("findChallenge : {}",findChallenge);
         log.info("성공");
         return findChallenge;
+    }
+    public void deleteImage(File file){
+        if(file.exists()) file.delete();
     }
 }

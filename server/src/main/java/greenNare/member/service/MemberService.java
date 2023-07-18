@@ -16,11 +16,11 @@ public class MemberService {
 
     public Member findMemberByEmail(String email) {
         return memberRepository.findByEmail(email)
-                .orElseThrow(() -> new BusinessLogicException(ExceptionCode.INVALID_TOKEN));
+                .orElseThrow(() -> new BusinessLogicException(ExceptionCode.MEMBER_EXIST));
 
     }
     public Member findMemberById(long memberId) {
         return memberRepository.findById(memberId)
-                .orElseThrow(()-> new BusinessLogicException(ExceptionCode.CHALLENGE_NOT_FOUND));
+                .orElseThrow(()-> new BusinessLogicException(ExceptionCode.MEMBER_EXIST));
     }
 }
