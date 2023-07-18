@@ -1,12 +1,13 @@
 import { GreenButton } from 'feature/GreenButton';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
-import { Children, useEffect, useState } from 'react';
+import { useState } from 'react';
 import axios from 'axios';
 import { AxiosResponse, AxiosError } from 'axios';
 import { useAtom } from 'jotai';
 import { AccessTokenAtom, RefreshTokenAtom, UserIdAtom } from 'jotai/atom';
 import { useNavigate } from 'react-router-dom';
+import logo from '../assets/img/logo.png';
 
 const StyledLoginContainer = styled.div`
   display: flex;
@@ -84,6 +85,12 @@ const ErrorMessage = styled.p`
   font-size: 0.75rem;
   margin: 0.25rem 0 0 0;
 `;
+
+const StyledMenuLink = styled(Link)`
+  text-decoration: none;
+`;
+
+const StyledImg = styled.img``;
 export const Login = () => {
   const [email, setEmail] = useState(''); // 이메일
   const [password, setPassword] = useState(''); // 비밀번호
@@ -92,10 +99,6 @@ export const Login = () => {
   const [loginRefToken, setLoginRefToken] = useAtom(RefreshTokenAtom); // Jotai atom 사용
   const [loginUserId, setLoginUserId] = useAtom(UserIdAtom); // Jotai atom 사용
   const navigate = useNavigate();
-  interface LoginResponse {
-    authorization: string;
-    refresh: string;
-  }
 
   interface UserData {
     userId: string;
@@ -188,6 +191,9 @@ export const Login = () => {
   return (
     <>
       <StyledLoginContainer>
+        <StyledMenuLink to={'/'}>
+          <StyledImg src={logo} />
+        </StyledMenuLink>
         <StyledTitle>Welcome back</StyledTitle>
         <Styledexplain>Welcome back! Please enter your details.</Styledexplain>
         <StyledLoginMain>
