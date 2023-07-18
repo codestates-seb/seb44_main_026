@@ -20,6 +20,7 @@ import java.util.List;
 @RequestMapping("/nare/map")
 @Validated
 @Slf4j
+@CrossOrigin(origins = "*")
 public class PlaceController {
     private final PlaceService placeService;
     private final PlaceMapper mapper;
