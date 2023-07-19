@@ -3,8 +3,9 @@ import { Nav } from 'components/Nav';
 import { UploadReview } from 'feature/UploadReview';
 import { LikeButton } from 'feature/LikeButton';
 import { useParams } from 'react-router-dom';
-import axios from 'axios';
 import { useEffect, useState } from 'react';
+import { useSetAtom } from 'jotai';
+import { isShopAtom } from 'jotai/atom';
 import { TopScrollButton } from 'feature/TopScrollButton';
 import API from '../api/index';
 import { Pagination } from 'feature/Pagination';
@@ -27,6 +28,7 @@ export const ItemDetail = () => {
   const location = useParams();
   const id = parseInt(location.id);
 
+  const setIsShop = useSetAtom(isShopAtom);
   const [currentItem, setCurrentItem] = useState({
     productId: 0,
     productName: '',
@@ -95,6 +97,7 @@ export const ItemDetail = () => {
   useEffect(() => {
     getItemDetail();
     getReview();
+    setIsShop(true);
 
     // const id = location.id;
     // axios

@@ -1,6 +1,7 @@
 import { styled } from 'styled-components';
 import { useEffect, useState } from 'react';
-import { useAtomValue } from 'jotai';
+import { useAtomValue, useSetAtom } from 'jotai';
+import { isShopAtom } from 'jotai/atom';
 import { filterAtom } from 'jotai/atom';
 import { Nav } from 'components/Nav';
 import { Category } from 'feature/Category';
@@ -23,6 +24,7 @@ export interface ItemType {
 
 export const Product = () => {
   const filter = useAtomValue(filterAtom);
+  const setIsShop = useSetAtom(isShopAtom);
 
   const [isLoding, setIsLoding] = useState(true);
   const [itemList, setItemList] = useState<ItemType[]>([]);
@@ -51,6 +53,7 @@ export const Product = () => {
   useEffect(() => {
     getProduct();
     setCurrentPage(1);
+    setIsShop(true);
   }, [filter]);
 
   //페이지네이션 변경 시
