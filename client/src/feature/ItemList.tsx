@@ -5,13 +5,17 @@ import { ItemSkeleton } from './ItemSkeleton';
 
 interface ItemListProps {
   itemlist: ItemType[];
+  isLoding: boolean;
 }
 
-export const ItemList = ({ itemlist }: ItemListProps) => {
+export const ItemList = ({ itemlist, isLoding }: ItemListProps) => {
   return (
     <ListWrapper>
-      {itemlist
-        ? itemlist.map((item: ItemType) => {
+      {isLoding
+        ? Array(9)
+            .fill(null)
+            .map((_, index) => <ItemSkeleton key={index} />)
+        : itemlist.map((item: ItemType) => {
             // <Item key={item.id} {...item} />
             // const { productId, productName, image, heart } = item;
             return (
@@ -24,8 +28,7 @@ export const ItemList = ({ itemlist }: ItemListProps) => {
                 {...item}
               />
             );
-          })
-        : Array(9).map(() => <ItemSkeleton />)}
+          })}
     </ListWrapper>
   );
 };

@@ -6,9 +6,11 @@ import { useEffect, useState } from 'react';
 
 export const LikeProducts = () => {
   const [likeItems, setLikeItems] = useState([]);
+  const [isLoding, setIsLoding] = useState(true);
 
   useEffect(() => {
     setLikeItems(JSON.parse(localStorage.getItem('likeItems') || '[]'));
+    setIsLoding(false);
   }, []);
 
   return (
@@ -16,7 +18,7 @@ export const LikeProducts = () => {
       <Nav />
       <ProductWrapper>
         <Title>관심 상품</Title>
-        <ItemList itemlist={likeItems} />
+        <ItemList itemlist={likeItems} isLoding={isLoding} />
       </ProductWrapper>
       <TopScrollButton />
     </>

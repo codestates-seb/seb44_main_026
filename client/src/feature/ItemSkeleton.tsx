@@ -5,7 +5,7 @@ import { styled } from 'styled-components';
 export const ItemSkeleton = () => {
   return (
     <ItemWrapper>
-      <Image />
+      <Skeleton className="image" />
       <ItemInfoWrapper>
         <ItemInfo>
           <Skeleton className="title"></Skeleton>
@@ -31,11 +31,11 @@ const ItemWrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-`;
 
-const Image = styled(Skeleton)`
-  width: 16rem;
-  min-height: 13rem;
+  .image {
+    width: 16rem;
+    min-height: 13rem;
+  }
 `;
 
 const ItemInfoWrapper = styled.div`
@@ -58,13 +58,10 @@ const ItemInfo = styled.div`
     margin-bottom: 0.3rem;
   }
 
-  .title {
-    cursor: pointer;
-    font-weight: bold;
+  .price {
+    width: 40%;
   }
-
   .point {
-    font-weight: bold;
-    color: var(--green-300);
+    width: 40%;
   }
 `;
