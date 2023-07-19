@@ -5,7 +5,7 @@ import org.springframework.security.web.authentication.AuthenticationFailureHand
 
 
 import com.google.gson.Gson;
-import greenNare.exception.Response.ErrorResponse;
+import greenNare.Response.ErrorResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;

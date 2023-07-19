@@ -1,6 +1,6 @@
 package greenNare.advice;
 
-import greenNare.exception.Response.ErrorResponse;
+import greenNare.Response.ErrorResponse;
 import greenNare.exception.BusinessLogicException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
