@@ -201,18 +201,18 @@ public class ChallengeService {
         challengeRepository.delete(findChallenge);
     }
 
-    public ChallengeDto.Response findWriterInfo(long memberId, ChallengeDto.Response response) {
+    public ChallengeDto.Response findWriterInfo(int memberId, ChallengeDto.Response response) {
         Member member = memberService.findMemberById(memberId);
         response.setName(member.getName());
         response.setPoint(member.getPoint());
         return response;
     }
-    public String findUsername(long memberId) {
+    public String findUsername(int memberId) {
         Member member = memberService.findMemberById(memberId);
         log.info(member.getName());
         return member.getName();
     }
-    public int findPoint(long memberId) {
+    public int findPoint(int memberId) {
         Member member = memberService.findMemberById(memberId);
         log.info(String.valueOf(member.getPoint()));
         return member.getPoint();

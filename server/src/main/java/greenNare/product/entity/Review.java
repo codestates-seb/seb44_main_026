@@ -1,5 +1,6 @@
 package greenNare.product.entity;
 
+import greenNare.member.entity.Member;
 import lombok.*;
 
 import javax.persistence.*;

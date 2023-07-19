@@ -1,18 +1,13 @@
 package greenNare.product.service;
 
-import greenNare.Response.SingleResponseDto;
 import greenNare.exception.BusinessLogicException;
 import greenNare.exception.ExceptionCode;
-import greenNare.product.dto.GetReviewsResultDto;
-import greenNare.product.entity.Member;
+import greenNare.member.repository.MemberRepository;
 import greenNare.product.entity.Review;
-import greenNare.product.repository.MemberRepository;
 import greenNare.product.repository.ReviewRepository;
-import org.mapstruct.ap.internal.model.GeneratedType;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.GetMapping;
 
 import java.time.LocalDateTime;
 import java.util.Optional;

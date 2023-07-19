@@ -105,11 +105,11 @@ public class ReplyService {
         return replyPage;
 
     }
-    public String findUsername(long memberId) {
+    public String findUsername(int memberId) {
         Member member = memberService.findMemberById(memberId);
         return member.getName();
     }
-    public int findPoint(long memberId) {
+    public int findPoint(int memberId) {
         Member member = memberService.findMemberById(memberId);
         return member.getPoint();
     }

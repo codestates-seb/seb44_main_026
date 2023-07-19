@@ -13,19 +13,26 @@ import javax.persistence.*;
 public class Member {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "memberId", nullable = false)
-    private long memberId;
+    private int memberId;
 
-    @Column(nullable = false, unique = true, updatable = false)
+    @Column(nullable = false, unique = true)
     private String email;
+
+    @Column(nullable = false, unique = true)
+    private String name;
 
     @Column(nullable = false)
     private String password;
 
-    @Column(name = "username", nullable = false)
-    private String name;
-
-    @Column
+    @Column(unique = true)
+    private String image;
     private int point;
 
+    public Member(String email, String name, String password, String image, int point){
+        this.email = email;
+        this.name = name;
+        this.password = password;
+        this.image = image;
+        this.point = point;
+    }
 }
