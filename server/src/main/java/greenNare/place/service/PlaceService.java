@@ -1,5 +1,6 @@
 package greenNare.place.service;
 
+import greenNare.challenge.entity.Challenge;
 import greenNare.config.SecurityConfiguration;
 import greenNare.exception.BusinessLogicException;
 import greenNare.exception.ExceptionCode;
@@ -55,6 +56,11 @@ public class PlaceService {
          */
         long memberId = 1L;
         validateWriter(memberId, placeId);
+
+        Optional<Place> findPlace = placeRepository.findById(placeId);
+        Place place = findPlace.orElseThrow(() ->
+                new BusinessLogicException(ExceptionCode.PLACE_NOT_FOUND));
+        placeRepository.delete(place);
     }
 
     public void verifyExistsPlace(double lat, double longi) {

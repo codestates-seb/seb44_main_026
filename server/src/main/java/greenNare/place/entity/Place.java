@@ -2,6 +2,7 @@ package greenNare.place.entity;
 
 import greenNare.audit.Auditable;
 import lombok.*;
+import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 
 import javax.persistence.*;
 

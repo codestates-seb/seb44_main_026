@@ -13,5 +13,6 @@ public interface ChallengeMapper {
     List<ChallengeDto.Response> challengesToChallengeResponseDtos(List<Challenge> challenges);
 
     Challenge challengePostDtoToChallenge(ChallengeDto.Post challengePostDto);
+    Challenge challengePatchDtoToChallenge(ChallengeDto.Patch challengePatchDto);
 
 }
