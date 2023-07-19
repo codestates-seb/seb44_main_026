@@ -1,7 +1,7 @@
 import { styled } from 'styled-components';
 import { Item } from 'feature/item';
 import { ItemType } from 'pages/Product';
-import { ItemSkeleton } from './ItemSkeleton';
+import { ItemSkeleton } from './skeletonUI/ItemSkeleton';
 
 interface ItemListProps {
   itemlist: ItemType[];

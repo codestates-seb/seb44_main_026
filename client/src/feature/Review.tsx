@@ -25,6 +25,7 @@ export const Review = ({
 }: ReviewProps) => {
   const [isEdit, setIsEdit] = useState(false);
 
+  // 임시
   const username = 'name0';
 
   const onDeleteReview = () => {

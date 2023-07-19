@@ -9,6 +9,7 @@ import { TopScrollButton } from 'feature/TopScrollButton';
 import API from '../api/index';
 import { Pagination } from 'feature/Pagination';
 import { Review } from 'feature/Review';
+import { ReviewSkeleton } from 'feature/skeletonUI/ReviewSkeleton';
 
 interface ImageProps {
   img: string;
@@ -41,6 +42,7 @@ export const ItemDetail = () => {
   const [reviewList, setReviewList] = useState<ReviewType[]>([]);
   const [totalPages, setTotalPages] = useState(1);
   const [currentPage, setCurrentPage] = useState(1);
+  const [isLoding, setIsLoding] = useState(true);
 
   const getReview = async () => {
     try {
@@ -66,7 +68,7 @@ export const ItemDetail = () => {
       setReviewList(mapReviews);
 
       setTotalPages(Reviews.pageInfo.totalPages);
-
+      setIsLoding(false);
       console.log('review');
       console.log(res?.data);
     } catch (err) {
@@ -152,12 +154,15 @@ export const ItemDetail = () => {
             <UploadReview id={currentItem.productId} />
           </FormWrapper>
           <ul>
-            {reviewList.map((review: ReviewType) => (
-              <Review key={review.name} id={id} {...review} />
-            ))}
+            {isLoding
+              ? Array(3)
+                  .fill(null)
+                  .map((_, index) => <ReviewSkeleton key={index} />)
+              : reviewList.map((review: ReviewType) => (
+                  <Review key={review.name} id={id} {...review} />
+                ))}
           </ul>
           <Pagination
-            // total={Math.ceil(dummyComment.length / 3)}
             total={totalPages}
             page={currentPage}
             setPage={setCurrentPage}
