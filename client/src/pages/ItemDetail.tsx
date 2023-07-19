@@ -1,20 +1,31 @@
 import { styled } from 'styled-components';
 import { Nav } from 'components/Nav';
 import { UploadReview } from 'feature/UploadReview';
-import { ReviewList } from 'feature/ReviewList';
 import { LikeButton } from 'feature/LikeButton';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { TopScrollButton } from 'feature/TopScrollButton';
 import API from '../api/index';
+import { Pagination } from 'feature/Pagination';
+import { Review } from 'feature/Review';
 
 interface ImageProps {
   img: string;
 }
 
+interface ReviewType {
+  context: string;
+  createdAt: string;
+  image?: string;
+  name: string;
+  point: number;
+}
+
 export const ItemDetail = () => {
   const location = useParams();
+  const id = parseInt(location.id);
+
   const [currentItem, setCurrentItem] = useState({
     productId: 0,
     productName: '',
@@ -23,13 +34,48 @@ export const ItemDetail = () => {
     point: 0,
     category: '',
     storeLink: '',
-    image: '',
+    imageLink: '',
     heart: false,
   });
 
-  const getItemDetail = async () => {
-    const id = location.id;
+  const [reviewList, setReviewList] = useState<ReviewType[]>([]);
+  const [totalPages, setTotalPages] = useState(1);
+  const [currentPage, setCurrentPage] = useState(1);
 
+  const getReview = async () => {
+    try {
+      const res = await API.GET(
+        `http://greennarealb-281283380.ap-northeast-2.elb.amazonaws.com/green/review/${id}?page=${
+          currentPage - 1
+        }&size=${5}`,
+      );
+
+      const Reviews = res.data;
+      // setReviewList(Reviews.data);
+
+      //추후 수정
+      const mapReviews = Reviews.data.map((review: any) => {
+        return {
+          context: review.context,
+          createdAt: review.createdAt,
+          image: review.image,
+          name: review.member.name,
+          point: review.member.point,
+        };
+      });
+      setReviewList(mapReviews);
+
+      setTotalPages(Reviews.pageInfo.totalPages);
+
+      console.log('review');
+      console.log(res?.data);
+    } catch (err) {
+      console.log('review err');
+      console.log(err);
+    }
+  };
+
+  const getItemDetail = async () => {
     try {
       const res = await API.GET(
         `http://greennarealb-281283380.ap-northeast-2.elb.amazonaws.com/green/${id}`,
@@ -37,7 +83,7 @@ export const ItemDetail = () => {
 
       const itemDetail = res.data;
       setCurrentItem(itemDetail.data);
-
+      console.log('item detail');
       console.log(res.data);
     } catch (err) {
       console.log(err);
@@ -45,29 +91,31 @@ export const ItemDetail = () => {
   };
 
   useEffect(() => {
-    // getItemDetail();
-    const id = location.id;
-    axios
-      .get(
-        `http://greennarealb-281283380.ap-northeast-2.elb.amazonaws.com/green/${id}`,
-      )
-      .then((res) => {
-        console.log(res.data.data);
+    getItemDetail();
+    getReview();
 
-        const itemDetail = res.data;
-        setCurrentItem(itemDetail.data);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }, []);
+    // const id = location.id;
+    // axios
+    //   .get(
+    //     `http://greennarealb-281283380.ap-northeast-2.elb.amazonaws.com/green/${id}`,
+    //   )
+    //   .then((res) => {
+    //     console.log(res.data.data);
+
+    //     const itemDetail = res.data;
+    //     setCurrentItem(itemDetail.data);
+    //   })
+    //   .catch((err) => {
+    //     console.log(err);
+    //   });
+  }, [currentPage]);
 
   return (
     <>
       <Nav />
       <Wrapper>
         <div className="itemWrapper">
-          <Image img={currentItem.image} />
+          <Image img={currentItem.imageLink} />
           <ItemInfo>
             <div>
               <h1 className="title">{currentItem.productName}</h1>
@@ -77,25 +125,7 @@ export const ItemDetail = () => {
               <div className="point">
                 {`${currentItem.point.toLocaleString()} 포인트`}
               </div>
-              <p className="detail">
-                {currentItem.detail}
-                {/* 100% 천연 커피 점토만을 사용하여 만들어진 연필입니다 ! 100% 천연
-              커피 점토만을 사용하여 만들어진 연필입니다 ! 100% 천연 커피
-              점토만을 사용하여 만들어진 연필입니다 ! 100% 천연 커피 점토만을
-              사용하여 만들어진 연필입니다 ! 100% 천연 커피 점토만을 사용하여
-              만들어진 연필입니다 ! 100% 천연 커피 점토만을 사용하여 만들어진
-              연필입니다 !100% 천연 커피 점토만을 사용하여 만들어진 연필입니다 !
-              100% 천연 커피 점토만을 사용하여 만들어진 연필입니다 ! 100% 천연
-              커피 점토만을 사용하여 만들어진 연필입니다 ! 100% 천연 커피
-              점토만을 사용하여 만들어진 연필입니다 ! 100% 천연 커피 점토만을
-              사용하여 만들어진 연필입니다 ! 100% 천연 커피 점토만을 사용하여
-              만들어진 연필입니다 !100% 천연 커피 점토만을 사용하여 만들어진
-              연필입니다 ! 100% 천연 커피 점토만을 사용하여 만들어진 연필입니다
-              ! 100% 천연 커피 점토만을 사용하여 만들어진 연필입니다 ! 100% 천연
-              커피 점토만을 사용하여 만들어진 연필입니다 ! 100% 천연 커피
-              점토만을 사용하여 만들어진 연필입니다 ! 100% 천연 커피 점토만을
-              사용하여 만들어진 연필입니다 ! */}
-              </p>
+              <p className="detail">{currentItem.detail}</p>
             </div>
             <ButtonWrapper>
               <BuyButton onClick={() => window.open(currentItem.storeLink)}>
@@ -106,7 +136,7 @@ export const ItemDetail = () => {
                 <LikeButton
                   productId={currentItem.productId}
                   productName={currentItem.productName}
-                  image={currentItem.image}
+                  image={currentItem.imageLink}
                   price={currentItem.price}
                   point={currentItem.point}
                   heart={currentItem.heart}
@@ -121,7 +151,17 @@ export const ItemDetail = () => {
           <FormWrapper>
             <UploadReview id={currentItem.productId} />
           </FormWrapper>
-          <ReviewList id={currentItem.productId} />
+          <ul>
+            {reviewList.map((review: ReviewType) => (
+              <Review key={review.name} id={id} {...review} />
+            ))}
+          </ul>
+          <Pagination
+            // total={Math.ceil(dummyComment.length / 3)}
+            total={totalPages}
+            page={currentPage}
+            setPage={setCurrentPage}
+          />
         </div>
       </Wrapper>
       <TopScrollButton />

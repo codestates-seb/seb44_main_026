@@ -12,7 +12,7 @@ export const Item = ({
   productName,
   price,
   point,
-  image,
+  imageLink,
   heart,
 }: ItemType) => {
   const navigate = useNavigate();
@@ -23,7 +23,7 @@ export const Item = ({
 
   return (
     <ItemWrapper>
-      <Image img={image} onClick={() => selectItemHandler(productId)} />
+      <Image img={imageLink} onClick={() => selectItemHandler(productId)} />
       <ItemInfoWrapper>
         <ItemInfo>
           <div className="title" onClick={() => selectItemHandler(productId)}>
@@ -36,7 +36,7 @@ export const Item = ({
           <LikeButton
             productId={productId}
             productName={productName}
-            image={image}
+            image={imageLink}
             price={price}
             point={point}
             heart={heart}

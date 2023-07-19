@@ -1,60 +1,64 @@
 import { styled } from 'styled-components';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { UploadReview } from './UploadReview';
 import moment from 'moment';
 import 'moment/locale/ko';
+import API from '../api/index';
 
 interface ReviewProps {
   id: number;
-  memberId: string;
-  body: string;
-  point: number;
+
+  context: string;
   createdAt: string;
+  image?: string;
+  name: string;
+  point: number;
 }
 
 export const Review = ({
   id,
-  memberId,
-  body,
-  point,
+  context,
   createdAt,
+  image,
+  name,
+  point,
 }: ReviewProps) => {
   const [isEdit, setIsEdit] = useState(false);
 
-  const username = '참여자1';
+  const username = 'name0';
 
-  const onDeleteReview = (memberId: string) => {
-    console.log('delete');
-    console.log(memberId);
+  const onDeleteReview = () => {
+    deleteReview();
+  };
 
-    // return axios
-    //   .delete(`/gree/review/${id}`, {
-    //     headers: {
-    //       Authorization: accessToken,
-    //     },
-    //   })
-    //   .then((res) => {
-    //     // 성공
-    //   })
-    //   .catch((err) => {
-    //     console.log(err);
-    //   });
+  const deleteReview = async () => {
+    try {
+      const res = await API.DELETE({
+        url: `http://greennarealb-281283380.ap-northeast-2.elb.amazonaws.com/green/review/${id}`,
+        // data: reviewId,
+      });
+      console.log('delete review');
+      console.log(res.data);
+    } catch (err) {
+      console.log('delete review err');
+      console.log(err);
+    }
   };
 
   return (
     <ReviewWrapper>
       <div className="userInfoWrapper">
         <UserInfo>
-          <div className="userName">{`🐥 ${memberId}`}</div>
+          <div className="userName">{`🐥 ${name}`}</div>
           <div className="point">{`🏆 ${point}P`}</div>
           <div className="reviewDate">{`⏱️ ${moment(
             createdAt,
           ).fromNow()}`}</div>
         </UserInfo>
-        {memberId === username && !isEdit ? (
+        {name === username && !isEdit ? (
           <div>
             <Button onClick={() => setIsEdit(true)}>수정</Button>
-            <Button onClick={() => onDeleteReview(memberId)}>삭제</Button>
+            <Button onClick={() => onDeleteReview()}>삭제</Button>
           </div>
         ) : null}
       </div>
@@ -64,13 +68,13 @@ export const Review = ({
             id={id}
             isEdit={isEdit}
             setIsEdit={setIsEdit}
-            memberId={memberId}
-            content={body}
+            memberId={name}
+            content={context}
           />
         </ContentWrapper>
       ) : (
         <ContentWrapper>
-          <div className="content">{body}</div>
+          <div className="content">{context}</div>
         </ContentWrapper>
       )}
     </ReviewWrapper>

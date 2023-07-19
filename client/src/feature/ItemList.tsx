@@ -1,6 +1,7 @@
 import { styled } from 'styled-components';
 import { Item } from 'feature/item';
 import { ItemType } from 'pages/Product';
+import { ItemSkeleton } from './ItemSkeleton';
 
 interface ItemListProps {
   itemlist: ItemType[];
@@ -9,20 +10,22 @@ interface ItemListProps {
 export const ItemList = ({ itemlist }: ItemListProps) => {
   return (
     <ListWrapper>
-      {itemlist.map((item: ItemType) => {
-        // <Item key={item.id} {...item} />
-        // const { productId, productName, image, heart } = item;
-        return (
-          <Item
-            key={item.productId}
-            // productId={productId}
-            // productName={productName}
-            // image={image}
-            // heart={heart}
-            {...item}
-          />
-        );
-      })}
+      {itemlist
+        ? itemlist.map((item: ItemType) => {
+            // <Item key={item.id} {...item} />
+            // const { productId, productName, image, heart } = item;
+            return (
+              <Item
+                key={item.productId}
+                // productId={productId}
+                // productName={productName}
+                // image={image}
+                // heart={heart}
+                {...item}
+              />
+            );
+          })
+        : Array(9).map(() => <ItemSkeleton />)}
     </ListWrapper>
   );
 };

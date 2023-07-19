@@ -4,6 +4,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { faCloudArrowUp } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import API from '../api/index';
 
 interface UploadReviewProps {
   id: number;
@@ -25,9 +26,70 @@ export const UploadReview = ({
   const [preview, setPreview] = useState([]);
   const [errorMessage, setErrorMessage] = useState('');
 
+  const postReview = async (formData: FormData) => {
+    // formData값 확인
+    for (const [key, value] of formData.entries()) {
+      console.log(key, value);
+    }
+
+    try {
+      const res = await API.POST({
+        url: `http://greennareALB-281283380.ap-northeast-2.elb.amazonaws.com/green/review/${id}`,
+        data: { context: review },
+        // data: formData,
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+
+      setReview('');
+      setImageFiles([]);
+      setPreview([]);
+
+      if (res.data.exceptionCode === 'REVIEW_EXIST') {
+        alert('이미 등록한 리뷰가 존재합니다.');
+      }
+
+      location.reload();
+
+      console.log('review post');
+      console.log(res.data);
+    } catch (err) {
+      console.log('review post err');
+      console.log(err);
+    }
+  };
+  const patchReview = async (formData: FormData) => {
+    // formData값 확인
+    for (const [key, value] of formData.entries()) {
+      console.log(key, value);
+    }
+
+    try {
+      const res = await API.PATCH({
+        url: `http://greennareALB-281283380.ap-northeast-2.elb.amazonaws.com/green/review/${id}`,
+        data: { context: review },
+        // data: formData,
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+      setIsEdit(false);
+      location.reload();
+
+      console.log('review patch');
+      console.log(res.data);
+    } catch (err) {
+      console.log('review patch err');
+      console.log(err);
+    }
+  };
+
+  // 리뷰 작성
   const reviewHandler = (e: React.FormEvent<HTMLTextAreaElement>) => {
     setReview(e.currentTarget.value);
   };
+  // 이미지 파일 업로드, 프리뷰
   const uploadFileHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = Array.from(e.target.files);
     const addFiles = [...imageFiles, ...files];
@@ -40,7 +102,7 @@ export const UploadReview = ({
 
     e.target.value = '';
   };
-
+  // 이미지 파일 삭제
   const deleteFileHandler = (index: number) => {
     setImageFiles([
       ...imageFiles.slice(0, index),
@@ -52,6 +114,7 @@ export const UploadReview = ({
     ]);
   };
 
+  // 작성한 리뷰 등록
   const submitReviewHandler = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
@@ -62,54 +125,54 @@ export const UploadReview = ({
     }
 
     const formData = new FormData();
-    formData.append('content', review); // JSON.stringify ??
+    formData.append('context', review);
     imageFiles.forEach((file) => formData.append('image', file));
 
     if (isEdit) {
-      return axios
-        .patch(`/green/review/${id}`, formData, {
-          headers: {
-            // Authorization: accessToken,
-            // 'Content-Type': 'multipart/form-data',
-          },
-        })
-        .then((res) => {
-          // 성공
-          console.log(res.data);
-        })
-        .catch((err) => {
-          console.log(err);
-          console.log('edit');
-
-          // formData값 확인
-          for (const [key, value] of formData.entries()) {
-            console.log(key, value);
-          }
-
-          console.log(memberId);
-        });
+      return patchReview(formData);
+      // return axios
+      //   .patch(`/green/review/${id}`, formData, {
+      //     headers: {
+      //       // Authorization: accessToken,
+      //       // 'Content-Type': 'multipart/form-data',
+      //     },
+      //   })
+      //   .then((res) => {
+      //     // 성공
+      //     console.log(res.data);
+      //   })
+      //   .catch((err) => {
+      //     console.log(err);
+      //     console.log('edit');
+      //     // formData값 확인
+      //     for (const [key, value] of formData.entries()) {
+      //       console.log(key, value);
+      //     }
+      //     console.log(memberId);
+      //   });
     } else {
-      return axios
-        .post(`/green/review/${id}`, formData, {
-          headers: {
-            // Authorization: accessToken,
-            // 'Content-Type': 'multipart/form-data',
-          },
-        })
-        .then((res) => {
-          // 성공
-          console.log(res.data);
-        })
-        .catch((err) => {
-          console.log(err);
+      return postReview(formData);
+      // return axios
+      //   .post(`/green/review/${id}`, formData, {
+      //     headers: {
+      //       // Authorization: accessToken,
+      //       // 'Content-Type': 'multipart/form-data',
+      //     },
+      //   })
+      //   .then((res) => {
+      //     // 성공
+      //     console.log(res.data);
+      //   })
+      //   .catch((err) => {
+      //     console.log(err);
 
-          console.log('upload');
-          // formData값 확인
-          for (const [key, value] of formData.entries()) {
-            console.log(key, value);
-          }
-          console.log(memberId);
-        });
+      //     console.log('upload');
+      //     // formData값 확인
+      //     for (const [key, value] of formData.entries()) {
+      //       console.log(key, value);
+      //     }
+      //     console.log(memberId);
+      //   });
     }
   };
 
@@ -117,7 +180,7 @@ export const UploadReview = ({
     if (review) {
       setErrorMessage('');
     }
-  }, [review]);
+  }, [review, isEdit]);
 
   return (
     <>

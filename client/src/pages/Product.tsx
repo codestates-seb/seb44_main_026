@@ -18,7 +18,7 @@ export interface ItemType {
   point: number;
   category: string;
   storeLink: string;
-  image: string;
+  imageLink: string;
   heart?: boolean;
 }
 
@@ -38,10 +38,9 @@ export const Product = () => {
       const Products = res.data;
       setItemList(Products.data);
       setTotalPages(Products.pageInfo.totalPages);
-      setCurrentPage(1);
-      console.log(res.data);
+      console.log(res?.data);
     } catch (err) {
-      console.log('a');
+      console.log('product');
       console.log(err);
     }
   };
@@ -50,6 +49,7 @@ export const Product = () => {
   useEffect(() => {
     getProduct();
     setCurrentPage(1);
+
     // axios
     //   .get(
     //     `http://greennarealb-281283380.ap-northeast-2.elb.amazonaws.com/green`,
