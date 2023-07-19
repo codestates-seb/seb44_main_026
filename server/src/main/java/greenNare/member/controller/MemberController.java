@@ -27,8 +27,8 @@ public class MemberController {
 
     private final MemberMapper mapper;
 
-    public MemberController(MemberService memberService,/*PlaceService placeservice, LikeService likeService,
-                            ChallengeService challengeService, ReplyService replyService*/, MemberMapper mapper) {
+    public MemberController(MemberService memberService, MemberMapper mapper)/*PlaceService placeservice, LikeService likeService,
+                            ChallengeService challengeService, ReplyService replyService*/  {
         this.memberService = memberService;
        /* this.placeService = placeservice;
         this.likeService = likeService;
@@ -51,7 +51,7 @@ public class MemberController {
     //회원정보수정
     @PatchMapping("/{member-id}")
     public ResponseEntity patchMember(
-            @PathVariable("member-id") @Positive int memberId,
+            @PathVariable("member-id") @Positive long memberId,
             @Valid @RequestBody MemberDto.Patch requestBody) {
         requestBody.setMemberId(memberId);
 
@@ -67,7 +67,7 @@ public class MemberController {
     //회원 등록 정보 조회
     @GetMapping("/{member-id}")
     public ResponseEntity getMember(
-            @PathVariable("member-id") @Positive int memberId) {
+            @PathVariable("member-id") @Positive long memberId) {
         Member member = memberService.findMember(memberId);
         return new ResponseEntity<>(
                 new SingleResponseDto<>(mapper.memberToMemberResponse(member))
