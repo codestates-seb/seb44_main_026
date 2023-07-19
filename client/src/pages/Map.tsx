@@ -1,8 +1,7 @@
 import styled from 'styled-components';
 import { useEffect, useState } from 'react';
-import API from '../api/index';
 import { Link, useNavigate } from 'react-router-dom';
-import { useSetAtom } from 'jotai';
+import API from '../api/index';
 declare global {
   interface Window {
     kakao: any;
@@ -52,68 +51,66 @@ const StyledLink = styled(Link)`
   color: white;
   text-decoration: none;
 `;
+
 export const Map = () => {
   const [content, setContent] = useState(''); // 가게 이름
   const [latitude, setLatitude] = useState(0); // 위도 상태 변수
   const [longitude, setLongitude] = useState(0); // 경도 상태 변수
-  const [map, setMap] = useState<any>(null); // 지도 상태
+  const [map, setMap] = useState(null); // 지도 상태
   const getMapData = async () => {
     try {
       const res = await API.GET(
-        'http://greennarealb-281283380.ap-northeast-2.elb.amazonaws.com/nare/map',
+        'http://greennareALB-281283380.ap-northeast-2.elb.amazonaws.com/nare/map',
       );
-      console.log('GET 요청 성공', res.data);
-      setContent(res.data.placeName);
-      setLatitude(res.data.lat);
-      setLongitude(res.data.longi);
+      console.log(res?.data);
+      if (res?.data?.length > 0) {
+        // 배열의 첫 번째 객체에 접근하여 값을 추출
+        const mapData = res.data[0];
+        setContent(mapData.placeName);
+        setLatitude(mapData.lat);
+        setLongitude(mapData.longi);
+
+        // 지도 생성 및 마커 추가
+        const mapContainer = document.getElementById('map');
+        const mapOption = {
+          center: new window.kakao.maps.LatLng(mapData.lat, mapData.longi),
+          level: 3,
+        };
+        const map = new window.kakao.maps.Map(mapContainer, mapOption);
+
+        const markerPosition = new window.kakao.maps.LatLng(
+          mapData.lat,
+          mapData.longi,
+        );
+
+        const marker = new window.kakao.maps.Marker({
+          position: markerPosition,
+        });
+
+        marker.setMap(map);
+
+        const iwPosition = new window.kakao.maps.LatLng(
+          mapData.lat,
+          mapData.longi,
+        );
+
+        const infowindow = new window.kakao.maps.InfoWindow({
+          position: iwPosition,
+          content: mapData.placeName,
+        });
+
+        infowindow.open(map, marker);
+        setMap(map);
+      }
     } catch (err) {
-      console.log('GET 요청 실패', err);
+      console.log(err);
     }
   };
+
   useEffect(() => {
+    window.scrollTo(0, 0);
     getMapData();
   }, []);
-
-  useEffect(() => {
-    const mapContainer = document.getElementById('map'); // 지도를 표시할 div
-    const mapOption = {
-      center: new window.kakao.maps.LatLng(33.450701, 126.570667), // 지도의 중심좌표
-      level: 3, // 지도의 확대 레벨
-    };
-
-    // 지도를 생성합니다
-    const map = new window.kakao.maps.Map(mapContainer, mapOption);
-    setMap(map);
-  }, []);
-
-  useEffect(() => {
-    if (map === null) {
-      return;
-    }
-
-    // 마커가 표시될 위치입니다
-    const markerPosition = new window.kakao.maps.LatLng(33.450701, 126.570667);
-    //const markerPosition = new window.kakao.maps.LatLng(latitude, longitude);  api에서 받아온 좌표 데이터
-
-    // 마커를 생성합니다
-    const marker = new window.kakao.maps.Marker({
-      position: markerPosition,
-    });
-
-    // 마커가 지도 위에 표시되도록 설정합니다
-    marker.setMap(map);
-
-    const iwPosition = new window.kakao.maps.LatLng(33.450701, 126.570667); //인포윈도우 표시 위치입니다
-    //const iwPosition = new window.kakao.maps.LatLng(latitude, longitude);api에서 받아온 좌표 데이터
-    // 인포윈도우를 생성합니다
-    const infowindow = new window.kakao.maps.InfoWindow({
-      position: iwPosition,
-      content: '우리집',
-    });
-
-    // 마커 위에 인포윈도우를 표시합니다. 두번째 파라미터인 marker를 넣어주지 않으면 지도 위에 표시됩니다
-    infowindow.open(map, marker);
-  }, [map]);
   return (
     <>
       <StyledNav>
