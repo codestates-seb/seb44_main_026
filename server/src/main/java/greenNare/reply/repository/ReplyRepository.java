@@ -9,6 +9,6 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface ReplyRepository extends JpaRepository<Reply, Long> {
-    Page<Reply> findByChallengeId(long challengeId, Pageable pageable);
+public interface ReplyRepository extends JpaRepository<Reply, Integer> {
+    Page<Reply> findByChallengeId(int challengeId, Pageable pageable);
 }

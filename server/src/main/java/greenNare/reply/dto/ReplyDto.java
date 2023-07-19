@@ -17,9 +17,9 @@ public class ReplyDto {
     @Getter
     @Builder
     public static class Response {
-        private long replyId;
-        private long memberId;
-        private long challengeId;
+        private int replyId;
+        private int memberId;
+        private int challengeId;
         private String content;
         private LocalDateTime createdAt;
         private LocalDateTime updatedAt;

@@ -43,12 +43,12 @@ public class ChallengeService {
         /*
         String memberEmail = jwtTokenizer.getUsername(token)
         Member member = memberService.findMemberByEmail(memberEmail);
-        Long id = member.getId()
-        Long point = member.getPoint()
+        int id = member.getId()
+        int point = member.getPoint()
         challenge.setMemberId(id);
          */
         //challenge.setImage();
-        challenge.setMemberId(1L); //임시아이디 변수로 만들기
+        challenge.setMemberId(1); //임시아이디 변수로 만들기
         Challenge saveChallenge = challengeRepository.save(challenge);
         return saveChallenge;
     }
@@ -124,7 +124,7 @@ public class ChallengeService {
                 ))*/
     }
 
-    public ChallengeDto.Response getChallenge(long challengeId) {
+    public ChallengeDto.Response getChallenge(int challengeId) {
         log.info(String.valueOf("#### get challenge 시작 / challengeId :"+  String.valueOf(challengeId)));
 
         Challenge challenge = findVerifideChallenge(challengeId);
@@ -144,13 +144,13 @@ public class ChallengeService {
         );
         log.info("response : {}", response.getName());
 
-        //long memberId = challenge.getMemberId();
+        //int memberId = challenge.getMemberId();
         //findWriterInfo(memberId, response);
 
         return response;
     }
 
-    public ChallengeDto.Response updateChallenge(Challenge challenge, long challengeId, MultipartFile image) throws IOException {
+    public ChallengeDto.Response updateChallenge(Challenge challenge, int challengeId, MultipartFile image) throws IOException {
         Challenge findChallenge = findVerifideChallenge(challengeId);
 
         File file = new File(System.getProperty("user.dir")+"/src/main/resources/static"+findChallenge.getImage());
@@ -182,13 +182,13 @@ public class ChallengeService {
                 //findUsername(challenge.getMemberId()),
                 //findPoint(challenge.getMemberId())
         );
-        long memberId = imageSaveChallenge.getMemberId();
+        int memberId = imageSaveChallenge.getMemberId();
         //ChallengeDto.Response response = findWriterInfo(memberId, challengeResponseDto);
 
         return response;
     }
 
-    public void deleteChallenge(long challengeId, String token){
+    public void deleteChallenge(int challengeId, String token){
         log.info("##### delete challenge start");
         //if(token.isEmpty()){
           //  throw new BusinessLogicException(ExceptionCode.INVALID_TOKEN);
@@ -217,7 +217,7 @@ public class ChallengeService {
         log.info(String.valueOf(member.getPoint()));
         return member.getPoint();
     }
-    public Challenge findVerifideChallenge(long challengeId) {
+    public Challenge findVerifideChallenge(int challengeId) {
         log.info("findVerifiedChallenge challengeId : {}", challengeId);
         Optional<Challenge> optionalChallenge =
                 challengeRepository.findById(challengeId);

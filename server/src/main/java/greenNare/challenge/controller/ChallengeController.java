@@ -34,7 +34,6 @@ import java.util.List;
 @RequestMapping("/nare")
 @Validated
 @Slf4j
-@CrossOrigin(origins = "*")
 //@EnableWebMvc
 public class ChallengeController {
     private final static String CHALLENGE_DEFAULT_URL = "/nare";
@@ -56,7 +55,7 @@ public class ChallengeController {
     }
 
     @GetMapping("/{challengeId}") // 챌린지 상세 조회
-    public ResponseEntity getChallenge(@PathVariable("challengeId") long challengeId) {
+    public ResponseEntity getChallenge(@PathVariable("challengeId") int challengeId) {
         ChallengeDto.Response response = challengeService.getChallenge(challengeId);
         return ResponseEntity.ok(new SingleResponseDto<>(response));
     }
@@ -81,7 +80,20 @@ public class ChallengeController {
     }
 
     @PatchMapping("/{challengeId}") // 챌린지 수정
-    public ResponseEntity patchChallenge(@PathVariable("challengeId") long challengeId,
+    public ResponseEntity patchChallenge2(@PathVariable("challengeId") int challengeId,
+                                         @Valid @RequestPart(required = false) ChallengeDto.Patch requestBody,
+                                         @RequestPart(required = false) MultipartFile image,
+                                         @RequestHeader(value = "Authorization", required = false) String token) throws IOException {
+        Challenge patch = mapper.challengePatchDtoToChallenge(requestBody);
+
+        ChallengeDto.Response response = challengeService.updateChallenge(patch, challengeId, image);
+        //challengeService.saveImage(updateChallenge, image)
+
+        return ResponseEntity.ok(new SingleResponseDto<>(response));
+    }
+
+    @PostMapping("/update/{challengeId}") // 챌린지 수정
+    public ResponseEntity patchChallenge(@PathVariable("challengeId") int challengeId,
                                          @Valid @RequestPart(required = false) ChallengeDto.Patch requestBody,
                                          @RequestPart(required = false) MultipartFile image,
                                          @RequestHeader(value = "Authorization", required = false) String token) throws IOException {
@@ -94,7 +106,7 @@ public class ChallengeController {
     }
 
     @DeleteMapping("/{challengeId}") // 챌린지 삭제
-    public ResponseEntity deleteChallenge(@PathVariable("challengeId") long challengeId,
+    public ResponseEntity deleteChallenge(@PathVariable("challengeId") int challengeId,
                                           @RequestHeader(value = "Authorization", required = false) String token){
         challengeService.deleteChallenge(challengeId, token);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);

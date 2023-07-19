@@ -16,10 +16,10 @@ public class Place extends Auditable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(nullable = false)
-    private long placeId;
+    private int placeId;
 
     @Column(nullable = false)
-    private long memberId;
+    private int memberId;
 
     @Column//(nullable = false)
     private String placeName;

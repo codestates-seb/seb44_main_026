@@ -33,7 +33,7 @@ public class ReplyService {
         this.challengeService = challengeService;
     }
 
-    public List<ReplyDto.Response> getReplys(long challengeId, String token, Pageable pageable) {
+    public List<ReplyDto.Response> getReplys(int challengeId, String token, Pageable pageable) {
         Page<Reply> replyList = replyRepository.findByChallengeId(challengeId, pageable);
         List<ReplyDto.Response> replyResponseList = replyList.stream()
                 .map((reply)-> new ReplyDto.Response(
@@ -49,7 +49,7 @@ public class ReplyService {
         return replyResponseList;
     }
 
-    public ReplyDto.Response createReply(Reply reply, long challengeId, long memberId) {
+    public ReplyDto.Response createReply(Reply reply, int challengeId, int memberId) {
 
         reply.setChallengeId(challengeId);
         reply.setMemberId(memberId);
@@ -70,7 +70,7 @@ public class ReplyService {
         return response;
     }
 
-    public ReplyDto.Response updateReply (Reply reply, long replyId, long memberId) {
+    public ReplyDto.Response updateReply (Reply reply, int replyId, int memberId) {
         Reply findReply = findVerifyReply(replyId);
         validateWriter(findReply, memberId);
 
@@ -81,26 +81,26 @@ public class ReplyService {
         ReplyDto.Response response = ReplyDto.Response.from(findReply);
         return response;
     }
-    public void deleteReply(long replyId, long memberId) {
+    public void deleteReply(int replyId, int memberId) {
         Reply reply = findVerifyReply(replyId);
         validateWriter(reply, memberId);
         replyRepository.delete(reply);
     }
-    public Reply findVerifyReply(long replyId) {
+    public Reply findVerifyReply(int replyId) {
         Optional<Reply> optionalReply = replyRepository.findById(replyId);
         Reply findReply = optionalReply.orElseThrow(() ->
                 new BusinessLogicException(ExceptionCode.REPLY_NOT_FOUND));
         return findReply;
     }
-    public void validateWriter(Reply reply, long memberId) {
+    public void validateWriter(Reply reply, int memberId) {
         if (reply.getMemberId() != memberId) {
             throw new BusinessLogicException(ExceptionCode.REPLY_WRITER_NOT_MATCHED);
         }
     }
-    public void validateChallenge(long challengeId){
+    public void validateChallenge(int challengeId){
         challengeService.findVerifideChallenge(challengeId);
     }
-    public Page<Reply> getReplyPage(long challengeId, String token, Pageable pageable) {
+    public Page<Reply> getReplyPage(int challengeId, String token, Pageable pageable) {
         Page<Reply> replyPage = replyRepository.findByChallengeId(challengeId, pageable);
         return replyPage;
 

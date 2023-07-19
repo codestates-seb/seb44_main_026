@@ -69,8 +69,8 @@ public class ChallengeDto {
     @Getter
     @Builder
     public static class PageResponse {
-        private long challengeId;
-        private long memberId;
+        private int challengeId;
+        private int memberId;
         private String title;
         private String name;
         private int point;
