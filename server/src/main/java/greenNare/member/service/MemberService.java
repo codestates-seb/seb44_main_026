@@ -19,7 +19,7 @@ public class MemberService {
                 .orElseThrow(() -> new BusinessLogicException(ExceptionCode.MEMBER_EXIST));
 
     }
-    public Member findMemberById(long memberId) {
+    public Member findMemberById(int memberId) {
         return memberRepository.findById(memberId)
                 .orElseThrow(()-> new BusinessLogicException(ExceptionCode.MEMBER_EXIST));
     }

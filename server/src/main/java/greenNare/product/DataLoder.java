@@ -1,17 +1,14 @@
 package greenNare.product;
 
-import greenNare.product.entity.Member;
+import greenNare.member.entity.Member;
+import greenNare.member.repository.MemberRepository;
+
 import greenNare.product.entity.Product;
 import greenNare.product.entity.Review;
-import greenNare.product.repository.MemberRepository;
 import greenNare.product.repository.ProductRepository;
 import greenNare.product.repository.ReviewRepository;
-import greenNare.product.service.ProductService;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @Component
 public class DataLoder implements CommandLineRunner {
