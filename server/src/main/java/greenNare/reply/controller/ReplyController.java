@@ -28,7 +28,7 @@ import java.util.List;
 @RequestMapping("/nare")
 @Validated
 @Slf4j
-@CrossOrigin(origins = "*")
+//@CrossOrigin(origins = "*")
 public class ReplyController {
     private final ReplyService replyService;
     private final ReplyMapper mapper;
