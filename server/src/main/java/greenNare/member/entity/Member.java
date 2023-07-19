@@ -13,20 +13,30 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @Entity
-public class Member  {
+public class Member {
 
-       @Id
-       @GeneratedValue(strategy = GenerationType.IDENTITY)
-       private long memberId;
-       @Column(nullable = false, updatable = false, unique = true)
-       private String email;
-       @Column(length = 100, nullable = false)
-       private String password;
-       @Column(length = 100, nullable = false)
-       private String name;
-       @Column(nullable = false)
-       private int point;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int memberId;
+    @Column(nullable = false, updatable = false, unique = true)
+    private String email;
+    @Column(length = 100, nullable = false)
+    private String password;
+    @Column(length = 100, nullable = false)
+    private String name;
+    @Column(nullable = false)
+    private int point;
 
-       @ElementCollection(fetch = FetchType.EAGER)
-       private List<String> roles = new ArrayList<>();
-}
+
+    @ElementCollection(fetch = FetchType.EAGER)
+    private List<String> roles = new ArrayList<>();
+
+   }
+
+
+
+
+
+
+
+

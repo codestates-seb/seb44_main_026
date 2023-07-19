@@ -24,10 +24,10 @@ public static class Post {
     @Getter
     @AllArgsConstructor
     public static class Patch {
-        private long memberId;
+        private int memberId;
 
         @NotBlank(message = "이름을 넣으세요")
-        private String ame;
+        private String name;
 
         @NotBlank(message = "비밀번호를 넣으세요")
         private String password;
@@ -37,7 +37,7 @@ public static class Post {
     @AllArgsConstructor
     @Getter
     public static class Response {
-        private long memberId;
+        private int memberId;
         private String email;
         private String name;
     }

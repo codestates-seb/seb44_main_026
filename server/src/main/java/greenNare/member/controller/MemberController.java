@@ -19,41 +19,54 @@ import java.net.URI;
 @RestController
 @RequestMapping("/user")
 
-public class MemberController {
-    private final static String MEMBER_DEFAULT_URL = "/user";
-    private final MemberService memberService;
-    /*private final QuestionService questionService;
-    private final AnswerService answerService;*/
 
+    public class MemberController {
     private final MemberMapper mapper;
+    private final MemberService memberService;
 
-    public MemberController(MemberService memberService, MemberMapper mapper)/*PlaceService placeservice, LikeService likeService,
-                            ChallengeService challengeService, ReplyService replyService*/  {
-        this.memberService = memberService;
-       /* this.placeService = placeservice;
-        this.likeService = likeService;
-        this.challengeService = challengeService;*/
+    public MemberController(MemberMapper mapper, MemberService memberService) {
         this.mapper = mapper;
+        this.memberService = memberService;
     }
 
+    @GetMapping("/{member-id}")
+        public ResponseEntity getMember(@PathVariable("member-id") int memberId) {
+            System.out.println("# memberId: " + memberId);
 
 
-    //회원가입
+            return new ResponseEntity<>(HttpStatus.OK);
+        }
+
+        @GetMapping
+        public ResponseEntity getMembers() {
+            System.out.println("# get Members");
+
+
+            return new ResponseEntity<>(HttpStatus.OK);
+        }
+
+
+
+
+  //회원가입
     @PostMapping("/join")
     public ResponseEntity postMember(@Valid @RequestBody MemberDto.Post requestBody) {
         Member member = mapper.memberPostToMember(requestBody);
 
         Member createdMember = memberService.createMember(member);
-        URI location = UriCreator.createUri(MEMBER_DEFAULT_URL, createdMember.getMemberId());
+       /* URI location = UriCreator.createUri(MEMBER_DEFAULT_URL, createdMember.getMemberId());
 
-        return ResponseEntity.created(location).build();
+        return ResponseEntity.created(location).build();*/
+        return new ResponseEntity<>(new SingleResponseDto<>(createdMember), HttpStatus.CREATED);
     }
+
     //회원정보수정
-    @PatchMapping("/{member-id}")
+    @PatchMapping("/info")
     public ResponseEntity patchMember(
-            @PathVariable("member-id") @Positive long memberId,
-            @Valid @RequestBody MemberDto.Patch requestBody) {
-        requestBody.setMemberId(memberId);
+            @PathVariable() @Positive long memberId,
+            @Valid @RequestBody MemberDto.Patch requestBody,
+            @RequestHeader(value = "Authorization", required = false) String token) {
+
 
 
         Member member =
@@ -65,13 +78,13 @@ public class MemberController {
     }
 
     //회원 등록 정보 조회
-    @GetMapping("/{member-id}")
+    @GetMapping("/info")
     public ResponseEntity getMember(
-            @PathVariable("member-id") @Positive long memberId) {
+            @PathVariable() @Positive long memberId) {
         Member member = memberService.findMember(memberId);
         return new ResponseEntity<>(
                 new SingleResponseDto<>(mapper.memberToMemberResponse(member))
                 , HttpStatus.OK);
     }
+        }
 
-}

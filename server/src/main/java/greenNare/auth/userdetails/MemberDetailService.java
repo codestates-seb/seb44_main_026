@@ -1,6 +1,6 @@
 package greenNare.auth.userdetails;
 
-
+import greenNare.exception.ExceptionCode;
 import greenNare.auth.utils.CustomAuthorityUtils;
 import greenNare.exception.BusinessLogicException;
 import greenNare.member.entity.Member;
@@ -19,10 +19,6 @@ public class MemberDetailService implements UserDetailsService {
     private final MemberRepository memberRepository;
     private final CustomAuthorityUtils authorityUtils;
 
-    public MemberDetailsService(MemberRepository memberRepository, CustomAuthorityUtils authorityUtils) {
-        this.memberRepository = memberRepository;
-        this.authorityUtils = authorityUtils;
-    }
 
     public MemberDetailService(MemberRepository memberRepository, CustomAuthorityUtils authorityUtils) {
         this.memberRepository = memberRepository;
@@ -32,7 +28,8 @@ public class MemberDetailService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         Optional<Member> optionalMember = memberRepository.findByEmail(username);
-        Member findMember = optionalMember.orElseThrow(() -> new BusinessLogicException(ExceptionCode.MEMBER_NOT_FOUND));
+
+        Member findMember = optionalMember.orElseThrow(() -> new BusinessLogicException(ExceptionCode.MEMBER_EXIST));
 
         return new MemberDetails(findMember);
     }
@@ -56,7 +53,7 @@ public class MemberDetailService implements UserDetailsService {
         }
 
         @Override
-        public boolean isAccountNonExpired() {
+       public boolean isAccountNonLocked() {
             return true;
         }
 
@@ -71,8 +68,13 @@ public class MemberDetailService implements UserDetailsService {
         }
 
         @Override
-        public boolean isCredentialsNonExpired() {
+        public boolean isEnabled() {
             return true;
         }
+
+
+
+
     }
+
 }
