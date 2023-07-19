@@ -1,5 +1,6 @@
 package greenNare.product.entity;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -9,6 +10,7 @@ import java.util.List;
 import java.util.Objects;
 
 @NoArgsConstructor
+@AllArgsConstructor
 @Getter
 @Entity
 public class Product {
@@ -27,8 +29,14 @@ public class Product {
     @Column(nullable = false)
     private String storeLink;
 
+//    @OneToMany(mappedBy = "product")
+//    private List<Image> imageLinks;
+
+    private String imageLink;
+
     @Column(nullable = false)
     private String category;
+
 
     public Product(String productName, String detail, int price, int point, String storeLink, String category){
         this.productName = Objects.requireNonNull(productName);

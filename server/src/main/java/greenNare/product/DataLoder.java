@@ -1,7 +1,12 @@
 package greenNare.product;
 
+import greenNare.product.entity.Member;
 import greenNare.product.entity.Product;
+import greenNare.product.entity.Review;
+import greenNare.product.repository.MemberRepository;
 import greenNare.product.repository.ProductRepository;
+import greenNare.product.repository.ReviewRepository;
+import greenNare.product.service.ProductService;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
@@ -11,9 +16,14 @@ import java.util.List;
 @Component
 public class DataLoder implements CommandLineRunner {
     private final ProductRepository productRepository;
+    private final ReviewRepository reviewRepository;
+    private final MemberRepository memberRepository;
 
-    public DataLoder(ProductRepository productRepository) {
+    public DataLoder(ProductRepository productRepository, ReviewRepository reviewRepository,
+                     MemberRepository memberRepository) {
         this.productRepository = productRepository;
+        this.reviewRepository = reviewRepository;
+        this.memberRepository = memberRepository;
     }
 
 
@@ -39,7 +49,17 @@ public class DataLoder implements CommandLineRunner {
             productRepository.save(new Product("연필"+i, "연필입니다", i*100, i, "link", "stationery"));
             productRepository.save(new Product("손수건"+i, "손수건입니다", i*100, i, "link", "hygiene"));
         }
-        for (int i=0; i<30; i++) {
+        for(int i=0; i<30; i++) {
+            memberRepository.save(new Member("email"+i, "name"+i,"password"+i,"image"+i,i));
+        }
+        for (int i=1; i<=30; i++) {
+            Member member = memberRepository.findBymemberId(i);
+//            reviewRepository.save(Review.builder()
+//                    .context("리뷰 * "+i)
+//                    .product(productRepository.findByProductId(i))
+//                    .member(member)
+//                    .build());
+            reviewRepository.save(new Review(member, productRepository.findByProductId(i),"리뷰 * "+i ));
 
         }
 
