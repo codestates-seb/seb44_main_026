@@ -34,7 +34,7 @@ import java.util.List;
 @RequestMapping("/nare")
 @Validated
 @Slf4j
-@CrossOrigin(origins = "*")
+//@CrossOrigin(origins = "*")
 //@EnableWebMvc
 public class ChallengeController {
     private final static String CHALLENGE_DEFAULT_URL = "/nare";
