@@ -63,7 +63,7 @@ import java.net.URI;
     //회원정보수정
     @PatchMapping("/info")
     public ResponseEntity patchMember(
-            @PathVariable() @Positive long memberId,
+            @PathVariable() @Positive int memberId,
             @Valid @RequestBody MemberDto.Patch requestBody,
             @RequestHeader(value = "Authorization", required = false) String token) {
 
@@ -78,9 +78,9 @@ import java.net.URI;
     }
 
     //회원 등록 정보 조회
-    @GetMapping("/info")
-    public ResponseEntity getMember(
-            @PathVariable() @Positive long memberId) {
+    @GetMapping("/info/{member-id}")
+    public ResponseEntity getMemberInfo(
+            @PathVariable("member-id") @Positive int memberId) {
         Member member = memberService.findMember(memberId);
         return new ResponseEntity<>(
                 new SingleResponseDto<>(mapper.memberToMemberResponse(member))
