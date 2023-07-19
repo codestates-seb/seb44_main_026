@@ -95,7 +95,9 @@ const ChallengeDetail = () => {
                 </div>
               </div>
             </TitleContainer>
-            <BodyContainer>{body}</BodyContainer>
+            <BodyContainer>
+              <div dangerouslySetInnerHTML={{ __html: body }}></div>
+            </BodyContainer>
           </ItemContainer>
           <CommentContainer>
             <CommentTitle>참여 댓글 {commentCount}개</CommentTitle>

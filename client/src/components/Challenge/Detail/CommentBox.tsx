@@ -40,6 +40,7 @@ const CommentBox: React.FC<CommentProps> = ({
         <div className="comment-date">
           {'⏱️ ' + moment(createdAt).fromNow()}
         </div>
+        <div className="edit-button">수정</div>
         <div className="del-button" onClick={deleteComment}>
           삭제
         </div>
@@ -81,6 +82,21 @@ const InfoContainer = styled.div`
     right: 0;
     padding: 0.5rem;
     font-size: 13px;
+    border-radius: 4px;
+    cursor: pointer;
+    display: flex;
+    &:hover {
+      background-color: var(--green-100);
+      color: white;
+    }
+  }
+  .edit-button {
+    position: absolute;
+    top: 0;
+    right: 3rem;
+    padding: 0.5rem;
+    font-size: 13px;
+    cursor: pointer;
     border-radius: 4px;
     display: flex;
     &:hover {

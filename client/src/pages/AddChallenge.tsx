@@ -16,8 +16,8 @@ const AddChallenge = () => {
   const [fileurl, setFileurl] = useState<string>(''); //기본파일세팅
   const [newfile, setnewFile] = useState<File | null>(); //새로업로드할 파일
   const newData = {
-    title: 'title',
-    content: 'contents',
+    title: title,
+    content: contents,
   };
 
   const goToChallenge = () => {
@@ -27,8 +27,13 @@ const AddChallenge = () => {
   const postChallenge = async () => {
     try {
       const formData = new FormData();
-
-      formData.append('requestBody', JSON.stringify(newData));
+      //formData.append('requestBody', JSON.stringify(newData));
+      formData.append(
+        'requestBody',
+        new Blob([JSON.stringify(newData)], {
+          type: 'application/json',
+        }),
+      );
       formData.append('image', null);
       const res = await API.POST({
         url: 'http://greennarealb-281283380.ap-northeast-2.elb.amazonaws.com/nare/challenge',
@@ -40,6 +45,9 @@ const AddChallenge = () => {
     } catch (err) {
       console.log(err);
     }
+
+    nav('/challenge');
+    location.reload();
   };
 
   /*
