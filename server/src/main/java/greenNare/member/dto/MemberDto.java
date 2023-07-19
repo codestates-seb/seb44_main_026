@@ -1,26 +1,29 @@
 package greenNare.member.dto;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 
 public class MemberDto {
-@Getter
-@AllArgsConstructor
+    @Getter
+    @Builder
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class Post {
+        @NotBlank
+        @Email
+        private String email;
 
-public static class Post {
-    @NotBlank
-    @Email
-    private String email;
+        @NotBlank
+        private String password;
 
-    @NotBlank
-    private String password;
-
-    @NotBlank(message = "빈칸을 채워주세요.")
-    private String name;
-}
+        @NotBlank(message = "빈칸을 채워주세요.")
+        private String name;
+    }
     @Getter
     @AllArgsConstructor
     public static class Patch {
