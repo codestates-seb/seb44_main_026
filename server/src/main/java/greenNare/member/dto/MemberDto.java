@@ -40,6 +40,8 @@ public static class Post {
         private int memberId;
         private String email;
         private String name;
+
+        private int pont;
     }
 
 
