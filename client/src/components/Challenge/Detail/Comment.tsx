@@ -1,4 +1,7 @@
 import styled from 'styled-components';
+import API from '../../../api/index';
+import { useNavigate, useParams } from 'react-router-dom';
+import { useEffect, useState } from 'react';
 
 interface InputItemProps {
   setComment: (comment: string) => void;
@@ -6,8 +9,30 @@ interface InputItemProps {
 }
 
 const InputItem: React.FC<InputItemProps> = ({ setComment, value }) => {
+  const id = useParams().id;
+  const [loading, setloading] = useState(false);
   const textHandler = (e: React.FormEvent<HTMLInputElement>) => {
     setComment(e.currentTarget.value);
+  };
+
+  useEffect(() => {
+    console.log(id);
+  }, []);
+
+  const postComment = async () => {
+    try {
+      setloading(true);
+      const res = await API.POST({
+        url: `http://greennarealb-281283380.ap-northeast-2.elb.amazonaws.com/nare/reply/${id}`,
+        data: { content: value },
+      });
+    } catch (err) {
+      console.log(err);
+    }
+    setComment('');
+    alert('댓글이 등록되었습니다.');
+    setloading(false);
+    location.reload();
   };
 
   return (
@@ -18,7 +43,7 @@ const InputItem: React.FC<InputItemProps> = ({ setComment, value }) => {
         value={value}
         placeholder="댓글을 달고 챌린지에 참여해보세요!"
       ></input>
-      <InputButton>등록</InputButton>
+      <InputButton onClick={postComment}>등록</InputButton>
     </InputContainer>
   );
 };

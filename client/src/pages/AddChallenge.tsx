@@ -1,21 +1,45 @@
 import NewChallenge from 'feature/NewChallenge';
 import React from 'react';
 import { styled } from 'styled-components';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { InputTitle } from 'components/Challenge/Detail/Comment';
 import UploadFile from 'components/UploadFile/NewFile';
 import { useNavigate } from 'react-router-dom';
 import { UploadChallenge } from 'components/Challenge/UploadChallenge';
+import API from '../api/index';
+import axios, { AxiosError } from 'axios';
 
 const AddChallenge = () => {
   const nav = useNavigate();
   const [title, setTitle] = useState('');
   const [contents, setContents] = useState('');
   const [fileurl, setFileurl] = useState<string>(''); //기본파일세팅
-  const [newfile, setnewFile] = useState<File | null>(null); //새로업로드할 파일
+  const [newfile, setnewFile] = useState<File | null>(); //새로업로드할 파일
+  const newData = {
+    title: 'title',
+    content: 'contents',
+  };
 
   const goToChallenge = () => {
     nav('/challenge');
+  };
+
+  const postChallenge = async () => {
+    try {
+      const formData = new FormData();
+
+      formData.append('requestBody', JSON.stringify(newData));
+      formData.append('image', null);
+      const res = await API.POST({
+        url: 'http://greennarealb-281283380.ap-northeast-2.elb.amazonaws.com/nare/challenge',
+        data: formData,
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   /*
@@ -78,7 +102,7 @@ const AddChallenge = () => {
         <UploadChallenge />
       </InputContainer>
       <ButtonContainer>
-        <SubmitContainer>등록</SubmitContainer>
+        <SubmitContainer onClick={postChallenge}>등록</SubmitContainer>
         <CancelContainer onClick={goToChallenge}>취소</CancelContainer>
       </ButtonContainer>
     </>

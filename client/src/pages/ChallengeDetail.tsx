@@ -15,33 +15,60 @@ const ChallengeDetail = () => {
   const [body, setBody] = useState('');
   const [loading, setloading] = useState(false); //데이터 받아올 때 로딩
   const [comment, setComment] = useState(''); //새로 작성할 댓글 내용
+  const [commentList, setCommentList] = useState([]);
   const commentCount = 0;
 
   const getChallenge = async () => {
     try {
       setloading(true);
       const res = await API.GET(
-        `https://jsonplaceholder.typicode.com/posts/${id}`,
+        `http://greennarealb-281283380.ap-northeast-2.elb.amazonaws.com/nare/${id}`,
       );
       console.log(res);
-      setTitle(res.data.title);
-      setBody(res.data.body);
+      setTitle(res?.data.data.title);
+      setBody(res?.data.data.content);
     } catch (err) {
       console.log(err);
     }
     setloading(false);
   };
+
+  const deleteChallenge = async () => {
+    try {
+      setloading(true);
+      const res = await API.DELETE({
+        url: `http://greennarealb-281283380.ap-northeast-2.elb.amazonaws.com/nare/${id}`,
+      });
+      console.log(res);
+    } catch (err) {
+      console.log(err);
+    }
+    setloading(false);
+    navigate('/challenge');
+  };
+
+  const getComment = async () => {
+    try {
+      setloading(true);
+      const res = await API.GET(
+        `http://greennarealb-281283380.ap-northeast-2.elb.amazonaws.com/nare/reply/${id}`,
+      );
+      console.log(res);
+      setCommentList([...res?.data.data]);
+    } catch (err) {
+      console.log(err);
+    }
+    setloading(false);
+  };
+
   useEffect(() => {
     window.scrollTo(0, 0);
     getChallenge();
+    getComment();
   }, []);
 
   const goToEdit = () => {
     navigate(`/challenge/edit/${id}`);
-  };
-
-  const delChallenge = () => {
-    navigate('/challenge');
   };
 
   return (
@@ -63,7 +90,7 @@ const ChallengeDetail = () => {
                 <div className="edit-page" onClick={goToEdit}>
                   수정하기
                 </div>
-                <div className="delete-page" onClick={delChallenge}>
+                <div className="delete-page" onClick={deleteChallenge}>
                   삭제하기
                 </div>
               </div>
@@ -73,11 +100,12 @@ const ChallengeDetail = () => {
           <CommentContainer>
             <CommentTitle>참여 댓글 {commentCount}개</CommentTitle>
             <InputItem setComment={setComment} value={comment} />
-            {dummyComment.map((item: any, index: any) => (
+            {commentList.map((item: any, index: any) => (
               <CommentBox
                 name={item.memberId}
-                body={item.body}
-                point={item.point}
+                id={item.replyId}
+                body={item.content}
+                point={100}
                 createdAt={item.createdAt}
                 key={index}
               ></CommentBox>

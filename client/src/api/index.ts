@@ -1,7 +1,7 @@
 import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios';
 
 export const axiosClient: AxiosInstance = axios.create({
-  baseURL: 'http://localhost:4000',
+  baseURL: '',
 });
 
 axiosClient.defaults.withCredentials = true;

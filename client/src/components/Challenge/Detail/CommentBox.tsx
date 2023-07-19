@@ -2,12 +2,15 @@ import React from 'react';
 import { styled } from 'styled-components';
 import moment from 'moment';
 import 'moment/locale/ko';
+import API from '../../../api/index';
+import { type } from 'os';
 
 interface CommentProps {
   name: string;
   body: string;
   point: number;
   createdAt: string;
+  id: number;
 }
 
 const CommentBox: React.FC<CommentProps> = ({
@@ -15,7 +18,20 @@ const CommentBox: React.FC<CommentProps> = ({
   body,
   point,
   createdAt,
+  id,
 }) => {
+  const deleteComment = async () => {
+    try {
+      const res = await API.DELETE({
+        url: `http://greennarealb-281283380.ap-northeast-2.elb.amazonaws.com/nare/reply/${id}`,
+      });
+      console.log(res);
+    } catch (err) {
+      console.log(err);
+    }
+    location.reload();
+  };
+
   return (
     <DivContainer>
       <InfoContainer>
@@ -24,7 +40,9 @@ const CommentBox: React.FC<CommentProps> = ({
         <div className="comment-date">
           {'⏱️ ' + moment(createdAt).fromNow()}
         </div>
-        <div className="del-button">삭제</div>
+        <div className="del-button" onClick={deleteComment}>
+          삭제
+        </div>
       </InfoContainer>
       <BodyContainer>{body}</BodyContainer>
     </DivContainer>
