@@ -1,8 +1,9 @@
 package greenNare.member.entity;
 
 import lombok.*;
-
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Setter
@@ -15,24 +16,24 @@ public class Member {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int memberId;
 
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false, updatable = false, unique = true)
     private String email;
 
-    @Column(nullable = false, unique = true)
+    @Column(length = 100, nullable = false)
     private String name;
 
-    @Column(nullable = false)
+    @Column(length = 100, nullable = false)
     private String password;
-
-    @Column(unique = true)
-    private String image;
+    @Column(nullable = false)
     private int point;
+
+    @ElementCollection(fetch = FetchType.EAGER)
+    private List<String> roles = new ArrayList<>();
 
     public Member(String email, String name, String password, String image, int point){
         this.email = email;
         this.name = name;
         this.password = password;
-        this.image = image;
         this.point = point;
     }
 }
