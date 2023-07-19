@@ -9,7 +9,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface ChallengeRepository extends JpaRepository<Challenge, Long> {
+public interface ChallengeRepository extends JpaRepository<Challenge, Integer> {
     // inner join
     /*@Query("SELECT c.boardId, c.title, c.content, m.name, m.point "+
             "FROM Challenge c "+
@@ -29,6 +29,6 @@ public interface ChallengeRepository extends JpaRepository<Challenge, Long> {
     @Query(value = "SELECT c.title, c.content, c.challengeId, c.createdAt, m.name, m.point " +
             "FROM challenge c " +
             "JOIN member m ON c.memberId = m.memberId;", nativeQuery = true)
-    ChallengeDto.Response findByMemberId(Long memberId);
+    ChallengeDto.Response findByMemberId(int memberId);
 
 }

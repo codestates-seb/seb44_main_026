@@ -31,14 +31,12 @@ public class ProductService {
 
     }
 
-    public Product getProductDetails(int productId) {
+    public Product getProduct(int productId) {
         Product productDetails = productRepository.findByProductId(productId);
         return productDetails;
     }
 
     public List<Product> findProducts(String productName) {
-
-        //productName 과 동일한 상품
 
         List<Product> findProducts = productRepository.findByProductName(productName);
         System.out.println(productName + findProducts);

@@ -17,7 +17,8 @@ import java.util.Arrays;
 import java.util.List;
 
 @RestController
-@CrossOrigin(origins = "*")
+//@CrossOrigin(origins = "*")
+@RequestMapping("/green")
 public class ProductController {
     private ProductService productService;
     private ProductMapper mapper;
@@ -28,14 +29,12 @@ public class ProductController {
     }
 
     @GetMapping("/")
-    public ResponseEntity response(){
-        String response = "hi";
+    public void response(){
         System.out.println("h");
-        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    @GetMapping("/green")
-    public ResponseEntity GetProducts(@RequestParam("page") int page,
+    @GetMapping
+    public ResponseEntity getProducts(@RequestParam("page") int page,
                                       @RequestParam("size") int size,
                                       @RequestParam("category") String category){
 
@@ -49,16 +48,18 @@ public class ProductController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    @GetMapping("/green/{productId}")
-    public ResponseEntity getProductDetails(@PathVariable("productId") int productId) {
-        Product productDetails = productService.getProductDetails(productId);
+    @GetMapping("/{productId}")
+    public ResponseEntity getProduct(@PathVariable("productId") int productId) {
+        Product productDetails = productService.getProduct(productId);
         SingleResponseDto response = new SingleResponseDto(productDetails);
 
         return new ResponseEntity(response, HttpStatus.OK);
     }
 
-    @GetMapping("/green/search")
-    public ResponseEntity findProduct(@RequestParam("productName") String productName) {
+    @GetMapping("/search")
+    public ResponseEntity findProduct(@RequestParam("productName") String productName,
+                                      @RequestParam("page") int page,
+                                      @RequestParam("size") int size) {
 
         List<Product> Products = productService.findProducts(productName);
         SingleResponseDto response = new SingleResponseDto(Products);

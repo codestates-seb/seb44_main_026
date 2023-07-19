@@ -15,12 +15,12 @@ public class Challenge extends Auditable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(nullable = false)
-    private long ChallengeId;
+    private int ChallengeId;
 
     //@ManyToOne
     //@joinColumn
     @Column(nullable = false)
-    private long memberId;
+    private int memberId;
 
     @Column(nullable = false)
     private String title;

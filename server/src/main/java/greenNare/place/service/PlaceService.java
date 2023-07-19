@@ -29,8 +29,8 @@ public class PlaceService {
         /*
         String memberEmail = jwtTokenizer.getUsername(token)
         Member member = findByEmail(memberEmail)
-        Long id = member.getId()
-        Long point = member.getPoint()
+        int id = member.getId()
+        int point = member.getPoint()
         challenge.setMemberId(id);
          */
         /*
@@ -41,20 +41,20 @@ public class PlaceService {
                 //.memberId(1L)
                 .build();
          */
-        place.setMemberId(1L);
+        place.setMemberId(1);
         return placeRepository.save(place);
     }
 
     public List<Place> getPlaces() {
         return placeRepository.findAll();
     }
-    public void deletePlace(long placeId){//, String token) {
+    public void deletePlace(int placeId){//, String token) {
         /*
         String memberEmail = jwtTokenizer.getUsername(token)
         Member member = findByEmail(memberEmail)
-        Long id = member.getId()
+        int id = member.getId()
          */
-        long memberId = 1L;
+        int memberId = 1;
         validateWriter(memberId, placeId);
 
         Optional<Place> findPlace = placeRepository.findById(placeId);
@@ -67,7 +67,7 @@ public class PlaceService {
         boolean exist = placeRepository.findByLatAndLongi(lat, longi).isPresent();
         if (exist) throw new BusinessLogicException(ExceptionCode.PLACE_EXIST);
     }
-    public void validateWriter(long memberId, long placeId) {
+    public void validateWriter(int memberId, int placeId) {
         Optional<Place> place = placeRepository.findById(placeId);
         if(memberId != place.get().getMemberId()){
             throw new BusinessLogicException(ExceptionCode.WRITER_NOT_MATCHED);

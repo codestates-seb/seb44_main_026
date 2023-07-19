@@ -89,7 +89,7 @@ public class PlaceControllerTest {
     @Test
     @DisplayName("delete place test")
     void deletePlaceTest() throws Exception {
-        long placeId = 1L;
+        int placeId = 1;
         // String token = "your-token";
 
         // Mock placeService.deletePlace 호출 시 아무 작업도 하지 않도록 설정

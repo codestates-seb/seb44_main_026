@@ -15,14 +15,14 @@ public class Reply extends Auditable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(nullable = false)
-    private long replyId;
+    private int replyId;
 
     //@ManyToOne
     @Column
-    private long memberId;
+    private int memberId;
     //@ManyToOne
     @Column
-    private long challengeId;
+    private int challengeId;
     @Column(nullable = false)
     private String content;
 }
