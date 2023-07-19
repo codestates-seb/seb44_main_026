@@ -4,6 +4,8 @@ import moment from 'moment';
 import 'moment/locale/ko';
 import API from '../../../api/index';
 import { type } from 'os';
+import { useState } from 'react';
+import EditComment from './EditComment';
 
 interface CommentProps {
   name: string;
@@ -20,6 +22,9 @@ const CommentBox: React.FC<CommentProps> = ({
   createdAt,
   id,
 }) => {
+  const [isEdit, setIsEdit] = useState(false);
+  const [comment, setComment] = useState(body);
+
   const deleteComment = async () => {
     try {
       const res = await API.DELETE({
@@ -34,18 +39,31 @@ const CommentBox: React.FC<CommentProps> = ({
 
   return (
     <DivContainer>
-      <InfoContainer>
-        <div className="member-name">{'🐥 ' + name}</div>
-        <div className="member-point">{'🏆 ' + point + '점'}</div>
-        <div className="comment-date">
-          {'⏱️ ' + moment(createdAt).fromNow()}
-        </div>
-        <div className="edit-button">수정</div>
-        <div className="del-button" onClick={deleteComment}>
-          삭제
-        </div>
-      </InfoContainer>
-      <BodyContainer>{body}</BodyContainer>
+      {isEdit ? (
+        <EditComment
+          setnewComment={setComment}
+          newComment={comment}
+          id={id}
+          setIsEdit={setIsEdit}
+        />
+      ) : (
+        <>
+          <InfoContainer>
+            <div className="member-name">{'🐥 ' + name}</div>
+            <div className="member-point">{'🏆 ' + point + '점'}</div>
+            <div className="comment-date">
+              {'⏱️ ' + moment(createdAt).fromNow()}
+            </div>
+            <div className="edit-button" onClick={() => setIsEdit(true)}>
+              수정
+            </div>
+            <div className="del-button" onClick={deleteComment}>
+              삭제
+            </div>
+          </InfoContainer>
+          <BodyContainer>{body}</BodyContainer>
+        </>
+      )}
     </DivContainer>
   );
 };

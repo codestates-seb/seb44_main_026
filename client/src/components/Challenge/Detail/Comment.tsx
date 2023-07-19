@@ -11,6 +11,7 @@ interface InputItemProps {
 const InputItem: React.FC<InputItemProps> = ({ setComment, value }) => {
   const id = useParams().id;
   const [loading, setloading] = useState(false);
+
   const textHandler = (e: React.FormEvent<HTMLInputElement>) => {
     setComment(e.currentTarget.value);
   };

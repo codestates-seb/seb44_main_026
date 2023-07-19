@@ -102,7 +102,7 @@ const ChallengeDetail = () => {
           <CommentContainer>
             <CommentTitle>참여 댓글 {commentCount}개</CommentTitle>
             <InputItem setComment={setComment} value={comment} />
-            {commentList.map((item: any, index: any) => (
+            {dummyComment.map((item: any, index: any) => (
               <CommentBox
                 name={item.memberId}
                 id={item.replyId}
