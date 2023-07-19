@@ -44,7 +44,7 @@ public class MemberDto {
         private String email;
         private String name;
 
-        private int pont;
+        private int point;
     }
 
 
