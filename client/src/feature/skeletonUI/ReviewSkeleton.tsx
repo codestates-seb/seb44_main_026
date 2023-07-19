@@ -13,9 +13,7 @@ export const ReviewSkeleton = () => {
         </UserInfo>
       </div>
 
-      <ContentWrapper>
-        <Skeleton className="content"></Skeleton>
-      </ContentWrapper>
+      <Skeleton className="content"></Skeleton>
     </ReviewWrapper>
   );
 };
@@ -34,6 +32,12 @@ const ReviewWrapper = styled.li`
     display: flex;
     align-items: center;
     justify-content: space-between;
+  }
+
+  .content {
+    margin-top: 0.5rem;
+    width: 80%;
+    height: 2rem;
   }
 `;
 
@@ -56,15 +60,5 @@ const UserInfo = styled.div`
   .reviewDate {
     width: 7rem;
     margin-right: 1rem;
-  }
-`;
-
-const ContentWrapper = styled.div`
-  display: flex;
-  align-items: center;
-  margin: 0.5rem 0;
-
-  .content {
-    width: 100%;
   }
 `;

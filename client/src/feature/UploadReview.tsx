@@ -118,7 +118,7 @@ export const UploadReview = ({
   const submitReviewHandler = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    if (!review) {
+    if (!review || !review.replace(/\n/g, '')) {
       return setErrorMessage('내용을 작성해 주세요!');
     } else {
       setErrorMessage('');
