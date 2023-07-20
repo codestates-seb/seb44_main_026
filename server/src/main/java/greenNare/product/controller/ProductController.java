@@ -2,8 +2,8 @@ package greenNare.product.controller;
 
 
 import greenNare.Response.MultiResponseDto;
-import greenNare.Response.PageInfo;
 import greenNare.Response.SingleResponseDto;
+import greenNare.product.dto.GetProductWithImageDto;
 import greenNare.product.entity.Product;
 import greenNare.product.mapper.ProductMapper;
 import greenNare.product.service.ProductService;
@@ -12,8 +12,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 @RestController
@@ -38,10 +36,9 @@ public class ProductController {
                                       @RequestParam("size") int size,
                                       @RequestParam("category") String category){
 
-        Page<Product> getProducts = productService.getProducts(page-1, size, category);
-        List<Product> responseProducts = getProducts.getContent();
-        MultiResponseDto response = new MultiResponseDto(responseProducts,
-                getProducts);
+        Page<Product> getProducts = productService.getProducts(page, size, category);
+        List<GetProductWithImageDto> responseProducts = productService.getProductWithImage(getProducts);
+        MultiResponseDto response = new MultiResponseDto(responseProducts, getProducts);
 
 
 
@@ -51,6 +48,7 @@ public class ProductController {
     @GetMapping("/{productId}")
     public ResponseEntity getProduct(@PathVariable("productId") int productId) {
         Product productDetails = productService.getProduct(productId);
+
         SingleResponseDto response = new SingleResponseDto(productDetails);
 
         return new ResponseEntity(response, HttpStatus.OK);

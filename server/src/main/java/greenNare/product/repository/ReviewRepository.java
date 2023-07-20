@@ -1,12 +1,9 @@
 package greenNare.product.repository;
 
-import greenNare.Response.SingleResponseDto;
-import greenNare.product.dto.GetReviewsResultDto;
 import greenNare.product.entity.Review;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
 
 import java.util.Optional;
 
@@ -20,4 +17,7 @@ public interface ReviewRepository extends JpaRepository<Review, Integer> {
     Page<Review> findByProductProductId(Pageable pageable, int productId);
 
     Optional<Review> findByMemberMemberIdAndProductProductId(int memberId, int productId);
+
+    //DataLoder
+    Review findById(int id);
 }

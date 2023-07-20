@@ -4,6 +4,8 @@ import lombok.Getter;
 
 public enum ExceptionCode {
     MEMBER_EXIST(409, "이미 등록된 회원입니다"),
+    PRODUCT_EXIST(409, "이미 등록된 상품입니다"),
+    PRODUCT_NOT_FOUND(404, "등록되지 않은 상품입니다"),
     REVIEW_EXIST(409, "이미 등록된 리뷰가 존재합니다."),
     REVIEW_NOT_FOUND(404, "존재하지 않는 리뷰입니다"),
     PLACE_EXIST(409, "이미 등록된 장소입니다."),

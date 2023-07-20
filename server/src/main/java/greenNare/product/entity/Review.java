@@ -25,14 +25,14 @@ public class Review {
     @JoinColumn(name = "productId")
     private Product product;
 
-    //@Column(nullable = false)
+    @Column(nullable = false)
     private String context;
     private LocalDateTime createdAt;
 
-    private LocalDateTime modifiedAt;
+    private LocalDateTime updatedAt;
 
-//    @OneToMany(mappedBy = "review")
-//    private List<Image> imageLinks;
+    @OneToMany(mappedBy = "review")
+    private List<Image> imageLinks;
 
     @PrePersist
     public void prePersist() {

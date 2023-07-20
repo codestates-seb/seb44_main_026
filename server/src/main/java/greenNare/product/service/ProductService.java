@@ -1,20 +1,29 @@
 package greenNare.product.service;
 
 
+import greenNare.exception.BusinessLogicException;
+import greenNare.exception.ExceptionCode;
+import greenNare.product.dto.GetProductWithImageDto;
+import greenNare.product.entity.Image;
 import greenNare.product.entity.Product;
+import greenNare.product.repository.ImageRepository;
 import greenNare.product.repository.ProductRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class ProductService {
     private ProductRepository productRepository;
+    private ImageRepository imageRepository;
 
-    public ProductService (ProductRepository productRepository) {
+    public ProductService (ProductRepository productRepository,
+                           ImageRepository imageRepository) {
         this.productRepository = productRepository;
+        this.imageRepository = imageRepository;
     }
 
     public Page<Product> getProducts(int page, int size, String category) {
@@ -29,11 +38,58 @@ public class ProductService {
             return products;
         }
 
+
+    }
+
+    public List<GetProductWithImageDto> getProductWithImage(Page<Product> products) {
+        List<GetProductWithImageDto> getProductWithImageDtos = products.getContent().stream()
+                .map(product -> {
+                    List<Image> images = imageRepository.findImagesUriByProductProductId(product.getProductId());
+                    List<String> imageLinks = images.stream()
+                            .map(image -> image.getImageUri())
+                            .collect(Collectors.toList());
+//                    Image image = imageRepository.findImageUriByProductProductId(product.getProductId());
+//                    String imageLink = image.getImageUri();
+
+                    GetProductWithImageDto resultDto = new GetProductWithImageDto(
+                            product.getProductId(),
+                            product.getProductName(),
+                            product.getPrice(),
+                            product.getPoint(),
+                            imageLinks
+//                            imageLink
+                    );
+
+                    return resultDto;
+                })
+                .collect(Collectors.toList());
+
+        return getProductWithImageDtos;
+
     }
 
     public Product getProduct(int productId) {
-        Product productDetails = productRepository.findByProductId(productId);
+        Product productDetails = productRepository.findById(productId)
+                .orElseThrow(() -> new BusinessLogicException(ExceptionCode.PRODUCT_NOT_FOUND));
         return productDetails;
+    }
+
+    public GetProductWithImageDto getProductWithImage(int productId) {
+        Product productDetails = getProduct(productId); //productRepository.findById(productId);
+        List<Image> images = imageRepository.findImagesUriByProductProductId(productDetails.getProductId());
+        List<String> imageLinks = images.stream()
+                .map(image -> image.getImageUri())
+                .collect(Collectors.toList());
+//        String imageLink = imageRepository.findImageUriByProductProductId(productId).getImageUri();
+        GetProductWithImageDto resultDto = new GetProductWithImageDto(
+                productDetails.getProductId(),
+                productDetails.getProductName(),
+                productDetails.getPrice(),
+                productDetails.getPoint(),
+                            imageLinks
+//                imageLink
+        );
+        return resultDto;
     }
 
     public List<Product> findProducts(String productName) {
