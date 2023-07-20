@@ -1,11 +1,16 @@
 import ChallengeList from 'components/Challenge/ChallengeList';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { styled } from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 import { Nav } from 'components/Nav';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowUp } from '@fortawesome/free-solid-svg-icons';
+import { useSetAtom } from 'jotai';
+import { isShopAtom } from 'jotai/atom';
+
 const ChallengePage = () => {
+  const setIsShop = useSetAtom(isShopAtom);
+
   const navigate = useNavigate();
   const gotoWrite = () => {
     navigate('/challenge/write');
@@ -16,6 +21,11 @@ const ChallengePage = () => {
       behavior: 'smooth',
     });
   };
+
+  useEffect(() => {
+    setIsShop(false);
+  }, []);
+
   return (
     <>
       <Nav />

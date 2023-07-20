@@ -1,18 +1,26 @@
 import AutoSlide from 'components/AdSlide/AutoSlide';
 import MainSlide from 'components/MainSlide/MainSlide';
-import React from 'react';
+import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowUp } from '@fortawesome/free-solid-svg-icons';
 import { Nav } from 'components/Nav';
+import { useSetAtom } from 'jotai';
+import { isShopAtom } from 'jotai/atom';
 
 const MainPage = () => {
+  const setIsShop = useSetAtom(isShopAtom);
+
   const scrollToTop = () => {
     window.scrollTo({
       top: 0,
       behavior: 'smooth',
     });
   };
+
+  useEffect(() => {
+    setIsShop(true);
+  }, []);
   return (
     <>
       <Nav />
