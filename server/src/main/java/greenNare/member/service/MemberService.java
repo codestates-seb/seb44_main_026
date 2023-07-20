@@ -11,6 +11,7 @@ import greenNare.product.entity.Product;
 import greenNare.product.repository.ImageRepository;
 import greenNare.product.service.ProductService;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import javax.imageio.ImageReader;
@@ -116,8 +117,15 @@ public class MemberService {
         member.setPoint(point);
         memberRepository.save(member);
     }
-//    public List<GetProductWithImageDto> getLikeProducts(Page<Product> products) {
-//        return productService.getProductWithImage(products);
+
+//    public Page<Product> getLikeProduts(int memberId, PageRequest pageable) {
+//
 //
 //    }
+
+    public List<GetProductWithImageDto> getLikeProductsWithImage(Page<Product> products) {
+        return productService.getProductWithImage(products);
+
+    }
 }
+
