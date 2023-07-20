@@ -5,8 +5,6 @@ import { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import API from '../api/index';
 import { Link, useNavigate } from 'react-router-dom';
-import { useAtom } from 'jotai';
-import { AccessTokenAtom } from 'jotai/atom';
 declare global {
   interface Window {
     kakao: any;
@@ -71,7 +69,6 @@ export const AddMap = () => {
   const [lat, setLat] = useState(0); // 위도 상태 변수
   const [longi, setLongi] = useState(0); // 경도 상태 변수
   const [PlaceId, setPlaceId] = useState(0);
-  const [loginAccToken, setLoginAccToken] = useAtom(AccessTokenAtom); // 토큰
   const accessToken = localStorage.getItem('accessToken');
   const handleChangeValue = (e: React.ChangeEvent<HTMLInputElement>) => {
     setAddress(e.target.value);
