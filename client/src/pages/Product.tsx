@@ -52,7 +52,7 @@ export const Product = () => {
     else if (filter === 'hygiene') id = 6;
 
     axios
-      .get(`https://jsonplaceholder.typicode.com/photos?albumId=${id}`)
+      .get('url')
       .then((res) => {
         // setItemList(res.data.slice(0, 10));
         const itemlist = res.data.map((item: ItemType) => {
