@@ -5,6 +5,7 @@ import axios from 'axios';
 import { faCloudArrowUp } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import API from '../api/index';
+import { ReviewModal } from './ReviewModal';
 
 interface UploadReviewProps {
   id: number;
@@ -21,10 +22,15 @@ export const UploadReview = ({
   memberId,
   content,
 }: UploadReviewProps) => {
+  //리뷰 작성
   const [review, setReview] = useState(content || '');
   const [imageFiles, setImageFiles] = useState([]);
   const [preview, setPreview] = useState([]);
   const [errorMessage, setErrorMessage] = useState('');
+  //모달
+  const [isOpen, setIsOpen] = useState(false);
+  const [isAlert, setIsAlert] = useState(true);
+  const [modalContent, setModalContent] = useState('');
 
   const postReview = async (formData: FormData) => {
     // formData값 확인
@@ -47,18 +53,27 @@ export const UploadReview = ({
       setPreview([]);
 
       if (res.data.exceptionCode === 'REVIEW_EXIST') {
-        alert('이미 등록한 리뷰가 존재합니다.');
+        setModalContent('이미 등록한 리뷰가 존재합니다.');
+        setIsAlert(true);
+        setIsOpen(true);
+      } else {
+        setModalContent('리뷰가 등록되었습니다.');
+        setIsAlert(true);
+        setIsOpen(true);
       }
-
-      location.reload();
 
       console.log('review post');
       console.log(res.data);
     } catch (err) {
       console.log('review post err');
       console.log(err);
+
+      setModalContent('리뷰 등록에 실패하였습니다.');
+      setIsAlert(true);
+      setIsOpen(true);
     }
   };
+
   const patchReview = async (formData: FormData) => {
     // formData값 확인
     for (const [key, value] of formData.entries()) {
@@ -74,14 +89,20 @@ export const UploadReview = ({
           'Content-Type': 'multipart/form-data',
         },
       });
-      setIsEdit(false);
-      location.reload();
+
+      setModalContent('리뷰가 수정되었습니다.');
+      setIsAlert(true);
+      setIsOpen(true);
 
       console.log('review patch');
       console.log(res.data);
     } catch (err) {
       console.log('review patch err');
       console.log(err);
+
+      setModalContent('리뷰 수정에 실패하였습니다.');
+      setIsAlert(true);
+      setIsOpen(true);
     }
   };
 
@@ -130,50 +151,14 @@ export const UploadReview = ({
 
     if (isEdit) {
       return patchReview(formData);
-      // return axios
-      //   .patch(`/green/review/${id}`, formData, {
-      //     headers: {
-      //       // Authorization: accessToken,
-      //       // 'Content-Type': 'multipart/form-data',
-      //     },
-      //   })
-      //   .then((res) => {
-      //     // 성공
-      //     console.log(res.data);
-      //   })
-      //   .catch((err) => {
-      //     console.log(err);
-      //     console.log('edit');
-      //     // formData값 확인
-      //     for (const [key, value] of formData.entries()) {
-      //       console.log(key, value);
-      //     }
-      //     console.log(memberId);
-      //   });
     } else {
       return postReview(formData);
-      // return axios
-      //   .post(`/green/review/${id}`, formData, {
-      //     headers: {
-      //       // Authorization: accessToken,
-      //       // 'Content-Type': 'multipart/form-data',
-      //     },
-      //   })
-      //   .then((res) => {
-      //     // 성공
-      //     console.log(res.data);
-      //   })
-      //   .catch((err) => {
-      //     console.log(err);
-
-      //     console.log('upload');
-      //     // formData값 확인
-      //     for (const [key, value] of formData.entries()) {
-      //       console.log(key, value);
-      //     }
-      //     console.log(memberId);
-      //   });
     }
+  };
+
+  const handleClose = () => {
+    setIsOpen(false);
+    // location.reload();
   };
 
   useEffect(() => {
@@ -184,6 +169,13 @@ export const UploadReview = ({
 
   return (
     <>
+      {isOpen ? (
+        <ReviewModal
+          isAlert={isAlert}
+          content={modalContent}
+          onClose={handleClose}
+        />
+      ) : null}
       <Form onSubmit={submitReviewHandler}>
         <InputWrapper>
           <Input

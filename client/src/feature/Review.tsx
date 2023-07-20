@@ -4,13 +4,14 @@ import { UploadReview } from './UploadReview';
 import moment from 'moment';
 import 'moment/locale/ko';
 import API from '../api/index';
+import { ReviewModal } from './ReviewModal';
 
 interface ReviewProps {
   id: number;
 
   context: string;
   createdAt: string;
-  image?: string;
+  image?: string[];
   name: string;
   point: number;
 }
@@ -24,30 +25,62 @@ export const Review = ({
   point,
 }: ReviewProps) => {
   const [isEdit, setIsEdit] = useState(false);
-
+  //모달
+  const [isOpen, setIsOpen] = useState(false);
+  const [isAlert, setIsAlert] = useState(true);
+  const [modalContent, setModalContent] = useState('');
   // 임시
-  const username = 'name0';
+  const username = 'name1';
 
   const onDeleteReview = () => {
-    deleteReview();
+    setModalContent('정말 삭제하시겠습니까?');
+    setIsAlert(false);
+    setIsOpen(true);
   };
 
   const deleteReview = async () => {
     try {
       const res = await API.DELETE({
         url: `http://greennarealb-281283380.ap-northeast-2.elb.amazonaws.com/green/review/${id}`,
-        // data: reviewId,
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
       });
       console.log('delete review');
       console.log(res.data);
+
+      setModalContent('리뷰가 삭제되었습니다.');
+      setIsAlert(true);
+      setIsOpen(true);
     } catch (err) {
       console.log('delete review err');
       console.log(err);
+
+      setModalContent('리뷰 삭제에 실패하였습니다.');
+      setIsAlert(true);
+      setIsOpen(true);
     }
+  };
+
+  const handleConfirm = () => {
+    setIsOpen(false);
+    deleteReview();
+    location.reload();
+  };
+  const handleClose = () => {
+    setIsOpen(false);
   };
 
   return (
     <ReviewWrapper>
+      {isOpen ? (
+        <ReviewModal
+          isAlert={isAlert}
+          content={modalContent}
+          onConfirm={handleConfirm}
+          onClose={handleClose}
+        />
+      ) : null}
       <div className="userInfoWrapper">
         <UserInfo>
           <div className="userName">{`🐥 ${name}`}</div>

@@ -17,9 +17,12 @@ interface ImageProps {
 }
 
 interface ReviewType {
+  reviewId: number;
   context: string;
   createdAt: string;
-  image?: string;
+  updateId: number;
+  productId: number;
+  image?: string[];
   name: string;
   point: number;
 }
@@ -30,14 +33,14 @@ export const ItemDetail = () => {
 
   const setIsShop = useSetAtom(isShopAtom);
   const [currentItem, setCurrentItem] = useState({
+    category: '',
+    imageLink: '',
+    point: 0,
+    price: 0,
     productId: 0,
     productName: '',
     detail: '',
-    price: 0,
-    point: 0,
-    category: '',
     storeLink: '',
-    imageLink: '',
     heart: false,
   });
 
@@ -55,22 +58,10 @@ export const ItemDetail = () => {
       );
 
       const Reviews = res.data;
-      // setReviewList(Reviews.data);
-
-      //추후 수정
-      const mapReviews = Reviews.data.map((review: any) => {
-        return {
-          context: review.context,
-          createdAt: review.createdAt,
-          image: review.image,
-          name: review.member.name,
-          point: review.member.point,
-        };
-      });
-      setReviewList(mapReviews);
-
+      setReviewList(Reviews.data);
       setTotalPages(Reviews.pageInfo.totalPages);
       setIsLoding(false);
+
       console.log('review');
       console.log(res?.data);
     } catch (err) {
@@ -98,21 +89,6 @@ export const ItemDetail = () => {
     getItemDetail();
     getReview();
     setIsShop(true);
-
-    // const id = location.id;
-    // axios
-    //   .get(
-    //     `http://greennarealb-281283380.ap-northeast-2.elb.amazonaws.com/green/${id}`,
-    //   )
-    //   .then((res) => {
-    //     console.log(res.data.data);
-
-    //     const itemDetail = res.data;
-    //     setCurrentItem(itemDetail.data);
-    //   })
-    //   .catch((err) => {
-    //     console.log(err);
-    //   });
   }, [currentPage]);
 
   return (
@@ -152,7 +128,7 @@ export const ItemDetail = () => {
         </div>
         {/* 리뷰 표시 */}
         <div className="reviewWrapper">
-          리뷰 2개
+          리뷰 {reviewList.length}개
           <FormWrapper>
             <UploadReview id={currentItem.productId} />
           </FormWrapper>
