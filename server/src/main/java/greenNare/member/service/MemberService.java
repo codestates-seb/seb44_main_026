@@ -89,7 +89,7 @@ public class MemberService {
     private void verifyExistsEmail(String email) {
         Optional<Member> member = memberRepository.findByEmail(email);
         if (member.isPresent())
-            throw new BusinessLogicException(ExceptionCode.MEMBER_NOT_FOUND);   //ExceptionCode.MEMBER_NOT_FOUND -> ExceptionCode.MEMBER_EXIST
+            throw new BusinessLogicException(ExceptionCode.MEMBER_NOT_FOUND);
     }
 
     public Member findMemberByEmail(String email) {
@@ -99,7 +99,7 @@ public class MemberService {
     }
     public Member findMemberById(int memberId) {
         return memberRepository.findById(memberId)
-                .orElseThrow(()-> new BusinessLogicException(ExceptionCode.MEMBER_EXIST));
+                .orElseThrow(()-> new BusinessLogicException(ExceptionCode.MEMBER_NOT_FOUND));
     }
 
     public void addPoint(int memberId) {
@@ -127,6 +127,5 @@ public class MemberService {
         return productService.getProductWithImage(products);
 
     }
-
-
 }
+

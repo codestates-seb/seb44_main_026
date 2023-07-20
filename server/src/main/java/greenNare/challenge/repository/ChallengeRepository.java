@@ -2,6 +2,7 @@ package greenNare.challenge.repository;
 
 import greenNare.challenge.dto.ChallengeDto;
 import greenNare.challenge.entity.Challenge;
+import greenNare.reply.entity.Reply;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;

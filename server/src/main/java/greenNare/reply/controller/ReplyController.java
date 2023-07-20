@@ -40,9 +40,10 @@ public class ReplyController {
     // 댓글 조회
     @GetMapping("/reply/{challengeId}")
     public ResponseEntity getReply(@PathVariable int challengeId,
-                                   Pageable pageable) {
-        //Sort sort = Sort.by(Sort.Direction.DESC, "memberId");
-        //Pageable pageable = PageRequest.of(page, size, sort);
+                                   Pageable pageablePageSize) {
+        Sort sort = Sort.by(Sort.Direction.DESC, "createdAt"); // challengeId를 내림차순으로 정렬하는 Sort 객체 생성
+        Pageable pageable = PageRequest.of(pageablePageSize.getPageNumber(), pageablePageSize.getPageSize(), sort);
+
 
         List<ReplyDto.Response> replyList = replyService.getReplys(challengeId, pageable);
         Page<Reply> replyPage = replyService.getReplyPage(challengeId, pageable);

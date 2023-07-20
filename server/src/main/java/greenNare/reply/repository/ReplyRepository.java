@@ -11,4 +11,5 @@ import java.util.List;
 @Repository
 public interface ReplyRepository extends JpaRepository<Reply, Integer> {
     Page<Reply> findByChallengeId(int challengeId, Pageable pageable);
+    List<Reply> findByChallengeId(int challengeId);
 }

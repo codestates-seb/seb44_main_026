@@ -37,7 +37,7 @@ public class ChallengeDto {
     @Getter
     @Builder
     public static class Response {
-        private long challengeId;
+        private int challengeId;
         private int memberId;
         @NotBlank
         private String title;
@@ -50,6 +50,7 @@ public class ChallengeDto {
 
         private String name;
         private int point;
+        private int countReply;
 
         public void setName(String name) {
             this.name = name;
@@ -57,6 +58,8 @@ public class ChallengeDto {
         public void setPoint(int point) {
             this.point = point;
         }
+        public void setCountReply(int countReply) {this.countReply = countReply;}
+
         public static Response from(Challenge challenge) {
             return Response.builder()
                     .challengeId(challenge.getChallengeId())
@@ -79,6 +82,7 @@ public class ChallengeDto {
         private String title;
         private String name;
         private int point;
+        private int countReply;
         private LocalDateTime createdAt;
         private LocalDateTime updatedAt;
 
@@ -88,6 +92,7 @@ public class ChallengeDto {
         public void setPoint(int point) {
             this.point = point;
         }
+        public void setCountReply(int countReply) {this.countReply = countReply;}
 
         public static PageResponse from(Challenge challenge) {
             return PageResponse.builder()

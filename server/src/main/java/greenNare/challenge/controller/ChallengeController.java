@@ -13,7 +13,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -46,8 +48,9 @@ public class ChallengeController {
     }
 
     @GetMapping("/challenge") // 챌린지 전체 조회
-    public ResponseEntity getChallenges(final Pageable pageable) {
-        //Page<Object[]> response = challengeService.getAllChallengeWithUsername(pageable);
+    public ResponseEntity getChallenges(final Pageable pageablePageSize) {
+        Sort sort = Sort.by(Sort.Direction.DESC, "createdAt"); // challengeId를 내림차순으로 정렬하는 Sort 객체 생성
+        Pageable pageable = PageRequest.of(pageablePageSize.getPageNumber(), pageablePageSize.getPageSize(), sort);
         Page<Challenge> challengePage = challengeService.getChallengesPage(pageable);
         List<ChallengeDto.PageResponse> response = challengeService.getChallenges(pageable);
         log.info("!!!! getChallenges 완료");
@@ -107,4 +110,10 @@ public class ChallengeController {
         challengeService.deleteChallenge(challengeId, token);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
+    @GetMapping("/images/{imageFileName}") // image
+    public Resource showImage(@PathVariable String imageFileName) throws MalformedURLException {
+        //return new UrlResource("file:" + "/home/ssm-user/seb44_main_026" + imageFileName);
+        return new UrlResource("file:" + System.getProperty("user.dir") + "/images/" + imageFileName);
+    }
+
 }

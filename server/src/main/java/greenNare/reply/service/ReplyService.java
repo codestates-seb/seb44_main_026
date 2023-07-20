@@ -26,13 +26,11 @@ import java.util.stream.Collectors;
 public class ReplyService {
     private final ReplyRepository replyRepository;
     private final MemberService memberService;
-    private final ChallengeService challengeService;
     private final JwtTokenizer jwtTokenizer;
 
-    public ReplyService(ReplyRepository replyRepository, MemberService memberService, ChallengeService challengeService, JwtTokenizer jwtTokenizer) {
+    public ReplyService(ReplyRepository replyRepository, MemberService memberService, JwtTokenizer jwtTokenizer) {
         this.replyRepository = replyRepository;
         this.memberService = memberService;
-        this.challengeService = challengeService;
         this.jwtTokenizer = jwtTokenizer;
     }
 
@@ -48,7 +46,7 @@ public class ReplyService {
     }
 
     public ReplyDto.Response createReply(Reply reply, int challengeId, String token) {
-        validateChallenge(challengeId);
+        //validateChallenge(challengeId);
 
         int memberId = jwtTokenizer.getMemberId(token);
 
@@ -92,9 +90,11 @@ public class ReplyService {
             throw new BusinessLogicException(ExceptionCode.REPLY_WRITER_NOT_MATCHED);
         }
     }
+    /*
     public void validateChallenge(int challengeId){
         challengeService.findVerifideChallenge(challengeId);
-    }
+    }*/
+
     public Page<Reply> getReplyPage(int challengeId, Pageable pageable) {
         Page<Reply> replyPage = replyRepository.findByChallengeId(challengeId, pageable);
         return replyPage;
@@ -107,5 +107,10 @@ public class ReplyService {
     public int findPoint(int memberId) {
         Member member = memberService.findMemberById(memberId);
         return member.getPoint();
+    }
+
+    public int countChallenge(int challengeId){
+        log.info("challenge 댓글 수: {}",(int) replyRepository.findByChallengeId(challengeId).stream().count());
+        return (int) replyRepository.findByChallengeId(challengeId).stream().count();
     }
 }
