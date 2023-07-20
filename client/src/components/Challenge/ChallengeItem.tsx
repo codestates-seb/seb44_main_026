@@ -14,10 +14,7 @@ const ChallengeItem: React.FC<ItemProps> = ({ item }) => {
   };
   return (
     <ItemWrapper onClick={gotoDetail}>
-      <div className="challenge">
-        {'🌱 ' + item.challengeId + '. '}
-        {item.title}
-      </div>
+      <div className="challenge">{'🌱 ' + item.title}</div>
       <WriterContainer>{item.name}</WriterContainer>
       <CountContainer>n명 참여중</CountContainer>
     </ItemWrapper>
