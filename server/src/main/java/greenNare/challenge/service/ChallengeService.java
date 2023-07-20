@@ -33,7 +33,7 @@ public class ChallengeService {
     private final SecurityConfiguration securityConfiguration;
     private final JwtTokenizer jwtTokenizer;
 
-    public static final String IMAGE_SAVE_URL = "\\src\\main\\resources\\static\\images";
+    public static final String IMAGE_SAVE_URL = "/src/main/resources/static/images";
     public static final String SEPERATOR  = "_";
 
     public ChallengeService(ChallengeRepository challengeRepository, MemberService memberService, SecurityConfiguration securityConfiguration, JwtTokenizer jwtTokenizer) {
