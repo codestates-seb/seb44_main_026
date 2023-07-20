@@ -32,7 +32,7 @@ export const Review = ({
 
   const accessToken = localStorage.getItem('accessToken');
   // 임시
-  const username = 'qweqwe';
+  const username = 'name1';
 
   const onDeleteReview = () => {
     setModalContent('정말 삭제하시겠습니까?');
