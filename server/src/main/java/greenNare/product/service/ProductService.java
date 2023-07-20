@@ -55,6 +55,7 @@ public class ProductService {
                             product.getProductId(),
                             product.getProductName(),
                             product.getPrice(),
+                            product.getCategory(),
                             product.getPoint(),
                             imageLinks
 //                            imageLink
@@ -85,6 +86,7 @@ public class ProductService {
                 productDetails.getProductId(),
                 productDetails.getProductName(),
                 productDetails.getPrice(),
+                productDetails.getCategory(),
                 productDetails.getPoint(),
                             imageLinks
 //                imageLink

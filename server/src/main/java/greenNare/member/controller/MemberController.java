@@ -70,5 +70,12 @@ import javax.validation.constraints.Positive;
                 new SingleResponseDto<>(mapper.memberToMemberResponse(member))
                 , HttpStatus.OK);
     }
+
+    @GetMapping("/like")
+    public ResponseEntity getLikeProduct(@RequestHeader(value = "Authorization", required = false) String token) {
+
+
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
 }
 
