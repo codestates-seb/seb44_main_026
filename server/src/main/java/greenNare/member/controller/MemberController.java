@@ -1,6 +1,6 @@
 package greenNare.member.controller;
 
-
+import greenNare.auth.jwt.JwtTokenizer;
 
 import greenNare.Response.SingleResponseDto;
 import greenNare.member.entity.Member;
@@ -14,25 +14,21 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import javax.validation.constraints.Positive;
 
-@RestController
-@RequestMapping("/user")
-
-
+   @RestController
+   @RequestMapping("/user")
     public class MemberController {
     private final MemberMapper mapper;
     private final MemberService memberService;
+    private final JwtTokenizer jwtTokenizer;
 
-    public MemberController(MemberMapper mapper, MemberService memberService) {
+    public MemberController(MemberMapper mapper, MemberService memberService, JwtTokenizer jwtTokenizer) {
         this.mapper = mapper;
         this.memberService = memberService;
+        this.jwtTokenizer = jwtTokenizer;
     }
 
-    @GetMapping
-    public ResponseEntity getMember() {
-        System.out.println("# get Member");
 
-        return new ResponseEntity<>(HttpStatus.OK);
-    }
+
 
 
    //회원가입
@@ -50,7 +46,7 @@ import javax.validation.constraints.Positive;
     //회원정보수정
     @PatchMapping("/info")
     public ResponseEntity patchMember(
-            @PathVariable() @Positive long memberId,
+            @PathVariable() @Positive int memberId,
             @Valid @RequestBody MemberDto.Patch requestBody,
             @RequestHeader(value = "Authorization", required = false) String token) {
 
@@ -64,13 +60,15 @@ import javax.validation.constraints.Positive;
 
     //회원 등록 정보 조회
     @GetMapping("/info")
-    public ResponseEntity getMember(@PathVariable @Positive int memberId) {
+    public ResponseEntity<?>getMemberInfoById(@RequestHeader("Authorization") String token) {
+        int memberId = jwtTokenizer.getMemberId(token);
         Member member = memberService.findMember(memberId);
-        return new ResponseEntity<>(
-                new SingleResponseDto<>(mapper.memberToMemberResponse(member))
-                , HttpStatus.OK);
+        if (member == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Member not found");
+        }
+        return new ResponseEntity<>(new SingleResponseDto<>(mapper.memberToMemberResponse(member)), HttpStatus.OK);
+        // System.out.println("# get Member");
     }
-
     @GetMapping("/like")
     public ResponseEntity getLikeProduct(@RequestHeader(value = "Authorization", required = false) String token) {
 

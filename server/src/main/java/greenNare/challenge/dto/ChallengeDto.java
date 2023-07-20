@@ -38,7 +38,7 @@ public class ChallengeDto {
     @Builder
     public static class Response {
         private long challengeId;
-        private long memberId;
+        private int memberId;
         @NotBlank
         private String title;
         @NotBlank
