@@ -29,24 +29,24 @@ public class CartService {
 //        if(findExistLike(productId) == false) createLike(productId);
 //        else deleteLike(productId);
 //    }
-    public void createLike(/*String token*, */int productId) {
-        cartRepository.save(new Cart(memberService.findMember(1),productService.getProduct(productId)));
+    public void createLike(int memberId, int productId) {
+        cartRepository.save(new Cart(memberService.findMember(memberId),productService.getProduct(productId)));
     }
 
-    public void deleteLike(/*String token*, */int productId) {
-        cartRepository.delete(findCartProduct(productId));
+    public void deleteLike(int memberId, int productId) {
+        cartRepository.delete(findCartProduct(memberId, productId));
     }
 
-    public boolean findExistLike(/*String token*, */int productId) {
+    public boolean findExistLike(int memberId, int productId) {
         Optional<Cart> optionalLike = cartRepository.findByMemberMemberIdAndProductProductId(1, productId);
         boolean like = optionalLike.isPresent();
 
         return like;
     }
 
-    public Cart findCartProduct(/*String token*, */int productId) {
+    public Cart findCartProduct(int memberId, int productId) {
         Optional<Cart> optionalCart = cartRepository.findByMemberMemberIdAndProductProductId(
-                memberService.findMember(1).getMemberId(),
+                memberService.findMember(memberId).getMemberId(),
                 productService.getProduct(productId).getProductId());
         Cart findCart = optionalCart.orElseThrow(() -> new BusinessLogicException(ExceptionCode.PRODUCT_NOT_FOUND));
 
