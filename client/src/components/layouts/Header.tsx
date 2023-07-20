@@ -4,8 +4,9 @@ import logo from '../../assets/img/logo.png';
 import cart from '../../assets/img/cart.png';
 import user from '../../assets/img/user.png';
 // import { SearchBar } from '../../feature/SearchBar';
-import { useSetAtom } from 'jotai';
 import { isShopAtom } from 'jotai/atom';
+import { useSetAtom, useAtom } from 'jotai';
+import { AccessTokenAtom } from 'jotai/atom';
 
 const StyledHeaderContainer = styled.nav`
   display: flex;
@@ -70,6 +71,11 @@ const StyledSpan = styled.span`
 const StyledPadding = styled.div`
   padding-right: 7rem;
 `;
+
+const StyledIconLink = styled(Link)`
+  text-decoration: none;
+`;
+
 const BeforeLogin = () => {
   const navigation = useNavigate();
   const handleLogin = () => {
@@ -96,8 +102,13 @@ const AfterLogin = () => {
   return (
     <>
       <StyledPadding />
-      <StyledLoginLogo src={cart}></StyledLoginLogo>
-      <StyledLoginLogo src={user}></StyledLoginLogo>
+      <StyledIconLink to={'product/like'}>
+        <StyledLoginLogo src={cart}></StyledLoginLogo>
+      </StyledIconLink>
+      <StyledIconLink to={'mypage'}>
+        <StyledLoginLogo src={user}></StyledLoginLogo>
+      </StyledIconLink>
+
       <StyledButton onClick={handlelogout}>로그아웃</StyledButton>
     </>
   );
@@ -107,6 +118,8 @@ export const Header = () => {
   const isLogin = false; // 로그인 상태 구현전 임시 변수입니다.
   const setIsShop = useSetAtom(isShopAtom);
 
+  const [loginAccToken, setLoginAccToken] = useAtom(AccessTokenAtom); // Jotai atom 사용
+  console.log('토큰:', loginAccToken);
   return (
     <div>
       <StyledHeaderContainer>
@@ -123,7 +136,7 @@ export const Header = () => {
         </StyledChoicePage>
         <StyledNavContainer>
           {/* <SearchBar></SearchBar> */}
-          {isLogin ? <AfterLogin /> : <BeforeLogin />}
+          {loginAccToken ? <AfterLogin /> : <BeforeLogin />}
         </StyledNavContainer>
         {/* 로그인, 회원가입 버튼 자리*/}
       </StyledHeaderContainer>
