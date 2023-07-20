@@ -53,31 +53,48 @@ const StyledLink = styled(Link)`
 `;
 
 export const Map = () => {
-  const [content, setContent] = useState(''); // 가게 이름
-  const [latitude, setLatitude] = useState(0); // 위도 상태 변수
-  const [longitude, setLongitude] = useState(0); // 경도 상태 변수
+  const [mapDataArray, setMapDataArray] = useState<MapData[]>([]); // 지도 데이터 배열
   const [map, setMap] = useState(null); // 지도 상태
+
+  interface MapData {
+    placeName: string;
+    lat: number;
+    longi: number;
+  }
+
   const getMapData = async () => {
     try {
-      const res = await API.GET(
+      const response = await API.GET(
         'http://greennareALB-281283380.ap-northeast-2.elb.amazonaws.com/nare/map',
       );
-      console.log(res?.data);
-      if (res?.data?.length > 0) {
-        // 배열의 첫 번째 객체에 접근하여 값을 추출
-        const mapData = res.data[0];
-        setContent(mapData.placeName);
-        setLatitude(mapData.lat);
-        setLongitude(mapData.longi);
+      console.log(response?.data);
+      if (response?.data?.length > 0) {
+        // 배열 안의 모든 객체에 접근하여 값을 추출
+        setMapDataArray(response.data);
+      } else {
+        console.log('데이터가 비어있습니다.');
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
-        // 지도 생성 및 마커 추가
-        const mapContainer = document.getElementById('map');
-        const mapOption = {
-          center: new window.kakao.maps.LatLng(mapData.lat, mapData.longi),
-          level: 3,
-        };
-        const map = new window.kakao.maps.Map(mapContainer, mapOption);
+  useEffect(() => {
+    window.scrollTo(0, 0);
+    getMapData();
+  }, []);
 
+  useEffect(() => {
+    const mapContainer = document.getElementById('map');
+    const mapOption = {
+      center: new window.kakao.maps.LatLng(33.450701, 126.570667), // 기본 중심 좌표 설정
+      level: 3,
+    };
+    const map = new window.kakao.maps.Map(mapContainer, mapOption);
+
+    // 데이터가 있을 경우, 모든 마커 추가
+    if (mapDataArray.length > 0) {
+      mapDataArray.forEach((mapData) => {
         const markerPosition = new window.kakao.maps.LatLng(
           mapData.lat,
           mapData.longi,
@@ -100,17 +117,26 @@ export const Map = () => {
         });
 
         infowindow.open(map, marker);
-        setMap(map);
-      }
-    } catch (err) {
-      console.log(err);
-    }
-  };
+      });
 
-  useEffect(() => {
-    window.scrollTo(0, 0);
-    getMapData();
-  }, []);
+      // 데이터가 바뀔 때마다 마커들 중심으로 지도 업데이트
+      const centerPositions = mapDataArray.map((mapData) => ({
+        lat: mapData.lat,
+        lng: mapData.longi,
+      }));
+
+      // 지도를 데이터 마커들 중심으로 업데이트
+      const bounds = new window.kakao.maps.LatLngBounds();
+      centerPositions.forEach((position) => {
+        bounds.extend(new window.kakao.maps.LatLng(position.lat, position.lng));
+      });
+      map.setBounds(bounds);
+    } else {
+      console.log('데이터가 비어있습니다.');
+    }
+
+    setMap(map);
+  }, [mapDataArray]);
   return (
     <>
       <StyledNav>

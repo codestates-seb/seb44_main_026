@@ -53,11 +53,12 @@ export const AddMap = () => {
   const [map, setMap] = useState(null); // 지도 상태
   const [lat, setLat] = useState(0); // 위도 상태 변수
   const [longi, setLongi] = useState(0); // 경도 상태 변수
+
   const handleChangeValue = (e: React.ChangeEvent<HTMLInputElement>) => {
     setAddress(e.target.value);
   };
 
-  const PostMapData = async () => {
+  const PostMapData = async (lat: number, longi: number) => {
     try {
       const postData = {
         placeName: placeName, // 가게 이름
@@ -78,29 +79,45 @@ export const AddMap = () => {
       console.log('POST 요청 오류', err);
     }
   };
+  interface MapData {
+    placeId: number;
+  }
+  interface ID {
+    id: number;
+  }
+  const DeleteMapData = async () => {
+    try {
+      const response = await API.GET(
+        'http://greennarealb-281283380.ap-northeast-2.elb.amazonaws.com/nare/map',
+      );
+      if (response?.data?.length > 0) {
+        // 배열의 모든 객체에 접근하여 placeId 값을 추출
+        const placeIds = response.data.map(
+          (mapData: MapData) => mapData.placeId,
+        );
 
-  // const DeleteMapData = async () => {
-  //   try {
-  //     const deleteData = {
-  //       placeName: placeName, // 가게 이름
-  //       lat: lat, // 위도
-  //       longi: longi, // 경도
-  //     };
-  //     console.log('보낼 데이터:', deleteData);
+        // placeIds에는 배열 안의 모든 객체들의 placeId 값.
+        console.log('placeIds:', placeIds);
 
-  //     const response = await API.DELETE({
-  //       url: 'http://greennarealb-281283380.ap-northeast-2.elb.amazonaws.com/nare/map',
-  //       data: deleteData,
-  //       headers: {
-  //         // Authorization: 'Bearer 여러분의_액세스_토큰', // 필요한 헤더를 추가합니다.
-  //         'Content-Type': 'application/json', // 필요에 따라 content type을 설정합니다.
-  //       },
-  //     });
-  //     console.log('DELETE 요청 성공', response.data);
-  //   } catch (err) {
-  //     console.log('DELETE 요청 오류', err);
-  //   }
-  // };
+        // DeleteMapData 함수를 호출하여 placeIds 배열을 사용하여 순차적으로 삭제 요청 보내기
+        placeIds.map(async (id: ID) => {
+          try {
+            const deleteResponse = await API.DELETE({
+              url: `http://greennarealb-281283380.ap-northeast-2.elb.amazonaws.com/nare/map/${id}`,
+            });
+            console.log(`DELETE 요청 성공 - ID: ${id}`, deleteResponse.data);
+          } catch (error) {
+            console.log(`DELETE 요청 실패 - ID: ${id}`, error);
+          }
+        });
+      } else {
+        console.log('데이터가 비어있습니다.');
+      }
+      console.log('GET 요청 성공', response);
+    } catch (error) {
+      console.log('GET 요청 실패', error);
+    }
+  };
   const handlechangeregister = () => {
     const geocoder = new window.kakao.maps.services.Geocoder();
     geocoder.addressSearch(address, function (result: any, status: any) {
@@ -123,11 +140,13 @@ export const AddMap = () => {
         setLat(coords.getLat()); // 위도
         setLongi(coords.getLng()); // 경도
         // post 요청 보내기
-        PostMapData();
+        PostMapData(coords.getLat(), coords.getLng()); // coords.getLat()와 coords.getLng() 값을 전달
       }
     });
   };
-  // const handledeleteregister = () => {};
+  const handledeleteregister = () => {
+    DeleteMapData();
+  };
   useEffect(() => {
     const mapContainer = document.getElementById('map'); // 지도를 표시할 div
     const mapOption = {
@@ -156,8 +175,10 @@ export const AddMap = () => {
             <StyledPaddingBottom />
             <NewChallenge setContents={setPlaceName} contents={placeName} />
           </StyledPadding>
-          <GreenButton onClick={handlechangeregister}>등록</GreenButton>
-          {/* <GreenButton onClick={handledeleteregister}>삭제</GreenButton> */}
+          <div>
+            <GreenButton onClick={handlechangeregister}>등록</GreenButton>
+            <GreenButton onClick={handledeleteregister}>삭제</GreenButton>
+          </div>
         </StyledMapItem>
       </StyledMapContainer>
     </>
