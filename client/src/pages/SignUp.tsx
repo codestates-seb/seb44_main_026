@@ -5,9 +5,8 @@ import styled from 'styled-components';
 import logo from '../assets/img/logo.png';
 import { Modal } from 'feature/Modal';
 import { modalAtom } from 'jotai/atom';
-import axios from 'axios';
 import API from '../api/index';
-import { AxiosResponse, AxiosError } from 'axios';
+
 interface StyledChangeModal {
   modalOpen: boolean;
 }
@@ -95,7 +94,7 @@ export const SignUp = () => {
       };
 
       const response = await API.POST({
-        url: 'url',
+        url: 'http://greennareALB-281283380.ap-northeast-2.elb.amazonaws.com/user/join',
         headers: {
           'Content-Type': 'application/json',
         },

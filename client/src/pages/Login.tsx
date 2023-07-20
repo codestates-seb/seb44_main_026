@@ -1,7 +1,7 @@
 import { GreenButton } from 'feature/GreenButton';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { AxiosResponse, AxiosError } from 'axios';
 import { useAtom } from 'jotai';
 import { AccessTokenAtom, RefreshTokenAtom, UserIdAtom } from 'jotai/atom';
@@ -100,13 +100,22 @@ export const Login = () => {
   const navigate = useNavigate();
 
   const PostLogin = async () => {
+    interface UserData {
+      memberId: string;
+    }
+
+    interface LoginData {
+      accessToken: string;
+      refreshToken: string;
+      memberId: string;
+    }
     try {
       const postData = {
-        email: email, // 이메일
+        username: email, // 이메일
         password: password, // 비밀번호
       };
       const response = await API.POST({
-        url: 'url',
+        url: 'http://greennareALB-281283380.ap-northeast-2.elb.amazonaws.com/user/login',
         headers: {
           'Content-Type': 'application/json',
         },
@@ -123,24 +132,26 @@ export const Login = () => {
 
         const accessToken = authorizationHeader.split(' ')[1]; // Bearer 분리
 
-        const userData: UserData = response.data;
-        const { userId } = userData;
-        console.log(userId);
+        const userData = response.data;
+        console.log(userData);
+        const { memberId } = userData;
 
         // 토큰 저장
         localStorage.setItem('accessToken', accessToken);
         localStorage.setItem('refreshToken', refreshToken);
-        localStorage.setItem('userId', userId);
-
+        localStorage.setItem('userId', memberId);
+        console.log(accessToken);
+        console.log(memberId);
         // 상태 업데이트
         const loginData: LoginData = {
           accessToken,
           refreshToken,
-          userId,
+          memberId,
         };
         setLoginAccToken(loginData.accessToken);
         setLoginRefToken(loginData.refreshToken);
-        setLoginUserId(loginData.userId);
+        setLoginUserId(loginData.memberId);
+        console.log(loginAccToken);
         // 페이지 이동
         navigate('/');
       } else if (response.status === 401) {
@@ -160,15 +171,6 @@ export const Login = () => {
     }
   };
 
-  interface UserData {
-    userId: string;
-  }
-
-  interface LoginData {
-    accessToken: string;
-    refreshToken: string;
-    userId: string;
-  }
   const handleLoginChange = () => {
     // 오류 메시지 초기화
     setErrors([]);

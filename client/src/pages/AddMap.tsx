@@ -4,6 +4,7 @@ import { SearchBar } from 'feature/SearchBar';
 import { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import API from '../api/index';
+import { Link, useNavigate } from 'react-router-dom';
 declare global {
   interface Window {
     kakao: any;
@@ -47,13 +48,27 @@ const StyledPadding = styled.div``;
 const StyledPaddingBottom = styled.div`
   margin-bottom: 2rem;
 `;
+
+const StyledAddButton = styled.button`
+  background-color: var(--green-100);
+  color: var(--white);
+  border-radius: 0.4rem;
+  border: 1px solid rgba(217, 218, 218, 1);
+  width: 7rem;
+  height: 3rem;
+`;
+
+const StyledLink = styled(Link)`
+  color: white;
+  text-decoration: none;
+`;
 export const AddMap = () => {
   const [address, setAddress] = useState(''); // 지도 주소
   const [placeName, setPlaceName] = useState(''); // 내용
   const [map, setMap] = useState(null); // 지도 상태
   const [lat, setLat] = useState(0); // 위도 상태 변수
   const [longi, setLongi] = useState(0); // 경도 상태 변수
-
+  const [PlaceId, setPlaceId] = useState(0);
   const handleChangeValue = (e: React.ChangeEvent<HTMLInputElement>) => {
     setAddress(e.target.value);
   };
@@ -85,7 +100,7 @@ export const AddMap = () => {
   interface ID {
     id: number;
   }
-  const DeleteMapData = async () => {
+  const DeleteMapData = async (placeId: number) => {
     try {
       const response = await API.GET(
         'http://greennarealb-281283380.ap-northeast-2.elb.amazonaws.com/nare/map',
@@ -103,7 +118,7 @@ export const AddMap = () => {
         placeIds.map(async (id: ID) => {
           try {
             const deleteResponse = await API.DELETE({
-              url: `http://greennarealb-281283380.ap-northeast-2.elb.amazonaws.com/nare/map/${id}`,
+              url: `http://greennarealb-281283380.ap-northeast-2.elb.amazonaws.com/nare/map/${placeId}`,
             });
             console.log(`DELETE 요청 성공 - ID: ${id}`, deleteResponse.data);
           } catch (error) {
@@ -144,8 +159,11 @@ export const AddMap = () => {
       }
     });
   };
-  const handledeleteregister = () => {
-    DeleteMapData();
+
+  const handledeleteregister = (placeId: number) => {
+    setPlaceId(placeId);
+    console.log(placeId);
+    DeleteMapData(placeId);
   };
   useEffect(() => {
     const mapContainer = document.getElementById('map'); // 지도를 표시할 div
@@ -163,6 +181,9 @@ export const AddMap = () => {
     <>
       <StyledNav>
         <StyledTitle>🗺 나만의 그린 상점 등록하기</StyledTitle>
+        <StyledAddButton>
+          <StyledLink to={'/map'}>그린나래지도</StyledLink>
+        </StyledAddButton>
       </StyledNav>
       <StyledMapContainer>
         <StyledMapItem>
@@ -170,14 +191,16 @@ export const AddMap = () => {
         </StyledMapItem>
         <StyledMapItem>
           <StyledPadding>
-            <StyledSubTitle>나만의 상점 등록하기</StyledSubTitle>
+            <StyledSubTitle>나만의 상점 등록하기</StyledSubTitle>{' '}
             <SearchBar onChange={handleChangeValue} value={address}></SearchBar>
             <StyledPaddingBottom />
             <NewChallenge setContents={setPlaceName} contents={placeName} />
           </StyledPadding>
           <div>
             <GreenButton onClick={handlechangeregister}>등록</GreenButton>
-            <GreenButton onClick={handledeleteregister}>삭제</GreenButton>
+            <GreenButton onClick={() => handledeleteregister(PlaceId + 1)}>
+              삭제
+            </GreenButton>
           </div>
         </StyledMapItem>
       </StyledMapContainer>
