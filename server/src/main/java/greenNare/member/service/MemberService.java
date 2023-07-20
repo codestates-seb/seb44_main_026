@@ -117,7 +117,7 @@ public class MemberService {
         memberRepository.save(member);
     }
 //    public List<GetProductWithImageDto> getLikeProducts(Page<Product> products) {
-//        return
+//        return productService.getProductWithImage(products);
 //
 //    }
 }
