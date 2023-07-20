@@ -4,8 +4,10 @@ import logo from '../../assets/img/logo.png';
 import cart from '../../assets/img/cart.png';
 import user from '../../assets/img/user.png';
 // import { SearchBar } from '../../feature/SearchBar';
-import { useSetAtom } from 'jotai';
 import { menuAtom } from 'jotai/atom';
+import { isShopAtom } from 'jotai/atom';
+import { useSetAtom, useAtom } from 'jotai';
+import { AccessTokenAtom } from 'jotai/atom';
 
 const StyledHeaderContainer = styled.nav`
   display: flex;
@@ -123,13 +125,11 @@ export const Header = () => {
         <StyledLogo src={logo}></StyledLogo>
         <StyledChoicePage>
           <StyledGreen to={'/'}>
-            <StyledSpan onClick={() => setCurrentMenu('')}>그린</StyledSpan>
+            <StyledSpan onClick={() => setIsShop(true)}>그린</StyledSpan>
           </StyledGreen>
           ㅣ{/* 그린 라우팅 주소 입력*/}
           <StyledNare to={'/challenge'}>
-            <StyledSpan onClick={() => setCurrentMenu('챌린지')}>
-              나래
-            </StyledSpan>
+            <StyledSpan onClick={() => setIsShop(false)}>나래</StyledSpan>
           </StyledNare>
           {/* 나래 라우팅 주소 입력*/}
         </StyledChoicePage>

@@ -1,89 +1,126 @@
 import { styled } from 'styled-components';
 import { Nav } from 'components/Nav';
 import { UploadReview } from 'feature/UploadReview';
-import { ReviewList } from 'feature/ReviewList';
 import { LikeButton } from 'feature/LikeButton';
-import { useLocation } from 'react-router-dom';
-import axios from 'axios';
+import { useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
+import { useSetAtom } from 'jotai';
+import { isShopAtom } from 'jotai/atom';
 import { TopScrollButton } from 'feature/TopScrollButton';
+import API from '../api/index';
+import { Pagination } from 'feature/Pagination';
+import { Review } from 'feature/Review';
+import { ReviewSkeleton } from 'feature/skeletonUI/ReviewSkeleton';
 
 interface ImageProps {
   img: string;
 }
 
+interface ReviewType {
+  reviewId: number;
+  context: string;
+  createdAt: string;
+  updateId: number;
+  productId: number;
+  imageLinks?: string[];
+  name: string;
+  point: number;
+}
+
 export const ItemDetail = () => {
-  const location = useLocation();
-  const item = location.state;
+  const location = useParams();
+  const id = parseInt(location.id);
 
-  //
-  // const [currentItem, setCurrentItem] = useState({});
+  const setIsShop = useSetAtom(isShopAtom);
+  const [currentItem, setCurrentItem] = useState({
+    category: '',
+    imageLinks: '',
+    point: 0,
+    price: 0,
+    productId: 0,
+    productName: '',
+    detail: '',
+    storeLink: '',
+    heart: false,
+  });
 
-  const onBuyHandler = () => {
-    window.open('https://www.naver.com/');
+  const [reviewList, setReviewList] = useState<ReviewType[]>([]);
+  const [totalPages, setTotalPages] = useState(1);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [isLoding, setIsLoding] = useState(true);
 
-    // const point = {
-    //   point: currentItem.point,
-    // };
+  const getReview = async () => {
+    try {
+      const res = await API.GET(
+        `http://greennarealb-281283380.ap-northeast-2.elb.amazonaws.com/green/review/${id}?page=${
+          currentPage - 1
+        }&size=${5}`,
+      );
 
-    // axios
-    //   .patch(`url`, JSON.stringify(point))
-    //   .then((res) => {
-    //     //성공
-    //   })
-    //   .catch((err) => {
-    //     console.log(err);
-    //   });
+      const Reviews = res.data;
+      setReviewList(Reviews.data);
+      setTotalPages(Reviews.pageInfo.totalPages);
+      setIsLoding(false);
+
+      console.log('review');
+      console.log(res?.data);
+    } catch (err) {
+      console.log('review err');
+      console.log(err);
+    }
+  };
+
+  const getItemDetail = async () => {
+    try {
+      const res = await API.GET(
+        `http://greennarealb-281283380.ap-northeast-2.elb.amazonaws.com/green/${id}`,
+      );
+
+      const itemDetail = res.data;
+      setCurrentItem(itemDetail.data);
+      console.log('item detail');
+      console.log(res.data);
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   useEffect(() => {
-    // axios
-    //   .get(`/green/${productId}`)
-    //   .then((res) => {
-    //     setCurrentItem(res.data);
-    //   })
-    //   .catch((err) => {
-    //     console.log(err);
-    //   });
-  }, []);
+    getItemDetail();
+    getReview();
+    setIsShop(true);
+  }, [currentPage]);
 
   return (
     <>
       <Nav />
       <Wrapper>
         <div className="itemWrapper">
-          <Image img={item.url} />
+          <Image img={currentItem.imageLinks} />
           <ItemInfo>
-            <h1 className="title">{item.title}</h1>
-            <div className="price">10,000원</div>
-            <div className="point">100포인트</div>
-            <p className="detail">
-              100% 천연 커피 점토만을 사용하여 만들어진 연필입니다 ! 100% 천연
-              커피 점토만을 사용하여 만들어진 연필입니다 ! 100% 천연 커피
-              점토만을 사용하여 만들어진 연필입니다 ! 100% 천연 커피 점토만을
-              사용하여 만들어진 연필입니다 ! 100% 천연 커피 점토만을 사용하여
-              만들어진 연필입니다 ! 100% 천연 커피 점토만을 사용하여 만들어진
-              연필입니다 !100% 천연 커피 점토만을 사용하여 만들어진 연필입니다 !
-              100% 천연 커피 점토만을 사용하여 만들어진 연필입니다 ! 100% 천연
-              커피 점토만을 사용하여 만들어진 연필입니다 ! 100% 천연 커피
-              점토만을 사용하여 만들어진 연필입니다 ! 100% 천연 커피 점토만을
-              사용하여 만들어진 연필입니다 ! 100% 천연 커피 점토만을 사용하여
-              만들어진 연필입니다 !100% 천연 커피 점토만을 사용하여 만들어진
-              연필입니다 ! 100% 천연 커피 점토만을 사용하여 만들어진 연필입니다
-              ! 100% 천연 커피 점토만을 사용하여 만들어진 연필입니다 ! 100% 천연
-              커피 점토만을 사용하여 만들어진 연필입니다 ! 100% 천연 커피
-              점토만을 사용하여 만들어진 연필입니다 ! 100% 천연 커피 점토만을
-              사용하여 만들어진 연필입니다 !
-            </p>
+            <div>
+              <h1 className="title">{currentItem.productName}</h1>
+              <div className="price">
+                {`${currentItem.price.toLocaleString()} 원`}
+              </div>
+              <div className="point">
+                {`${currentItem.point.toLocaleString()} 포인트`}
+              </div>
+              <p className="detail">{currentItem.detail}</p>
+            </div>
             <ButtonWrapper>
-              <BuyButton onClick={() => onBuyHandler()}>구매하기</BuyButton>
+              <BuyButton onClick={() => window.open(currentItem.storeLink)}>
+                구매하기
+              </BuyButton>
 
               <div className="likebutton">
                 <LikeButton
-                  id={item.id}
-                  title={item.title}
-                  url={item.url}
-                  heart={item.heart}
+                  productId={currentItem.productId}
+                  productName={currentItem.productName}
+                  image={currentItem.imageLinks}
+                  price={currentItem.price}
+                  point={currentItem.point}
+                  heart={currentItem.heart}
                 />
               </div>
             </ButtonWrapper>
@@ -91,11 +128,24 @@ export const ItemDetail = () => {
         </div>
         {/* 리뷰 표시 */}
         <div className="reviewWrapper">
-          리뷰 2개
+          리뷰 {reviewList.length}개
           <FormWrapper>
-            <UploadReview id={item.id} />
+            <UploadReview id={currentItem.productId} />
           </FormWrapper>
-          <ReviewList id={item.id} />
+          <ul>
+            {isLoding
+              ? Array(3)
+                  .fill(null)
+                  .map((_, index) => <ReviewSkeleton key={index} />)
+              : reviewList.map((review: ReviewType) => (
+                  <Review key={review.name} id={id} {...review} />
+                ))}
+          </ul>
+          <Pagination
+            total={totalPages}
+            page={currentPage}
+            setPage={setCurrentPage}
+          />
         </div>
       </Wrapper>
       <TopScrollButton />
@@ -130,23 +180,28 @@ const Image = styled.div<ImageProps>`
   background-image: url(${(props) => props.img});
   background-size: cover;
   background-position: center;
+  background-color: var(--gray);
 `;
 
 const ItemInfo = styled.div`
   margin-left: 2rem;
-
-  > * {
-    margin-bottom: 0.5rem;
-  }
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 
   .title {
     font-weight: bold;
     font-size: 1.5rem;
+    margin-bottom: 0.5rem;
   }
-
+  .price {
+    margin-bottom: 0.5rem;
+  }
   .point {
     font-weight: bold;
     color: var(--green-300);
+    margin: 0.5rem 0;
   }
 `;
 

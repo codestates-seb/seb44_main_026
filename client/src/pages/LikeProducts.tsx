@@ -3,12 +3,18 @@ import { Nav } from 'components/Nav';
 import { ItemList } from 'feature/ItemList';
 import { TopScrollButton } from 'feature/TopScrollButton';
 import { useEffect, useState } from 'react';
+import { useSetAtom } from 'jotai';
+import { isShopAtom } from 'jotai/atom';
 
 export const LikeProducts = () => {
+  const setIsShop = useSetAtom(isShopAtom);
   const [likeItems, setLikeItems] = useState([]);
+  const [isLoding, setIsLoding] = useState(true);
 
   useEffect(() => {
     setLikeItems(JSON.parse(localStorage.getItem('likeItems') || '[]'));
+    setIsLoding(false);
+    setIsShop(true);
   }, []);
 
   return (
@@ -16,7 +22,7 @@ export const LikeProducts = () => {
       <Nav />
       <ProductWrapper>
         <Title>관심 상품</Title>
-        <ItemList itemlist={likeItems} />
+        <ItemList itemlist={likeItems} isLoding={isLoding} />
       </ProductWrapper>
       <TopScrollButton />
     </>
