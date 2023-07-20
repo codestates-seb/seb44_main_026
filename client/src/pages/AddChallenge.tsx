@@ -42,6 +42,7 @@ const AddChallenge = () => {
       try {
         const formData = new FormData();
         //formData.append('requestBody', JSON.stringify(newData));
+        console.log(loginAccToken);
         formData.append(
           'requestBody',
           new Blob([JSON.stringify(newData)], {
