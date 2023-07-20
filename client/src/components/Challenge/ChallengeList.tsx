@@ -37,7 +37,6 @@ const ChallengeList = () => {
   }, []);
 
   useEffect(() => {
-    console.log(currentPage);
     getChallenge();
     window.scrollTo(0, 0);
   }, [currentPage]);

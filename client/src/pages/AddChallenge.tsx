@@ -8,6 +8,8 @@ import { useNavigate } from 'react-router-dom';
 import { UploadChallenge } from 'components/Challenge/UploadChallenge';
 import API from '../api/index';
 import axios, { AxiosError } from 'axios';
+import { useSetAtom, useAtom } from 'jotai';
+import { AccessTokenAtom } from 'jotai/atom';
 
 const AddChallenge = () => {
   const nav = useNavigate();
@@ -16,6 +18,8 @@ const AddChallenge = () => {
   const [fileurl, setFileurl] = useState<string>(''); //기본파일세팅
   const [newfile, setnewFile] = useState<File | null>(); //새로업로드할 파일
   const [isReady, setIsReady] = useState(false);
+  const loginAccToken = localStorage.getItem('accessToken');
+
   const newData = {
     title: title,
     content: contents,
@@ -28,6 +32,10 @@ const AddChallenge = () => {
   const handleWarning = () => {
     alert('제목을 1자 이상, 내용을 20자 이상 입력하세요. 등록이 불가능합니다.');
   };
+
+  useEffect(() => {
+    console.log(loginAccToken);
+  }, [loginAccToken]);
 
   const postChallenge = async () => {
     if (isReady) {
@@ -46,14 +54,15 @@ const AddChallenge = () => {
           data: formData,
           headers: {
             'Content-Type': 'multipart/form-data',
+            Authorization: loginAccToken,
           },
         });
       } catch (err) {
         console.log(err);
       }
 
-      nav('/challenge');
-      location.reload();
+      //nav('/challenge');
+      //location.reload();
     }
   };
 

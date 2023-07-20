@@ -11,6 +11,7 @@ interface InputItemProps {
 const InputItem: React.FC<InputItemProps> = ({ setComment, value }) => {
   const id = useParams().id;
   const [loading, setloading] = useState(false);
+  const loginAccToken = localStorage.getItem('accessToken');
 
   const textHandler = (e: React.FormEvent<HTMLInputElement>) => {
     setComment(e.currentTarget.value);
@@ -22,6 +23,9 @@ const InputItem: React.FC<InputItemProps> = ({ setComment, value }) => {
       const res = await API.POST({
         url: `http://greennarealb-281283380.ap-northeast-2.elb.amazonaws.com/nare/reply/${id}`,
         data: { content: value },
+        headers: {
+          Authorization: loginAccToken,
+        },
       });
     } catch (err) {
       console.log(err);
