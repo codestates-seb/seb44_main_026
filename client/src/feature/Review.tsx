@@ -5,7 +5,6 @@ import moment from 'moment';
 import 'moment/locale/ko';
 import API from '../api/index';
 import { ReviewModal } from './ReviewModal';
-import { access } from 'fs';
 
 interface ReviewProps {
   id: number;
@@ -47,7 +46,6 @@ export const Review = ({
         url: `http://greennarealb-281283380.ap-northeast-2.elb.amazonaws.com/green/review/${id}`,
         headers: {
           Authorization: accessToken,
-          'Content-Type': 'multipart/form-data',
         },
       });
       console.log('delete review');
@@ -119,10 +117,10 @@ export const Review = ({
                 <Preview key={index}>
                   <img
                     className="previewImg"
-                    // src={image}
-                    src={
-                      'https://i.namu.wiki/i/c1FfgJTOGJAGV6Pz4hfrAtzmfdCpnO0Sqjqhd2wB9DtgjKFoEcTen1HymS9oa2FpgNdKSUxj494vii746Eu_YLAueKFu_VpKCbegr6Sa4WYX-rr5598Ma8quoNWHv3620PkvgxolW58DYM5-e4bOGQ.webp'
-                    }
+                    src={image}
+                    // src={
+                    //   'https://i.namu.wiki/i/c1FfgJTOGJAGV6Pz4hfrAtzmfdCpnO0Sqjqhd2wB9DtgjKFoEcTen1HymS9oa2FpgNdKSUxj494vii746Eu_YLAueKFu_VpKCbegr6Sa4WYX-rr5598Ma8quoNWHv3620PkvgxolW58DYM5-e4bOGQ.webp'
+                    // }
                   />
                 </Preview>
               ))}

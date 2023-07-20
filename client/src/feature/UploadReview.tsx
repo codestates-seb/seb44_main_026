@@ -30,6 +30,7 @@ export const UploadReview = ({
   const [isOpen, setIsOpen] = useState(false);
   const [isAlert, setIsAlert] = useState(true);
   const [modalContent, setModalContent] = useState('');
+
   const accessToken = localStorage.getItem('accessToken');
 
   const postReview = async (formData: FormData) => {
@@ -57,11 +58,16 @@ export const UploadReview = ({
         setModalContent('이미 등록한 리뷰가 존재합니다.');
         setIsAlert(true);
         setIsOpen(true);
-      } else {
-        setModalContent('리뷰가 등록되었습니다.');
+      } else if (res.status === 500) {
+        setModalContent('리뷰 등록에 실패하였습니다.');
         setIsAlert(true);
         setIsOpen(true);
+        return;
       }
+
+      setModalContent('리뷰가 등록되었습니다.');
+      setIsAlert(true);
+      setIsOpen(true);
 
       console.log('review post');
       console.log(res.data);
@@ -91,6 +97,13 @@ export const UploadReview = ({
           'Content-Type': 'multipart/form-data',
         },
       });
+
+      if (res.status === 500) {
+        setModalContent('리뷰 등록에 실패하였습니다.');
+        setIsAlert(true);
+        setIsOpen(true);
+        return;
+      }
 
       setModalContent('리뷰가 수정되었습니다.');
       setIsAlert(true);
