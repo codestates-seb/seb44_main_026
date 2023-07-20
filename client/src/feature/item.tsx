@@ -7,28 +7,40 @@ interface ImageProps {
   img: string;
 }
 
-export const Item = ({ id, title, url, heart }: ItemType) => {
+export const Item = ({
+  productId,
+  productName,
+  price,
+  point,
+  imageLink,
+  heart,
+}: ItemType) => {
   const navigate = useNavigate();
 
-  const selectItemHandler = (id: number) => {
-    navigate(`/product/detail/${id}`, {
-      state: { id: id, title: title, url: url, heart: heart },
-    });
+  const selectItemHandler = (productId: number) => {
+    navigate(`/product/detail/${productId}`);
   };
 
   return (
     <ItemWrapper>
-      <Image img={url} onClick={() => selectItemHandler(id)} />
+      <Image img={imageLink} onClick={() => selectItemHandler(productId)} />
       <ItemInfoWrapper>
         <ItemInfo>
-          <div className="title" onClick={() => selectItemHandler(id)}>
-            {title}
+          <div className="title" onClick={() => selectItemHandler(productId)}>
+            {productName}
           </div>
-          <div className="price">10000원</div>
-          <div className="review">리뷰 00개</div>
+          <div className="price"> {`${price.toLocaleString()} 원`}</div>
+          <div className="point">{`${point.toLocaleString()} 포인트`}</div>
         </ItemInfo>
         <div className="likebutton">
-          <LikeButton id={id} title={title} url={url} heart={heart} />
+          <LikeButton
+            productId={productId}
+            productName={productName}
+            image={imageLink}
+            price={price}
+            point={point}
+            heart={heart}
+          />
         </div>
       </ItemInfoWrapper>
     </ItemWrapper>
@@ -43,7 +55,7 @@ const ItemWrapper = styled.li`
   box-shadow: rgba(0, 0, 0, 0.3) 1px 1px 4px;
 
   width: 18rem;
-  height: 22rem;
+  height: 20rem;
   padding: 1rem;
 
   display: flex;
@@ -60,6 +72,7 @@ const Image = styled.div<ImageProps>`
   background-image: url(${(props) => props.img});
   background-size: cover;
   background-position: center;
+  background-color: var(--gray);
 `;
 
 const ItemInfoWrapper = styled.div`
@@ -85,5 +98,10 @@ const ItemInfo = styled.div`
   .title {
     cursor: pointer;
     font-weight: bold;
+  }
+
+  .point {
+    font-weight: bold;
+    color: var(--green-300);
   }
 `;

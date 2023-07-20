@@ -1,33 +1,131 @@
 import { styled } from 'styled-components';
 import TextareaAutosize from 'react-textarea-autosize';
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
 import { faCloudArrowUp } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import API from '../api/index';
+import { ReviewModal } from './ReviewModal';
 
 interface UploadReviewProps {
   id: number;
   isEdit?: boolean;
   setIsEdit?: React.Dispatch<React.SetStateAction<boolean>>;
-  memberId?: string;
-  content?: string;
+  context?: string;
+  imageLinks?: string[];
 }
 
 export const UploadReview = ({
   id,
   isEdit,
   setIsEdit,
-  memberId,
-  content,
+  context,
+  imageLinks,
 }: UploadReviewProps) => {
-  const [review, setReview] = useState(content || '');
+  //리뷰 작성
+  const [review, setReview] = useState(context || '');
   const [imageFiles, setImageFiles] = useState([]);
-  const [preview, setPreview] = useState([]);
+  const [preview, setPreview] = useState(imageLinks || []);
   const [errorMessage, setErrorMessage] = useState('');
+  //모달
+  const [isOpen, setIsOpen] = useState(false);
+  const [isAlert, setIsAlert] = useState(true);
+  const [modalContent, setModalContent] = useState('');
 
+  const accessToken = localStorage.getItem('accessToken');
+
+  const postReview = async (formData: FormData) => {
+    // formData값 확인
+    for (const [key, value] of formData.entries()) {
+      console.log(key, value);
+    }
+
+    try {
+      const res = await API.POST({
+        url: `http://greennareALB-281283380.ap-northeast-2.elb.amazonaws.com/green/review/${id}`,
+        data: { context: review },
+        // data: formData,
+        headers: {
+          Authorization: accessToken,
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+
+      setReview('');
+      setImageFiles([]);
+      setPreview([]);
+
+      if (res.data.exceptionCode === 'REVIEW_EXIST') {
+        setModalContent('이미 등록한 리뷰가 존재합니다.');
+        setIsAlert(true);
+        setIsOpen(true);
+      } else if (res.status === 500) {
+        setModalContent('리뷰 등록에 실패하였습니다.');
+        setIsAlert(true);
+        setIsOpen(true);
+        return;
+      }
+
+      setModalContent('리뷰가 등록되었습니다.');
+      setIsAlert(true);
+      setIsOpen(true);
+
+      console.log('review post');
+      console.log(res.data);
+    } catch (err) {
+      console.log('review post err');
+      console.log(err);
+
+      setModalContent('리뷰 등록에 실패하였습니다.');
+      setIsAlert(true);
+      setIsOpen(true);
+    }
+  };
+
+  const patchReview = async (formData: FormData) => {
+    // formData값 확인
+    for (const [key, value] of formData.entries()) {
+      console.log(key, value);
+    }
+
+    try {
+      const res = await API.PATCH({
+        url: `http://greennareALB-281283380.ap-northeast-2.elb.amazonaws.com/green/review/${id}`,
+        data: { context: review },
+        // data: formData,
+        headers: {
+          Authorization: accessToken,
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+
+      if (res.status === 500) {
+        setModalContent('리뷰 등록에 실패하였습니다.');
+        setIsAlert(true);
+        setIsOpen(true);
+        return;
+      }
+
+      setModalContent('리뷰가 수정되었습니다.');
+      setIsAlert(true);
+      setIsOpen(true);
+
+      console.log('review patch');
+      console.log(res.data);
+    } catch (err) {
+      console.log('review patch err');
+      console.log(err);
+
+      setModalContent('리뷰 수정에 실패하였습니다.');
+      setIsAlert(true);
+      setIsOpen(true);
+    }
+  };
+
+  // 리뷰 작성
   const reviewHandler = (e: React.FormEvent<HTMLTextAreaElement>) => {
     setReview(e.currentTarget.value);
   };
+  // 이미지 파일 업로드, 프리뷰
   const uploadFileHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = Array.from(e.target.files);
     const addFiles = [...imageFiles, ...files];
@@ -40,7 +138,7 @@ export const UploadReview = ({
 
     e.target.value = '';
   };
-
+  // 이미지 파일 삭제
   const deleteFileHandler = (index: number) => {
     setImageFiles([
       ...imageFiles.slice(0, index),
@@ -52,75 +150,47 @@ export const UploadReview = ({
     ]);
   };
 
+  // 작성한 리뷰 등록
   const submitReviewHandler = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    if (!review) {
+    if (!review || !review.replace(/\n/g, '')) {
       return setErrorMessage('내용을 작성해 주세요!');
     } else {
       setErrorMessage('');
     }
 
     const formData = new FormData();
-    formData.append('content', review); // JSON.stringify ??
+    formData.append('context', review);
     imageFiles.forEach((file) => formData.append('image', file));
 
     if (isEdit) {
-      return axios
-        .patch(`/green/review/${id}`, formData, {
-          headers: {
-            // Authorization: accessToken,
-            // 'Content-Type': 'multipart/form-data',
-          },
-        })
-        .then((res) => {
-          // 성공
-          console.log(res.data);
-        })
-        .catch((err) => {
-          console.log(err);
-          console.log('edit');
-
-          // formData값 확인
-          for (const [key, value] of formData.entries()) {
-            console.log(key, value);
-          }
-
-          console.log(memberId);
-        });
+      return patchReview(formData);
     } else {
-      return axios
-        .post(`/green/review/${id}`, formData, {
-          headers: {
-            // Authorization: accessToken,
-            // 'Content-Type': 'multipart/form-data',
-          },
-        })
-        .then((res) => {
-          // 성공
-          console.log(res.data);
-        })
-        .catch((err) => {
-          console.log(err);
-
-          console.log('upload');
-          // formData값 확인
-          for (const [key, value] of formData.entries()) {
-            console.log(key, value);
-          }
-          console.log(memberId);
-        });
+      return postReview(formData);
     }
+  };
+
+  const handleClose = () => {
+    setIsOpen(false);
+    location.reload();
   };
 
   useEffect(() => {
     if (review) {
       setErrorMessage('');
     }
-  }, [review]);
+  }, [review, isEdit]);
 
   return (
     <>
+      {isOpen ? (
+        <ReviewModal
+          isAlert={isAlert}
+          content={modalContent}
+          onClose={handleClose}
+        />
+      ) : null}
       <Form onSubmit={submitReviewHandler}>
         <InputWrapper>
           <Input
