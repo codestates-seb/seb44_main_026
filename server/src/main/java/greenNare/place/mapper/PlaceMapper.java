@@ -11,4 +11,5 @@ import java.util.List;
 public interface PlaceMapper {
     Place placePostDtoToPlace(PlaceDto.Post placePostDto);
     //List<Place> placesToPlacesResponseDto();
+    PlaceDto.Response placeToPlaceResponseDto(Place place);
 }

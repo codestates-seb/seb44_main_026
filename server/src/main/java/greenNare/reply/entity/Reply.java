@@ -25,4 +25,10 @@ public class Reply extends Auditable {
     private int challengeId;
     @Column(nullable = false)
     private String content;
+
+    public Reply(int memberId, int challengeId, String content) {
+        this.memberId = memberId;
+        this.challengeId = challengeId;
+        this.content = content;
+    }
 }

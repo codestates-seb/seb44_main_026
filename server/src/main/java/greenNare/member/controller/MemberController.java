@@ -28,8 +28,8 @@ import javax.validation.constraints.Positive;
     }
 
     @GetMapping
-    public ResponseEntity getMembers() {
-        System.out.println("# get Members");
+    public ResponseEntity getMember() {
+        System.out.println("# get Member");
 
         return new ResponseEntity<>(HttpStatus.OK);
     }

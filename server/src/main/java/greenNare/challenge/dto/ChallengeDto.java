@@ -60,8 +60,13 @@ public class ChallengeDto {
         public static Response from(Challenge challenge) {
             return Response.builder()
                     .challengeId(challenge.getChallengeId())
+                    .memberId(challenge.getMemberId())
                     .title(challenge.getTitle())
-                    .content(challenge.getContent()).build();
+                    .content(challenge.getContent())
+                    .image(challenge.getImage())
+                    .createdAt(challenge.getCreatedAt())
+                    .updatedAt(challenge.getUpdatedAt())
+                    .build();
         }
     }
 
@@ -77,12 +82,22 @@ public class ChallengeDto {
         private LocalDateTime createdAt;
         private LocalDateTime updatedAt;
 
-
         public void setName(String name) {
             this.name = name;
         }
         public void setPoint(int point) {
             this.point = point;
         }
+
+        public static PageResponse from(Challenge challenge) {
+            return PageResponse.builder()
+                    .challengeId(challenge.getChallengeId())
+                    .memberId(challenge.getMemberId())
+                    .title(challenge.getTitle())
+                    .createdAt(challenge.getCreatedAt())
+                    .updatedAt(challenge.getUpdatedAt())
+                    .build();
+        }
+
     }
 }

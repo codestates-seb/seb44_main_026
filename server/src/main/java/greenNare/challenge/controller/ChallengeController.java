@@ -64,11 +64,7 @@ public class ChallengeController {
     public ResponseEntity postChallenge(@Valid @RequestPart(required = false) ChallengeDto.Post requestBody,
                                         @RequestPart(required = false) MultipartFile image,
                                         @RequestHeader(value = "Authorization", required = false) String token) throws Exception, IOException {
-        Challenge createdChallenge = challengeService.createChallenge(mapper.challengePostDtoToChallenge(requestBody));
-        Challenge saveImg  = challengeService.saveImage(createdChallenge, image);
-
-        ChallengeDto.Response response = mapper.challengeToChallengeResponseDto(saveImg);//, token);
-        //response.setName(challengeService.findWriter(response.getChallengeId()));
+        ChallengeDto.Response createdChallenge = challengeService.createChallenge(mapper.challengePostDtoToChallenge(requestBody), token, image);
 
         //URI location = UriCreator.createUri(CHALLENGE_DEFAULT_URL+"/challenge/", createdChallenge.getChallengeId());
         //HttpHeaders headers = new HttpHeaders();
@@ -76,7 +72,7 @@ public class ChallengeController {
 
         //return ResponseEntity.status(HttpStatus.CREATED).headers(headers).body(new SingleResponseDto<>(response));
 
-        return new ResponseEntity<>(new SingleResponseDto<>(saveImg), HttpStatus.CREATED);
+        return new ResponseEntity<>(new SingleResponseDto<>(createdChallenge), HttpStatus.CREATED);
     }
 
     @PatchMapping("/{challengeId}") // 챌린지 수정
@@ -86,7 +82,7 @@ public class ChallengeController {
                                          @RequestHeader(value = "Authorization", required = false) String token) throws IOException {
         Challenge patch = mapper.challengePatchDtoToChallenge(requestBody);
 
-        ChallengeDto.Response response = challengeService.updateChallenge(patch, challengeId, image);
+        ChallengeDto.Response response = challengeService.updateChallenge(patch, challengeId, image, token);
         //challengeService.saveImage(updateChallenge, image)
 
         return ResponseEntity.ok(new SingleResponseDto<>(response));
@@ -99,7 +95,7 @@ public class ChallengeController {
                                          @RequestHeader(value = "Authorization", required = false) String token) throws IOException {
         Challenge patch = mapper.challengePatchDtoToChallenge(requestBody);
 
-        ChallengeDto.Response response = challengeService.updateChallenge(patch, challengeId, image);
+        ChallengeDto.Response response = challengeService.updateChallenge(patch, challengeId, image, token);
         //challengeService.saveImage(updateChallenge, image)
 
         return ResponseEntity.ok(new SingleResponseDto<>(response));

@@ -43,10 +43,7 @@ public class MemberDto {
         private int memberId;
         private String email;
         private String name;
+
+        private int point;
     }
-
-
-
-
-
 }

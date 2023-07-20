@@ -40,13 +40,12 @@ public class ReplyController {
     // 댓글 조회
     @GetMapping("/reply/{challengeId}")
     public ResponseEntity getReply(@PathVariable int challengeId,
-                                   @RequestHeader(value = "Authorization", required = false) String token,
                                    Pageable pageable) {
         //Sort sort = Sort.by(Sort.Direction.DESC, "memberId");
         //Pageable pageable = PageRequest.of(page, size, sort);
 
-        List<ReplyDto.Response> replyList = replyService.getReplys(challengeId, token, pageable );
-        Page<Reply> replyPage = replyService.getReplyPage(challengeId, token, pageable);
+        List<ReplyDto.Response> replyList = replyService.getReplys(challengeId, pageable);
+        Page<Reply> replyPage = replyService.getReplyPage(challengeId, pageable);
 
         return new ResponseEntity<>(new MultiResponseDto<>(replyList, replyPage), HttpStatus.OK);
     }
@@ -56,12 +55,12 @@ public class ReplyController {
     public ResponseEntity createReply(@PathVariable int challengeId,
                                       @RequestHeader(value = "Authorization", required = false) String token,
                                       @RequestBody ReplyDto.Post replyPostDto) {
-        log.info("#####  createReply controller 도착");
+        log.info("#####  createReply controller");
         log.info("content = {}", replyPostDto.getContent());
         Reply reply = mapper.replyPostDtoToReply(replyPostDto);
         log.info("#####  createReply mapper");
         int memberId = 1;
-        ReplyDto.Response response = replyService.createReply(reply, challengeId, memberId);
+        ReplyDto.Response response = replyService.createReply(reply, challengeId, token);
         return new ResponseEntity<>(new SingleResponseDto<>(response), HttpStatus.OK);
     }
 
@@ -71,8 +70,7 @@ public class ReplyController {
                                       @RequestHeader(value = "Authorization", required = false) String token,
                                       @RequestBody ReplyDto.Post replyPatchDto) {
         Reply reply =  mapper.replyPostDtoToReply(replyPatchDto);
-        int memberId = 1;
-        ReplyDto.Response response = replyService.updateReply(reply, replyId, memberId);
+        ReplyDto.Response response = replyService.updateReply(reply, replyId, token);
         return ResponseEntity.ok(new SingleResponseDto<>(response));
     }
 

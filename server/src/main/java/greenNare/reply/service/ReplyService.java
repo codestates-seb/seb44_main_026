@@ -1,5 +1,6 @@
 package greenNare.reply.service;
 
+import greenNare.auth.jwt.JwtTokenizer;
 import greenNare.challenge.entity.Challenge;
 import greenNare.challenge.service.ChallengeService;
 import greenNare.exception.BusinessLogicException;
@@ -26,59 +27,53 @@ public class ReplyService {
     private final ReplyRepository replyRepository;
     private final MemberService memberService;
     private final ChallengeService challengeService;
+    private final JwtTokenizer jwtTokenizer;
 
-    public ReplyService(ReplyRepository replyRepository, MemberService memberService, ChallengeService challengeService) {
+    public ReplyService(ReplyRepository replyRepository, MemberService memberService, ChallengeService challengeService, JwtTokenizer jwtTokenizer) {
         this.replyRepository = replyRepository;
         this.memberService = memberService;
         this.challengeService = challengeService;
+        this.jwtTokenizer = jwtTokenizer;
     }
 
-    public List<ReplyDto.Response> getReplys(int challengeId, String token, Pageable pageable) {
+    public List<ReplyDto.Response> getReplys(int challengeId, Pageable pageable) {
         Page<Reply> replyList = replyRepository.findByChallengeId(challengeId, pageable);
         List<ReplyDto.Response> replyResponseList = replyList.stream()
-                .map((reply)-> new ReplyDto.Response(
-                        reply.getReplyId(),
-                        reply.getMemberId(),
-                        reply.getChallengeId(),
-                        reply.getContent(),
-                        reply.getCreatedAt(),
-                        reply.getUpdatedAt()
-                        //findUsername(reply.getMemberId()),
-                        //findPoint(reply.getMemberId())
-                )).collect(Collectors.toList());
+                .map((reply)-> {
+                    Member member = memberService.findMemberById(reply.getMemberId());
+                    return ReplyDto.Response.from(reply, member);
+                }).collect(Collectors.toList());
+
         return replyResponseList;
     }
 
-    public ReplyDto.Response createReply(Reply reply, int challengeId, int memberId) {
+    public ReplyDto.Response createReply(Reply reply, int challengeId, String token) {
+        validateChallenge(challengeId);
+
+        int memberId = jwtTokenizer.getMemberId(token);
 
         reply.setChallengeId(challengeId);
         reply.setMemberId(memberId);
-        Reply saveReply = replyRepository.save(reply);
-        log.info("saveReply : {}", saveReply);
+        replyRepository.save(reply);
 
-        ReplyDto.Response response = new ReplyDto.Response(
-                saveReply.getReplyId(),
-                reply.getMemberId(),
-                reply.getChallengeId(),
-                reply.getContent(),
-                reply.getCreatedAt(),
-                reply.getUpdatedAt()
-                //findUsername(reply.getMemberId()),
-                //findPoint(reply.getMemberId())
-        );
-        log.info("reply response : {}", response);
-        return response;
+        Member member = memberService.findMemberById(memberId);
+
+        log.info("create Reply 성공");
+        return ReplyDto.Response.from(reply, member);
     }
 
-    public ReplyDto.Response updateReply (Reply reply, int replyId, int memberId) {
+    public ReplyDto.Response updateReply (Reply reply, int replyId, String token) {
         Reply findReply = findVerifyReply(replyId);
+        int memberId = jwtTokenizer.getMemberId(token);
         validateWriter(findReply, memberId);
 
         findReply.setContent(reply.getContent());
 
         replyRepository.save(findReply);
 
-        ReplyDto.Response response = ReplyDto.Response.from(findReply);
+        Member member = memberService.findMemberById(memberId);
+
+        ReplyDto.Response response = ReplyDto.Response.from(findReply, member);
         return response;
     }
     public void deleteReply(int replyId, int memberId) {
@@ -100,7 +95,7 @@ public class ReplyService {
     public void validateChallenge(int challengeId){
         challengeService.findVerifideChallenge(challengeId);
     }
-    public Page<Reply> getReplyPage(int challengeId, String token, Pageable pageable) {
+    public Page<Reply> getReplyPage(int challengeId, Pageable pageable) {
         Page<Reply> replyPage = replyRepository.findByChallengeId(challengeId, pageable);
         return replyPage;
 

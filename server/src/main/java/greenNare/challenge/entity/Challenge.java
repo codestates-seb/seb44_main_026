@@ -35,4 +35,9 @@ public class Challenge extends Auditable {
         this.title = title;
         this.content = content;
     }
+    public Challenge(String title, String content, int memberId) {
+        this.title = title;
+        this.content = content;
+        this.memberId = memberId;
+    }
 }
