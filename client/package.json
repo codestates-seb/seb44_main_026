@@ -69,5 +69,5 @@
     "prettier": "^2.8.8"
   },
   "homepage": "https://codestates-seb.github.io/seb44_main_026/",
-  "proxy":"http://greennarealb-281283380.ap-northeast-2.elb.amazonaws.com/"
+  "proxy": "http://greennarealb-281283380.ap-northeast-2.elb.amazonaws.com/"
 }
