@@ -10,15 +10,12 @@ type ItemProps = {
 const ChallengeItem: React.FC<ItemProps> = ({ item }) => {
   const navigate = useNavigate();
   const gotoDetail = () => {
-    navigate(`/challenge/${item.id}`);
+    navigate(`/challenge/${item.challengeId}`);
   };
   return (
     <ItemWrapper onClick={gotoDetail}>
-      <div className="challenge">
-        {'🌱 ' + item.id + '. '}
-        {item.title}
-      </div>
-      <WriterContainer>작성자: 김철수</WriterContainer>
+      <div className="challenge">{'🌱 ' + item.title}</div>
+      <WriterContainer>{item.name}</WriterContainer>
       <CountContainer>n명 참여중</CountContainer>
     </ItemWrapper>
   );

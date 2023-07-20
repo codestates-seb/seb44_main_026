@@ -16,8 +16,39 @@ const EditChallenge: React.FC = () => {
   const [fileurl, setFileurl] = useState<string>(''); //기본파일세팅
   const [newfile, setnewFile] = useState<File | null>(null); //새로업로드할 파일
 
+  const newData = {
+    title: title,
+    content: contents,
+  };
+
   const goToChallenge = () => {
-    nav(`/challenge/${id}`);
+    nav('/challenge');
+  };
+
+  const EditChallenge = async () => {
+    try {
+      const formData = new FormData();
+      formData.append(
+        'requestBody',
+        new Blob([JSON.stringify(newData)], {
+          type: 'application/json',
+        }),
+      );
+      formData.append('image', null);
+      const res = await API.POST({
+        url: `http://greennarealb-281283380.ap-northeast-2.elb.amazonaws.com/nare/update/1`,
+        data: formData,
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+      console.log('수정');
+    } catch (err) {
+      console.log(err);
+    }
+    //alert('수정되었습니다');
+    //nav('/challenge/1');
+    //location.reload();
   };
 
   /*
@@ -66,11 +97,11 @@ const EditChallenge: React.FC = () => {
   const getMyChallenge = async () => {
     try {
       const res = await API.GET(
-        `https://jsonplaceholder.typicode.com/posts/${id}`,
+        `http://greennarealb-281283380.ap-northeast-2.elb.amazonaws.com/nare/${id}`,
       );
       console.log(res);
-      setTitle(res.data.title);
-      setContents(res.data.body);
+      setTitle(res?.data.data.title);
+      setContents(res?.data.data.content);
     } catch (err) {
       console.log(err);
     }
@@ -97,7 +128,7 @@ const EditChallenge: React.FC = () => {
         <UploadChallenge />
       </InputContainer>
       <ButtonContainer>
-        <SubmitContainer>수정</SubmitContainer>
+        <SubmitContainer onClick={EditChallenge}>수정</SubmitContainer>
         <CancelContainer onClick={goToChallenge}>취소</CancelContainer>
       </ButtonContainer>
     </>

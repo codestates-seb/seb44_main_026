@@ -2,12 +2,17 @@ import React from 'react';
 import { styled } from 'styled-components';
 import moment from 'moment';
 import 'moment/locale/ko';
+import API from '../../../api/index';
+import { type } from 'os';
+import { useState } from 'react';
+import EditComment from './EditComment';
 
 interface CommentProps {
-  name: string;
+  name: number;
   body: string;
   point: number;
   createdAt: string;
+  id: number;
 }
 
 const CommentBox: React.FC<CommentProps> = ({
@@ -15,18 +20,58 @@ const CommentBox: React.FC<CommentProps> = ({
   body,
   point,
   createdAt,
+  id,
 }) => {
+  const [isEdit, setIsEdit] = useState(false);
+  const [comment, setComment] = useState(body);
+  //멤버아이디 비교해서 멤버아이디가 맞으면 수정 삭제 표시
+  const memberId = 1;
+
+  const deleteComment = async () => {
+    try {
+      const res = await API.DELETE({
+        url: `http://greennarealb-281283380.ap-northeast-2.elb.amazonaws.com/nare/reply/${id}`,
+      });
+      console.log(res);
+    } catch (err) {
+      console.log(err);
+    }
+    location.reload();
+  };
+
   return (
     <DivContainer>
-      <InfoContainer>
-        <div className="member-name">{'🐥 ' + name}</div>
-        <div className="member-point">{'🏆 ' + point + '점'}</div>
-        <div className="comment-date">
-          {'⏱️ ' + moment(createdAt).fromNow()}
-        </div>
-        <div className="del-button">삭제</div>
-      </InfoContainer>
-      <BodyContainer>{body}</BodyContainer>
+      {isEdit ? (
+        <EditComment
+          setnewComment={setComment}
+          newComment={comment}
+          id={id}
+          setIsEdit={setIsEdit}
+        />
+      ) : (
+        <>
+          <InfoContainer>
+            <div className="member-name">{'🐥 ' + name}</div>
+            <div className="member-point">{'🏆 ' + point + '점'}</div>
+            <div className="comment-date">
+              {'⏱️ ' + moment(createdAt).fromNow()}
+            </div>
+            <>
+              {memberId === name ? (
+                <>
+                  <div className="edit-button" onClick={() => setIsEdit(true)}>
+                    수정
+                  </div>
+                  <div className="del-button" onClick={deleteComment}>
+                    삭제
+                  </div>
+                </>
+              ) : null}
+            </>
+          </InfoContainer>
+          <BodyContainer>{body}</BodyContainer>
+        </>
+      )}
     </DivContainer>
   );
 };
@@ -63,6 +108,21 @@ const InfoContainer = styled.div`
     right: 0;
     padding: 0.5rem;
     font-size: 13px;
+    border-radius: 4px;
+    cursor: pointer;
+    display: flex;
+    &:hover {
+      background-color: var(--green-100);
+      color: white;
+    }
+  }
+  .edit-button {
+    position: absolute;
+    top: 0;
+    right: 3rem;
+    padding: 0.5rem;
+    font-size: 13px;
+    cursor: pointer;
     border-radius: 4px;
     display: flex;
     &:hover {

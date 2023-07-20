@@ -1,16 +1,34 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import SlideItem from './SlideItem';
 import { DummyItem } from './DummyItem';
+import API from '../../api/index';
 
 const MainSlide = () => {
+  const [items, setItems] = useState([]);
+  const getItem = async () => {
+    try {
+      const res = await API.GET(
+        'http://greennarealb-281283380.ap-northeast-2.elb.amazonaws.com/green?size=3&page=1&category=all',
+      );
+      console.log(res);
+      setItems([...res?.data.data]);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  useEffect(() => {
+    getItem();
+  }, []);
+
   return (
     <StyledSlide>
       <HeadLine>
         <h1>🔥이 주 HOT 상품🔥</h1>
       </HeadLine>
       <DivConatiner>
-        {DummyItem.slice(0, 3).map((el, idx) => (
+        {items.slice(0, 3).map((el, idx) => (
           <SlideItem item={el} key={idx} />
         ))}
       </DivConatiner>
