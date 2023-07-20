@@ -93,7 +93,7 @@ export const Login = () => {
   const [email, setEmail] = useState(''); // 이메일
   const [password, setPassword] = useState(''); // 비밀번호
   const [errors, setErrors] = useState([]); //에러
-  const [loginAccToken, setLoginAccToken] = useAtom(AccessTokenAtom); // Jotai atom 사용
+  const [loginAccToken, setLoginAccToken] = useAtom(AccessTokenAtom); // 토큰
   const [loginRefToken, setLoginRefToken] = useAtom(RefreshTokenAtom); // Jotai atom 사용
   const [loginUserId, setLoginUserId] = useAtom(UserIdAtom); // Jotai atom 사용
   const navigate = useNavigate();
@@ -131,11 +131,12 @@ export const Login = () => {
 
         const accessToken = authorizationHeader.split(' ')[1]; // Bearer 분리
 
-        const userData = response.data;
+        const userData: UserData = response.data;
         console.log(userData);
         const { memberId } = userData;
 
         // 토큰 저장
+
         localStorage.setItem('accessToken', accessToken);
         localStorage.setItem('refreshToken', refreshToken);
         localStorage.setItem('userId', memberId);
