@@ -41,7 +41,7 @@ public class MemberService {
         return findVerifiedMember(memberId);
     }
 
-    public List<Member> findMembers() {
+    public List<Member> findMember() {
 
         return (List<Member>) memberRepository.findAll();
     }
