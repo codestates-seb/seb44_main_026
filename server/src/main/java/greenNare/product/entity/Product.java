@@ -29,10 +29,8 @@ public class Product {
     @Column(nullable = false)
     private String storeLink;
 
-//    @OneToMany(mappedBy = "product")
-//    private List<Image> imageLinks;
-
-    private String imageLink;
+    @OneToMany(mappedBy = "product")
+    private List<Image> imageLinks;
 
     @Column(nullable = false)
     private String category;
@@ -54,14 +52,5 @@ public class Product {
 //        this.category = category;
 //    }
 
-    public List<Product> makeTestProduct() {
-        List<Product> products = new ArrayList<>();
-
-        for (int i=0; i<50; i++) {
-            products.add(new Product("칫솔"+i, "칫솔입니다", i*100, i, "link", "욕실"));
-        }
-
-        return products;
-    }
 
 }

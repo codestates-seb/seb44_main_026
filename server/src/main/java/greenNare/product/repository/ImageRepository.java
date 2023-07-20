@@ -1,0 +1,14 @@
+package greenNare.product.repository;
+
+import greenNare.product.entity.Image;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+
+import java.util.List;
+
+public interface ImageRepository extends JpaRepository<Image, Integer> {
+    List<Image> findImagesUriByProductProductId(int productId);
+    //Image findImageUriByProductProductId(int productId);
+
+    List<Image> findImagesUriByReviewReviewId(int reviewId);
+}

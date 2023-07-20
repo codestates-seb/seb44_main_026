@@ -70,7 +70,7 @@ public class MemberService {
     private void verifyExistsEmail(String email) {
         Optional<Member> member = memberRepository.findByEmail(email);
         if (member.isPresent())
-            throw new BusinessLogicException(ExceptionCode.MEMBER_NOT_FOUND);
+            throw new BusinessLogicException(ExceptionCode.MEMBER_NOT_FOUND);   //ExceptionCode.MEMBER_NOT_FOUND -> ExceptionCode.MEMBER_EXIST
     }
 
     public Member findMemberByEmail(String email) {

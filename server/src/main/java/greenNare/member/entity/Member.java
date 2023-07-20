@@ -1,5 +1,6 @@
 package greenNare.member.entity;
 
+import greenNare.cart.entity.Cart;
 import lombok.*;
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -25,6 +26,9 @@ public class Member {
     private String password;
     @Column(nullable = false)
     private int point;
+
+    @OneToMany(mappedBy = "member")
+    private List<Cart> carts;
 
     @ElementCollection(fetch = FetchType.EAGER)
     private List<String> roles = new ArrayList<>();

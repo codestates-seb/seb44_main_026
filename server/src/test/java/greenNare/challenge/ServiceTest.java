@@ -30,8 +30,8 @@ public class ServiceTest {
     public void createChallengeTest() {
         // given
         Challenge challenge = new Challenge("title", "content");
-        challenge.setMemberId(1L);
-        given(challengeRepository.findById(Mockito.anyLong())).willReturn(Optional.of(challenge));
+        challenge.setMemberId(1);
+        given(challengeRepository.findById(Mockito.any())).willReturn(Optional.of(challenge));
 
         // when/then
         assertThrows(BusinessLogicException.class, () -> challengeService.createChallenge(challenge));

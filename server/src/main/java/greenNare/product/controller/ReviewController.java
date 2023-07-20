@@ -1,10 +1,8 @@
 package greenNare.product.controller;
 
 
-import com.sun.xml.bind.v2.runtime.unmarshaller.XsiNilLoader;
 import greenNare.Response.MultiResponseDto;
-import greenNare.Response.SingleResponseDto;
-import greenNare.product.dto.GetReviewsResultDto;
+import greenNare.product.dto.GetReviewWithImageDto;
 import greenNare.product.dto.ReviewDto;
 import greenNare.product.entity.Review;
 import greenNare.product.mapper.ReviewMapper;
@@ -15,7 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.nio.charset.MalformedInputException;
+import java.util.List;
 
 @RestController
 //@CrossOrigin(origins = "*")
@@ -39,25 +37,27 @@ public class ReviewController {
         //쿼리 결과가 GetReviewsResultDto로 바뀌지않음 - 확인 후 수정
         //Page<GetReviewsResultDto> reviews = reviewService.getReviews(productId, page, size);
 
-        Page<Review> reviews = reviewService.getReviews(productId, page, size);
-        MultiResponseDto response = new MultiResponseDto(reviews.getContent(), reviews);
+        Page<Review> reviewPage = reviewService.getReviews(productId, page, size);
+        List<GetReviewWithImageDto> reviews = reviewService.getReviewImage(reviewPage);
+        MultiResponseDto response = new MultiResponseDto(reviews, reviewPage);
 
         return new ResponseEntity(response,  HttpStatus.OK);
     }
 
     @PostMapping("/{productId}")
-    public ResponseEntity PostReview(@PathVariable("productId") int productId,
+    public ResponseEntity postReview(@PathVariable("productId") int productId,
                                      @Valid @RequestBody ReviewDto.Post postDto,
                                      @RequestHeader(value = "Authorization", required = false) String token) {
 
         reviewService.createReview(reviewMapper.ReviewPostDtoToReview(postDto), productId/*, token*/);
 
+        //updatePoint(response-변경된 포인트 전송)
         return new ResponseEntity(HttpStatus.CREATED);
 
     }
 
     @PatchMapping("/{productId}")
-    public ResponseEntity PatchReview(@PathVariable("productId") int productId,
+    public ResponseEntity patchReview(@PathVariable("productId") int productId,
                                       @Valid @RequestBody ReviewDto.Patch patchDto,
                                       @RequestHeader(value = "Authorization", required = false) String token) {
         reviewService.updateReview(reviewMapper.ReviewPatchDtoToReview(patchDto), productId/*, token*/);
@@ -65,5 +65,13 @@ public class ReviewController {
         return new ResponseEntity(HttpStatus.OK);
 
     }
+
+    @DeleteMapping("/{productId}")
+    public ResponseEntity deleteReview(@PathVariable("productId") int productId){
+        reviewService.deleteReview(productId);
+
+        return new ResponseEntity(HttpStatus.OK);
+    }
+
 
 }
