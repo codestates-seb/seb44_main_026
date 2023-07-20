@@ -65,6 +65,7 @@ public class ChallengeService {
         }
         log.info("patch 요청에 image 있음");
         String projectPath = System.getProperty("user.dir")+ IMAGE_SAVE_URL; // * 상수 값은 모두 변수로 만들기
+        log.info("user.dir: {}", System.getProperty("user.dir"));
 
         UUID uuid = UUID.randomUUID();
         String fileName = uuid + SEPERATOR + file.getOriginalFilename(); // 숨기기. 파일 객체가 이메서드를 갖고 있도록
