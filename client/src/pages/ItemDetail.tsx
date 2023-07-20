@@ -22,7 +22,7 @@ interface ReviewType {
   createdAt: string;
   updateId: number;
   productId: number;
-  image?: string[];
+  imageLinks?: string[];
   name: string;
   point: number;
 }
@@ -34,7 +34,7 @@ export const ItemDetail = () => {
   const setIsShop = useSetAtom(isShopAtom);
   const [currentItem, setCurrentItem] = useState({
     category: '',
-    imageLink: '',
+    imageLinks: '',
     point: 0,
     price: 0,
     productId: 0,
@@ -96,7 +96,7 @@ export const ItemDetail = () => {
       <Nav />
       <Wrapper>
         <div className="itemWrapper">
-          <Image img={currentItem.imageLink} />
+          <Image img={currentItem.imageLinks} />
           <ItemInfo>
             <div>
               <h1 className="title">{currentItem.productName}</h1>
@@ -117,7 +117,7 @@ export const ItemDetail = () => {
                 <LikeButton
                   productId={currentItem.productId}
                   productName={currentItem.productName}
-                  image={currentItem.imageLink}
+                  image={currentItem.imageLinks}
                   price={currentItem.price}
                   point={currentItem.point}
                   heart={currentItem.heart}

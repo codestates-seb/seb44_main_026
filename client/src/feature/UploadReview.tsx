@@ -1,7 +1,6 @@
 import { styled } from 'styled-components';
 import TextareaAutosize from 'react-textarea-autosize';
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
 import { faCloudArrowUp } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import API from '../api/index';
@@ -11,26 +10,27 @@ interface UploadReviewProps {
   id: number;
   isEdit?: boolean;
   setIsEdit?: React.Dispatch<React.SetStateAction<boolean>>;
-  memberId?: string;
-  content?: string;
+  context?: string;
+  imageLinks?: string[];
 }
 
 export const UploadReview = ({
   id,
   isEdit,
   setIsEdit,
-  memberId,
-  content,
+  context,
+  imageLinks,
 }: UploadReviewProps) => {
   //리뷰 작성
-  const [review, setReview] = useState(content || '');
+  const [review, setReview] = useState(context || '');
   const [imageFiles, setImageFiles] = useState([]);
-  const [preview, setPreview] = useState([]);
+  const [preview, setPreview] = useState(imageLinks || []);
   const [errorMessage, setErrorMessage] = useState('');
   //모달
   const [isOpen, setIsOpen] = useState(false);
   const [isAlert, setIsAlert] = useState(true);
   const [modalContent, setModalContent] = useState('');
+  const accessToken = localStorage.getItem('accessToken');
 
   const postReview = async (formData: FormData) => {
     // formData값 확인
@@ -44,6 +44,7 @@ export const UploadReview = ({
         data: { context: review },
         // data: formData,
         headers: {
+          Authorization: accessToken,
           'Content-Type': 'multipart/form-data',
         },
       });
@@ -86,6 +87,7 @@ export const UploadReview = ({
         data: { context: review },
         // data: formData,
         headers: {
+          Authorization: accessToken,
           'Content-Type': 'multipart/form-data',
         },
       });
@@ -158,7 +160,7 @@ export const UploadReview = ({
 
   const handleClose = () => {
     setIsOpen(false);
-    // location.reload();
+    location.reload();
   };
 
   useEffect(() => {

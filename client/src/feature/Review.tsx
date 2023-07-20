@@ -5,13 +5,14 @@ import moment from 'moment';
 import 'moment/locale/ko';
 import API from '../api/index';
 import { ReviewModal } from './ReviewModal';
+import { access } from 'fs';
 
 interface ReviewProps {
   id: number;
 
   context: string;
   createdAt: string;
-  image?: string[];
+  imageLinks?: string[];
   name: string;
   point: number;
 }
@@ -20,7 +21,7 @@ export const Review = ({
   id,
   context,
   createdAt,
-  image,
+  imageLinks,
   name,
   point,
 }: ReviewProps) => {
@@ -29,8 +30,10 @@ export const Review = ({
   const [isOpen, setIsOpen] = useState(false);
   const [isAlert, setIsAlert] = useState(true);
   const [modalContent, setModalContent] = useState('');
+
+  const accessToken = localStorage.getItem('accessToken');
   // 임시
-  const username = 'name1';
+  const username = 'qweqwe';
 
   const onDeleteReview = () => {
     setModalContent('정말 삭제하시겠습니까?');
@@ -43,6 +46,7 @@ export const Review = ({
       const res = await API.DELETE({
         url: `http://greennarealb-281283380.ap-northeast-2.elb.amazonaws.com/green/review/${id}`,
         headers: {
+          Authorization: accessToken,
           'Content-Type': 'multipart/form-data',
         },
       });
@@ -102,13 +106,28 @@ export const Review = ({
             id={id}
             isEdit={isEdit}
             setIsEdit={setIsEdit}
-            memberId={name}
-            content={context}
+            context={context}
+            imageLinks={imageLinks}
           />
         </ContentWrapper>
       ) : (
         <ContentWrapper>
           <div className="content">{context}</div>
+          {imageLinks ? (
+            <PreviewWrapper>
+              {imageLinks.map((image, index) => (
+                <Preview key={index}>
+                  <img
+                    className="previewImg"
+                    // src={image}
+                    src={
+                      'https://i.namu.wiki/i/c1FfgJTOGJAGV6Pz4hfrAtzmfdCpnO0Sqjqhd2wB9DtgjKFoEcTen1HymS9oa2FpgNdKSUxj494vii746Eu_YLAueKFu_VpKCbegr6Sa4WYX-rr5598Ma8quoNWHv3620PkvgxolW58DYM5-e4bOGQ.webp'
+                    }
+                  />
+                </Preview>
+              ))}
+            </PreviewWrapper>
+          ) : null}
         </ContentWrapper>
       )}
     </ReviewWrapper>
@@ -157,7 +176,8 @@ const UserInfo = styled.div`
 
 const ContentWrapper = styled.div`
   display: flex;
-  align-items: center;
+  flex-direction: column;
+  justify-content: center;
   margin: 0.5rem 0;
 
   .content {
@@ -179,5 +199,29 @@ const Button = styled.button`
 
   &:hover {
     color: var(--green-200);
+  }
+`;
+
+const PreviewWrapper = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  margin: 0.5rem 0;
+`;
+
+const Preview = styled.div`
+  position: relative;
+  margin: 0.25rem 0;
+  margin-right: 0.25rem;
+  background-color: var(--green-200);
+  width: 8rem;
+  height: 8rem;
+
+  .previewImg {
+    object-fit: cover;
+    width: 100%;
+    height: 100%;
+    opacity: 1;
+    transition: 0.5s ease;
+    backface-visibility: hidden;
   }
 `;
