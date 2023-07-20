@@ -1,8 +1,7 @@
 import { GreenButton } from 'feature/GreenButton';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
-import { useState, useEffect } from 'react';
-import { AxiosResponse, AxiosError } from 'axios';
+import { useState } from 'react';
 import { useAtom } from 'jotai';
 import { AccessTokenAtom, RefreshTokenAtom, UserIdAtom } from 'jotai/atom';
 import { useNavigate } from 'react-router-dom';
