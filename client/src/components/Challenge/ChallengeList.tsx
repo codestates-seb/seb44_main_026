@@ -9,15 +9,22 @@ import { Pagination } from '../../feature/Pagination';
 const ChallengeList = () => {
   const [challengeList, setChallengeList] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const [postPerPage, setPostPerPage] = useState(10);
+  const postPerPage = 10;
   const [loading, setLoading] = useState(false);
+  const [total, setTotal] = useState(0);
 
   const getChallenge = async () => {
     try {
       setLoading(true);
-      const res = await API.GET('https://jsonplaceholder.typicode.com/posts');
-      const newData = [...res.data];
-      setChallengeList(newData.slice((currentPage - 1) * 10, currentPage * 10));
+      const res = await API.GET(
+        `http://greennarealb-281283380.ap-northeast-2.elb.amazonaws.com/nare/challenge?&size=${postPerPage}&page=${
+          currentPage - 1
+        }`,
+      );
+      console.log(res?.data.data);
+      console.log(res?.data.pageInfo);
+      setChallengeList([...res?.data.data]);
+      setTotal(res?.data.pageInfo.totalPages);
     } catch (err) {
       console.log(err);
       setChallengeList([]);
@@ -30,14 +37,9 @@ const ChallengeList = () => {
   }, []);
 
   useEffect(() => {
-    console.log(currentPage);
     getChallenge();
     window.scrollTo(0, 0);
   }, [currentPage]);
-
-  useEffect(() => {
-    console.log(challengeList);
-  }, [challengeList]);
 
   return (
     <ListWrapper>
@@ -47,9 +49,9 @@ const ChallengeList = () => {
         </div>
       )}
       {challengeList.map((item) => (
-        <ChallengeItem item={item} key={item.id} />
+        <ChallengeItem item={item} key={item.challengeId} />
       ))}
-      <Pagination total={10} page={currentPage} setPage={setCurrentPage} />
+      <Pagination total={total} page={currentPage} setPage={setCurrentPage} />
     </ListWrapper>
   );
 };
