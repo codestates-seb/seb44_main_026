@@ -14,8 +14,6 @@ const AutoSlide: React.FC = () => {
   const [slideIndex, setslideIndex] = useState(0); //slider index
   const [currentInterval, setCurrentInterval] = useState(3000);
   const LastIdx = slideArr.length;
-  const beforeSlide = slideArr[LastIdx - 1];
-  const afterSlide = slideArr[0];
   const copiedArr = [...slideArr];
   const COPIED_NUM = copiedArr.length;
   const navigate = useNavigate();

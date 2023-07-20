@@ -7,7 +7,7 @@ interface SItemProps {
   item: {
     productName: string;
     price: string;
-    detail: string;
+    name: string;
     createdAt: string;
     point: number;
   };
@@ -23,7 +23,7 @@ const SlideItem: React.FC<SItemProps> = ({ item }) => {
         <div className="slide-name">
           <h3>{item.productName}</h3>
         </div>
-        <div>{item.detail}</div>
+        <div>{item.price}</div>
       </div>
     </StyledWrapper>
   );
