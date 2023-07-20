@@ -6,7 +6,7 @@ import logo from '../assets/img/logo.png';
 import { Modal } from 'feature/Modal';
 import { modalAtom } from 'jotai/atom';
 import API from '../api/index';
-
+import { Link } from 'react-router-dom';
 interface StyledChangeModal {
   modalOpen: boolean;
 }
@@ -76,6 +76,10 @@ const ErrorMessage = styled.p`
   color: red;
   font-size: 0.75rem;
   margin: 0.25rem 0 0 0;
+`;
+
+const StyledLink = styled(Link)`
+  text-decoration: none;
 `;
 
 export const SignUp = () => {
@@ -164,7 +168,10 @@ export const SignUp = () => {
   return (
     <>
       <StyledLoginContainer modalOpen={modal}>
-        <StyledImg src={logo}></StyledImg>
+        <StyledLink to={'/'}>
+          <StyledImg src={logo} />
+        </StyledLink>
+
         <Styledexplain>회원가입</Styledexplain>
         <StyledLoginMain>
           <StyledeEmail>닉네임</StyledeEmail>

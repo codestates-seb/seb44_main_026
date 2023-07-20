@@ -49,6 +49,10 @@ const StyledSpan = styled.span`
   }
 `;
 
+const StyledLink = styled(Link)`
+  text-decoration: none;
+`;
+
 export const Header = () => {
   const setIsShop = useSetAtom(isShopAtom);
 
@@ -56,7 +60,10 @@ export const Header = () => {
   return (
     <div>
       <StyledHeaderContainer>
-        <StyledLogo src={logo}></StyledLogo>
+        <StyledLink to={'/'}>
+          <StyledLogo src={logo}></StyledLogo>
+        </StyledLink>
+
         <StyledChoicePage>
           <StyledGreen to={'/'}>
             <StyledSpan onClick={() => setIsShop(true)}>그린</StyledSpan>
