@@ -35,7 +35,7 @@ public class ChallengeService {
     private final JwtTokenizer jwtTokenizer;
     private final ReplyService replyService;
 
-    public static final String IMAGE_SAVE_URL = "/src/main/resources/static/images";
+    public static final String IMAGE_SAVE_URL = "/home/ssm-user/seb44_main_026/server/images/";
     public static final String SEPERATOR  = "_";
 
     public ChallengeService(ChallengeRepository challengeRepository, MemberService memberService, SecurityConfiguration securityConfiguration, JwtTokenizer jwtTokenizer, ReplyService replyService) {
@@ -68,8 +68,8 @@ public class ChallengeService {
         }
         log.info("patch 요청에 image 있음");
         //String projectPath = System.getProperty("user.dir")+ IMAGE_SAVE_URL; // * 상수 값은 모두 변수로 만들기
-        //String path = "/home/ssm-user/seb44_main_026/img";
-        String projectPath = "/home/ssm-user/seb44_main_026/server"+IMAGE_SAVE_URL;
+        String projectPath = IMAGE_SAVE_URL;
+        //String projectPath = "C:/Users/eheka/seb44_main_026/images/";
         log.info("user.dir: {}", System.getProperty("user.dir"));
 
         UUID uuid = UUID.randomUUID();
