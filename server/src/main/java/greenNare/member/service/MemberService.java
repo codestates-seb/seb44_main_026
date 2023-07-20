@@ -5,19 +5,37 @@ import greenNare.exception.BusinessLogicException;
 import greenNare.exception.ExceptionCode;
 import greenNare.member.entity.Member;
 import greenNare.member.repository.MemberRepository;
+import greenNare.product.dto.GetProductWithImageDto;
+import greenNare.product.entity.Image;
+import greenNare.product.entity.Product;
+import greenNare.product.repository.ImageRepository;
+import greenNare.product.service.ProductService;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
+
+import javax.imageio.ImageReader;
 import java.util.Optional;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class MemberService {
     private MemberRepository memberRepository;
     private SecurityConfiguration securityConfiguration;
 
-    public MemberService(MemberRepository memberRepository, SecurityConfiguration securityConfiguration) {
+    private ImageRepository imageRepository;
+
+    private ProductService productService;
+
+    public MemberService(MemberRepository memberRepository,
+                         SecurityConfiguration securityConfiguration,
+                         ImageRepository imageRepository,
+                         ProductService productService) {
         this.memberRepository = memberRepository;
         this.securityConfiguration = securityConfiguration;
+        this.imageRepository = imageRepository;
+        this.productService = productService;
     }
 
     public Member createMember(Member member) {
@@ -98,5 +116,8 @@ public class MemberService {
         member.setPoint(point);
         memberRepository.save(member);
     }
-
+//    public List<GetProductWithImageDto> getLikeProducts(Page<Product> products) {
+//        return
+//
+//    }
 }
