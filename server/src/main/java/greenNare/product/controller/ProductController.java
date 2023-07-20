@@ -44,7 +44,7 @@ public class ProductController {
 
     @GetMapping("/{productId}")
     public ResponseEntity getProduct(@PathVariable("productId") int productId) {
-        Product productDetails = productService.getProduct(productId);
+        GetProductWithImageDto productDetails = productService.getProductWithImage(productId);
 
         SingleResponseDto response = new SingleResponseDto(productDetails);
 

@@ -118,7 +118,7 @@ public class MemberService {
     }
 
 //    public List<GetProductWithImageDto> getLikeProducts(Page<Product> products) {
-//        return
+//        return productService.getProductWithImage(products);
 //
 //    }
 
