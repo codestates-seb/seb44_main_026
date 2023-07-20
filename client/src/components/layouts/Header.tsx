@@ -4,9 +4,8 @@ import logo from '../../assets/img/logo.png';
 import cart from '../../assets/img/cart.png';
 import user from '../../assets/img/user.png';
 // import { SearchBar } from '../../feature/SearchBar';
-import { useSetAtom, useAtom } from 'jotai';
+import { useSetAtom } from 'jotai';
 import { menuAtom } from 'jotai/atom';
-import { AccessTokenAtom } from 'jotai/atom';
 
 const StyledHeaderContainer = styled.nav`
   display: flex;
@@ -116,8 +115,8 @@ const AfterLogin = () => {
 
 export const Header = () => {
   const setCurrentMenu = useSetAtom(menuAtom);
-  const [loginAccToken, setLoginAccToken] = useAtom(AccessTokenAtom); // Jotai atom 사용
-  console.log('토큰:', loginAccToken);
+  const accessToken = localStorage.getItem('accessToken');
+  console.log('토큰:', accessToken);
   return (
     <div>
       <StyledHeaderContainer>
@@ -136,7 +135,7 @@ export const Header = () => {
         </StyledChoicePage>
         <StyledNavContainer>
           {/* <SearchBar></SearchBar> */}
-          {loginAccToken ? <AfterLogin /> : <BeforeLogin />}
+          {accessToken ? <AfterLogin /> : <BeforeLogin />}
         </StyledNavContainer>
         {/* 로그인, 회원가입 버튼 자리*/}
       </StyledHeaderContainer>
