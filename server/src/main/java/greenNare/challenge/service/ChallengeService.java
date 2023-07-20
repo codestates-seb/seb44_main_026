@@ -67,8 +67,9 @@ public class ChallengeService {
             return challenge;
         }
         log.info("patch 요청에 image 있음");
-        String projectPath = System.getProperty("user.dir")+ IMAGE_SAVE_URL; // * 상수 값은 모두 변수로 만들기
+        //String projectPath = System.getProperty("user.dir")+ IMAGE_SAVE_URL; // * 상수 값은 모두 변수로 만들기
         //String path = "/home/ssm-user/seb44_main_026/img";
+        String projectPath = "/home/ssm-user/seb44_main_026/server"+IMAGE_SAVE_URL;
         log.info("user.dir: {}", System.getProperty("user.dir"));
 
         UUID uuid = UUID.randomUUID();
