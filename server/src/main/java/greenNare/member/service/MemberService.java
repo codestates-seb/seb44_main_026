@@ -80,7 +80,7 @@ public class MemberService {
     }
     public Member findMemberById(int memberId) {
         return memberRepository.findById(memberId)
-                .orElseThrow(()-> new BusinessLogicException(ExceptionCode.MEMBER_EXIST));
+                .orElseThrow(()-> new BusinessLogicException(ExceptionCode.MEMBER_NOT_FOUND));
     }
 
     public void addPoint(int memberId) {
