@@ -42,7 +42,7 @@ public class SecurityConfiguration {
                 .headers().frameOptions().sameOrigin()
                 .and()
                 .csrf().disable()
-                .cors() // CORS 설정 추가
+                .cors().configurationSource(corsConfigurationSource()) // CORS 설정 추가
                 .and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
@@ -69,9 +69,10 @@ public class SecurityConfiguration {
         CorsConfiguration configuration = new CorsConfiguration();
         configuration.setAllowedOrigins(Arrays.asList("http://localhost:3000")); // 클라이언트 애플리케이션이 호스팅되는 도메인
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PATCH", "PUT", "DELETE", "HEAD", "OPTIONS")); // 지원하는 HTTP 메서드
-        configuration.setExposedHeaders(Arrays.asList("Authorization")); // 노출할 응답 헤더 (필요한 경우에만 노출)
-        configuration.setAllowCredentials(false); // 인증 정보를 포함하지 않도록 설정 (보안상의 이유로 기본적으로는 false)
-        configuration.setAllowedHeaders(Arrays.asList("Content-Type")); // 허용되는 요청 헤더 (필요한 경우에만 추가)
+        configuration.setExposedHeaders(Arrays.asList("Authorization", "Refresh")); // 노출할 응답 헤더 (필요한 경우에만 노출)
+        configuration.setAllowCredentials(true); // 인증 정보를 포함하지 않도록 설정 (보안상의 이유로 기본적으로는 false)
+        configuration.setAllowedHeaders(Arrays.asList("Origin", "X-Requested-With", "Content-Type", "Accept", "Authorization",
+                "Access-Control-Allow-Headers", "Access-Control-Allow-Origin", "Refresh")); // 허용되는 요청 헤더 (필요한 경우에만 추가)
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
