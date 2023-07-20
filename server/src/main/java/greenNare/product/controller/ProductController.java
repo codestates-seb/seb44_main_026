@@ -3,6 +3,7 @@ package greenNare.product.controller;
 
 import greenNare.Response.MultiResponseDto;
 import greenNare.Response.SingleResponseDto;
+import greenNare.auth.jwt.JwtTokenizer;
 import greenNare.product.dto.GetProductWithImageDto;
 import greenNare.product.entity.Product;
 import greenNare.product.mapper.ProductMapper;
@@ -19,11 +20,9 @@ import java.util.List;
 @RequestMapping("/green")
 public class ProductController {
     private ProductService productService;
-    private ProductMapper mapper;
 
-    public ProductController(ProductService productService, ProductMapper mapper) {
+    public ProductController(ProductService productService, JwtTokenizer jwtTokenizer) {
         this.productService = productService;
-        this.mapper = mapper;
     }
 
     @GetMapping("/")
@@ -39,8 +38,6 @@ public class ProductController {
         Page<Product> getProducts = productService.getProducts(page, size, category);
         List<GetProductWithImageDto> responseProducts = productService.getProductWithImage(getProducts);
         MultiResponseDto response = new MultiResponseDto(responseProducts, getProducts);
-
-
 
         return new ResponseEntity<>(response, HttpStatus.OK);
     }

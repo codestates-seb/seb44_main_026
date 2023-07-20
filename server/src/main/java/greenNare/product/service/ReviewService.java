@@ -1,8 +1,10 @@
 package greenNare.product.service;
 
+import greenNare.auth.jwt.JwtTokenizer;
 import greenNare.exception.BusinessLogicException;
 import greenNare.exception.ExceptionCode;
 import greenNare.member.repository.MemberRepository;
+import greenNare.member.service.MemberService;
 import greenNare.product.dto.GetReviewWithImageDto;
 import greenNare.product.entity.Image;
 import greenNare.product.entity.Review;
@@ -27,24 +29,30 @@ public class ReviewService {
 
     private MemberRepository memberRepository;
 
+    private MemberService memberService;
+
+
     public ReviewService(ReviewRepository reviewRepository,
                          ProductService productService,
                          MemberRepository memberRepository,
-                         ImageRepository imageRepository) {
+                         ImageRepository imageRepository,
+                         MemberService memberService) {
+
         this.reviewRepository = reviewRepository;
         this.productService = productService;
         this.memberRepository = memberRepository;
         this.imageRepository = imageRepository;
+        this.memberService = memberService;
     }
 
-    public Page<Review> getReviews(int productId, int page, int size) {
-        PageRequest pageable = PageRequest.of(page,size);
 
-        //필요한 데이터만 반환하도록 수정
+    public Page<Review> getReviews(int productId, PageRequest pageable) {
+        //PageRequest pageable = PageRequest.of(page,size);
         Page<Review> reviews = reviewRepository.findByProductProductId(pageable, productId);
 
         return reviews;
     }
+
 
     public List<GetReviewWithImageDto> getReviewImage(Page<Review> reviews) {
         List<GetReviewWithImageDto> getReviewWithImageDtos = reviews.getContent().stream()
@@ -81,19 +89,23 @@ public class ReviewService {
 
 
     //create결과 리턴?
-    public void createReview(Review review, int productId/*, String token*/) {
+    public void createReview(Review review, int memberId, int productId) {
         //
-        verifyExistsReview(productId, 1);
+        verifyExistsReview(memberId, productId);
 
-        review.setMember(memberRepository.findBymemberId(1));
+        review.setMember(memberRepository.findBymemberId(memberId));
         review.setProduct(productService.getProduct(productId));
         reviewRepository.save(review);
         System.out.println("createReview " + review);
+
+        //updatePoint(response-변경된 포인트 전송)
+        memberService.addPoint(memberId);
     }
 
-    public void updateReview(Review review/*String token*/, int productId) {
+
+    public void updateReview(Review review,  int memberId, int productId) {
         //
-        Review findReview = findReview(1, productId);
+        Review findReview = findReview(memberId, productId);
 
         findReview.setContext(review.getContext());
         findReview.setUpdatedAt(LocalDateTime.now());
@@ -103,19 +115,22 @@ public class ReviewService {
 
     }
 
-    public void deleteReview(/*String token, */int productId) {
-        Review findReview = findReview(1, productId);
+
+    public void deleteReview(int memberId, int productId) {
+        Review findReview = findReview(memberId, productId);
 
         reviewRepository.delete(findReview);
     }
 
-    public void verifyExistsReview(int productId, int memberId/*String token*/) {
+
+    public void verifyExistsReview(int memberId, int productId) {
         boolean exist = reviewRepository.findByMemberMemberIdAndProductProductId(memberId, productId).isPresent();
         if(exist) throw new BusinessLogicException(ExceptionCode.REVIEW_EXIST);
 
     }
 
-    public Review findReview(int memberId/*String token*/, int productId) {
+
+    public Review findReview(int memberId, int productId) {
         Optional<Review> optionalReview = reviewRepository.findByMemberMemberIdAndProductProductId(memberId, productId);
         Review findReview = optionalReview
                 .orElseThrow(() -> new BusinessLogicException(ExceptionCode.REVIEW_NOT_FOUND));
