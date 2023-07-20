@@ -7,16 +7,24 @@ import loadimg from '../assets/img/loading.gif';
 import { InputItem } from 'components/Challenge/Detail/Comment';
 import { dummyComment } from 'components/Challenge/Detail/DummyComment';
 import CommentBox from 'components/Challenge/Detail/CommentBox';
+import ChallengeList from 'components/Challenge/ChallengeList';
+import { Pagination } from '../feature/Pagination';
 
 const ChallengeDetail = () => {
   const id = useParams().id; //챌린지 아이디
   const navigate = useNavigate();
   const [title, setTitle] = useState('');
   const [body, setBody] = useState('');
+  const [name, setName] = useState('');
   const [loading, setloading] = useState(false); //데이터 받아올 때 로딩
   const [comment, setComment] = useState(''); //새로 작성할 댓글 내용
   const [commentList, setCommentList] = useState([]);
-  const commentCount = 0;
+  const memberId = 1;
+  const [commentCount, setCommentCount] = useState(0);
+  const [admin, setAdmin] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
+  const postPerPage = 10;
+  const [total, setTotal] = useState(0);
 
   const getChallenge = async () => {
     try {
@@ -27,6 +35,10 @@ const ChallengeDetail = () => {
       console.log(res);
       setTitle(res?.data.data.title);
       setBody(res?.data.data.content);
+      setName(res?.data.data.name);
+      if (memberId === res?.data.data.memberId) {
+        setAdmin(true);
+      }
     } catch (err) {
       console.log(err);
     }
@@ -51,10 +63,16 @@ const ChallengeDetail = () => {
     try {
       setloading(true);
       const res = await API.GET(
-        `http://greennarealb-281283380.ap-northeast-2.elb.amazonaws.com/nare/reply/${id}`,
+        `http://greennarealb-281283380.ap-northeast-2.elb.amazonaws.com/nare/reply/${id}?size=${postPerPage}&page=${
+          currentPage - 1
+        }`,
       );
       console.log(res);
+
       setCommentList([...res?.data.data]);
+      setCommentCount(res?.data.pageInfo.totalElements);
+      setTotal(res?.data.pageInfo.totalPages);
+      console.log('comment');
     } catch (err) {
       console.log(err);
     }
@@ -66,6 +84,12 @@ const ChallengeDetail = () => {
     getChallenge();
     getComment();
   }, []);
+
+  useEffect(() => {
+    console.log(currentPage);
+    getComment();
+    window.scrollTo(0, 0);
+  }, [currentPage]);
 
   const goToEdit = () => {
     navigate(`/challenge/edit/${id}`);
@@ -86,13 +110,17 @@ const ChallengeDetail = () => {
                 <h2>{title}</h2>
               </div>
               <div className="subtitle-container">
-                <div className="detail-writer">작성자:김철수</div>
-                <div className="edit-page" onClick={goToEdit}>
-                  수정하기
-                </div>
-                <div className="delete-page" onClick={deleteChallenge}>
-                  삭제하기
-                </div>
+                <div className="detail-writer">{name}</div>
+                {admin ? (
+                  <>
+                    <div className="edit-page" onClick={goToEdit}>
+                      수정하기
+                    </div>
+                    <div className="delete-page" onClick={deleteChallenge}>
+                      삭제하기
+                    </div>
+                  </>
+                ) : null}
               </div>
             </TitleContainer>
             <BodyContainer>
@@ -102,7 +130,7 @@ const ChallengeDetail = () => {
           <CommentContainer>
             <CommentTitle>참여 댓글 {commentCount}개</CommentTitle>
             <InputItem setComment={setComment} value={comment} />
-            {dummyComment.map((item: any, index: any) => (
+            {commentList.map((item: any, index: any) => (
               <CommentBox
                 name={item.memberId}
                 id={item.replyId}
@@ -112,6 +140,11 @@ const ChallengeDetail = () => {
                 key={index}
               ></CommentBox>
             ))}
+            <Pagination
+              total={total}
+              page={currentPage}
+              setPage={setCurrentPage}
+            />
           </CommentContainer>
         </>
       )}

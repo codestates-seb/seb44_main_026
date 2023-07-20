@@ -9,7 +9,7 @@ import { Pagination } from '../../feature/Pagination';
 const ChallengeList = () => {
   const [challengeList, setChallengeList] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const [postPerPage, setPostPerPage] = useState(10);
+  const postPerPage = 10;
   const [loading, setLoading] = useState(false);
   const [total, setTotal] = useState(0);
 

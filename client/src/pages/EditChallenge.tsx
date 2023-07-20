@@ -28,7 +28,6 @@ const EditChallenge: React.FC = () => {
   const EditChallenge = async () => {
     try {
       const formData = new FormData();
-      //formData.append('requestBody', JSON.stringify(newData));
       formData.append(
         'requestBody',
         new Blob([JSON.stringify(newData)], {
@@ -36,17 +35,20 @@ const EditChallenge: React.FC = () => {
         }),
       );
       formData.append('image', null);
-      const res = await API.PATCH({
-        url: `http://greennarealb-281283380.ap-northeast-2.elb.amazonaws.com/nare/1`,
+      const res = await API.POST({
+        url: `http://greennarealb-281283380.ap-northeast-2.elb.amazonaws.com/nare/update/1`,
         data: formData,
         headers: {
           'Content-Type': 'multipart/form-data',
         },
       });
-      console.log('patch');
+      console.log('수정');
     } catch (err) {
       console.log(err);
     }
+    //alert('수정되었습니다');
+    //nav('/challenge/1');
+    //location.reload();
   };
 
   /*

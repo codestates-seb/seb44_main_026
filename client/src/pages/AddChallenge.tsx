@@ -15,6 +15,7 @@ const AddChallenge = () => {
   const [contents, setContents] = useState('');
   const [fileurl, setFileurl] = useState<string>(''); //기본파일세팅
   const [newfile, setnewFile] = useState<File | null>(); //새로업로드할 파일
+  const [isReady, setIsReady] = useState(false);
   const newData = {
     title: title,
     content: contents,
@@ -24,31 +25,45 @@ const AddChallenge = () => {
     nav('/challenge');
   };
 
-  const postChallenge = async () => {
-    try {
-      const formData = new FormData();
-      //formData.append('requestBody', JSON.stringify(newData));
-      formData.append(
-        'requestBody',
-        new Blob([JSON.stringify(newData)], {
-          type: 'application/json',
-        }),
-      );
-      formData.append('image', null);
-      const res = await API.POST({
-        url: 'http://greennarealb-281283380.ap-northeast-2.elb.amazonaws.com/nare/challenge',
-        data: formData,
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
-      });
-    } catch (err) {
-      console.log(err);
-    }
-
-    nav('/challenge');
-    location.reload();
+  const handleWarning = () => {
+    alert('제목을 1자 이상, 내용을 20자 이상 입력하세요. 등록이 불가능합니다.');
   };
+
+  const postChallenge = async () => {
+    if (isReady) {
+      try {
+        const formData = new FormData();
+        //formData.append('requestBody', JSON.stringify(newData));
+        formData.append(
+          'requestBody',
+          new Blob([JSON.stringify(newData)], {
+            type: 'application/json',
+          }),
+        );
+        formData.append('image', null);
+        const res = await API.POST({
+          url: 'http://greennarealb-281283380.ap-northeast-2.elb.amazonaws.com/nare/challenge',
+          data: formData,
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        });
+      } catch (err) {
+        console.log(err);
+      }
+
+      nav('/challenge');
+      location.reload();
+    }
+  };
+
+  useEffect(() => {
+    if (title.length > 0 && contents.length > 20) {
+      setIsReady(true);
+    } else {
+      setIsReady(false);
+    }
+  }, [title, contents]);
 
   /*
   //file upload 
@@ -109,8 +124,19 @@ const AddChallenge = () => {
   />*/}
         <UploadChallenge />
       </InputContainer>
+      {isReady ? null : (
+        <WarningContainer>
+          제목은 1자 이상, 내용은 20자 이상 입력하세요!
+        </WarningContainer>
+      )}
       <ButtonContainer>
-        <SubmitContainer onClick={postChallenge}>등록</SubmitContainer>
+        {isReady ? (
+          <SubmitContainer onClick={postChallenge}>등록</SubmitContainer>
+        ) : (
+          <SubmitContainer className="no-admin" onClick={handleWarning}>
+            등록
+          </SubmitContainer>
+        )}
         <CancelContainer onClick={goToChallenge}>취소</CancelContainer>
       </ButtonContainer>
     </>
@@ -134,6 +160,9 @@ const ButtonContainer = styled.div`
   display: flex;
   width: 20%;
   margin: 0 auto;
+  .no-admin {
+    background-color: var(--gray-100);
+  }
 `;
 
 const SubmitContainer = styled.div`
@@ -148,6 +177,13 @@ const SubmitContainer = styled.div`
   font-size: 13px;
   border-radius: 3px;
   margin-bottom: 1rem;
+`;
+
+const WarningContainer = styled.div`
+  display: flex;
+  color: red;
+  margin-left: 5rem;
+  font-size: 12px;
 `;
 
 const CancelContainer = styled.div`

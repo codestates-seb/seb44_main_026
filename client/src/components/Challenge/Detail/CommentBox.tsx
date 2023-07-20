@@ -8,7 +8,7 @@ import { useState } from 'react';
 import EditComment from './EditComment';
 
 interface CommentProps {
-  name: string;
+  name: number;
   body: string;
   point: number;
   createdAt: string;
@@ -24,6 +24,8 @@ const CommentBox: React.FC<CommentProps> = ({
 }) => {
   const [isEdit, setIsEdit] = useState(false);
   const [comment, setComment] = useState(body);
+  //멤버아이디 비교해서 멤버아이디가 맞으면 수정 삭제 표시
+  const memberId = 1;
 
   const deleteComment = async () => {
     try {
@@ -54,12 +56,18 @@ const CommentBox: React.FC<CommentProps> = ({
             <div className="comment-date">
               {'⏱️ ' + moment(createdAt).fromNow()}
             </div>
-            <div className="edit-button" onClick={() => setIsEdit(true)}>
-              수정
-            </div>
-            <div className="del-button" onClick={deleteComment}>
-              삭제
-            </div>
+            <>
+              {memberId === name ? (
+                <>
+                  <div className="edit-button" onClick={() => setIsEdit(true)}>
+                    수정
+                  </div>
+                  <div className="del-button" onClick={deleteComment}>
+                    삭제
+                  </div>
+                </>
+              ) : null}
+            </>
           </InfoContainer>
           <BodyContainer>{body}</BodyContainer>
         </>

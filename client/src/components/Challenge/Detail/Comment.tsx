@@ -16,10 +16,6 @@ const InputItem: React.FC<InputItemProps> = ({ setComment, value }) => {
     setComment(e.currentTarget.value);
   };
 
-  useEffect(() => {
-    console.log(id);
-  }, []);
-
   const postComment = async () => {
     try {
       setloading(true);
