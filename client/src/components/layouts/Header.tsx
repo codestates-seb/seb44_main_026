@@ -49,13 +49,20 @@ const StyledSpan = styled.span`
   }
 `;
 
+const StyledLink = styled(Link)`
+  text-decoration: none;
+`;
+
 export const Header = () => {
   const setCurrentMenu = useSetAtom(menuAtom);
   const accessToken = localStorage.getItem('accessToken');
   return (
     <div>
       <StyledHeaderContainer>
-        <StyledLogo src={logo}></StyledLogo>
+        <StyledLink to={'/'}>
+          <StyledLogo src={logo}></StyledLogo>
+        </StyledLink>
+
         <StyledChoicePage>
           <StyledGreen to={'/'}>
             <StyledSpan onClick={() => setCurrentMenu('')}>그린</StyledSpan>
