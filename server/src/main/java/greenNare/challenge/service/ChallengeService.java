@@ -68,7 +68,7 @@ public class ChallengeService {
         }
         log.info("patch 요청에 image 있음");
         String projectPath = System.getProperty("user.dir")+ IMAGE_SAVE_URL; // * 상수 값은 모두 변수로 만들기
-        String path = "/home/ssm-user/seb44_main_026/image";
+        String path = "/home/ssm-user/seb44_main_026/images";
         log.info("user.dir: {}", System.getProperty("user.dir"));
 
         UUID uuid = UUID.randomUUID();
@@ -128,7 +128,8 @@ public class ChallengeService {
 
     public ChallengeDto.Response updateChallenge(Challenge challenge, int challengeId, MultipartFile image, String token) throws IOException {
         Challenge findChallenge = findVerifideChallenge(challengeId);
-        validateWriter(challenge, token);
+
+        validateWriter(findChallenge.getMemberId(), token);
 
         File file = new File(System.getProperty("user.dir")+"/src/main/resources/static"+findChallenge.getImage());
         deleteImage(file);
@@ -156,7 +157,7 @@ public class ChallengeService {
         }
         log.info("##### token empty 통과");
         Challenge findChallenge = findVerifideChallenge(challengeId);
-        validateWriter(findChallenge,token);
+        validateWriter(findChallenge.getMemberId(),token);
 
         File file = new File(System.getProperty("user.dir")+"/src/main/resources/static"+findChallenge.getImage());
         deleteImage(file);
@@ -186,13 +187,18 @@ public class ChallengeService {
 
     public Member findMemberByToken(String token) {
         int memberId = jwtTokenizer.getMemberId(token);
+        log.info("token에서 추출한 memberId : {}", memberId);
         return memberService.findMemberById(memberId);
     }
 
-    public void validateWriter(Challenge challenge, String token) {
-        if (findMemberByToken(token).getMemberId() != challenge.getMemberId()) {
+    public void validateWriter(int writerMemberId, String token) {
+        if (findMemberByToken(token).getMemberId() != writerMemberId) {
+            log.info("작성자와 접근자(수정) 불일치");
+            log.info("token 주인 : {}", findMemberByToken(token).getMemberId());
+            log.info("챌린지 작성자 : {}", writerMemberId);
             throw new BusinessLogicException(ExceptionCode.UNMATCHED_WRITER);
         }
+        log.info("validateWriter OK");
     }
 
     public int countReply(int challengeId) {
