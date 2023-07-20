@@ -88,4 +88,17 @@ public class JwtTokenizer {
 
         return key;
     }
+    public int getMemberId(String token) {
+        String jws = token.replace("Bearer ", "");
+        String base64EncodedSecretKey = encodeBase64SecretKey(getSecretKey());
+        Jws<Claims> claimsJws = getClaims(jws, base64EncodedSecretKey);
+        Claims claims = claimsJws.getBody();
+
+        return (int) claims.get("memberId");
+    }
+    public String getUsername(String token) {
+        String jws = token.replace("Bearer ", "");
+        String base64EncodedSecretKey = encodeBase64SecretKey(getSecretKey());
+        return getClaims(jws, base64EncodedSecretKey).getBody().getSubject();
+    }
 }

@@ -80,4 +80,20 @@ public class MemberService {
                 .orElseThrow(()-> new BusinessLogicException(ExceptionCode.MEMBER_EXIST));
     }
 
+    public void addPoint(int memberId) {
+        Member member = findMemberById(memberId);
+        int point = member.getPoint() + 1;
+        member.setPoint(point);
+        memberRepository.save(member);
+    }
+    public void deletePoint(int memberId) {
+        Member member = findMemberById(memberId);
+        int point = member.getPoint() - 5;
+        if (point < 0) {
+            throw new BusinessLogicException(ExceptionCode.POINT_LAKE);
+        }
+        member.setPoint(point);
+        memberRepository.save(member);
+    }
+
 }

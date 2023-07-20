@@ -1,5 +1,6 @@
 package greenNare.reply.dto;
 
+import greenNare.member.entity.Member;
 import greenNare.reply.entity.Reply;
 import lombok.*;
 
@@ -23,7 +24,7 @@ public class ReplyDto {
         private String content;
         private LocalDateTime createdAt;
         private LocalDateTime updatedAt;
-        /*
+
         private String name;
         private int point;
 
@@ -35,15 +36,14 @@ public class ReplyDto {
             this.point = point;
         }
 
-         */
-        public static Response from(Reply reply) {// Member member)
+        public static Response from(Reply reply, Member member) {
             return Response.builder()
                     .replyId(reply.getReplyId())
                     .memberId(reply.getMemberId())
                     .challengeId(reply.getChallengeId())
                     .content(reply.getContent())
-                    //.name(member.getName())
-                    //.point(member.getPoint())
+                    .name(member.getName())
+                    .point(member.getPoint())
                     .build();
         }
 

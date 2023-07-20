@@ -1,5 +1,6 @@
 package greenNare.challenge.service;
 
+import greenNare.auth.jwt.JwtTokenizer;
 import greenNare.challenge.dto.ChallengeDto;
 import greenNare.challenge.entity.Challenge;
 import greenNare.challenge.repository.ChallengeRepository;
@@ -16,11 +17,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.swing.text.html.Option;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -32,25 +31,31 @@ public class ChallengeService {
     private final ChallengeRepository challengeRepository;
     private final MemberService memberService;
     private final SecurityConfiguration securityConfiguration;
+    private final JwtTokenizer jwtTokenizer;
 
-    public ChallengeService(ChallengeRepository challengeRepository, MemberService memberService, SecurityConfiguration securityConfiguration) {
+    public static final String IMAGE_SAVE_URL = "\\src\\main\\resources\\static\\images";
+    public static final String SEPERATOR  = "_";
+
+    public ChallengeService(ChallengeRepository challengeRepository, MemberService memberService, SecurityConfiguration securityConfiguration, JwtTokenizer jwtTokenizer) {
         this.challengeRepository = challengeRepository;
         this.memberService = memberService;
         this.securityConfiguration = securityConfiguration;
+        this.jwtTokenizer = jwtTokenizer;
     }
 
-    public Challenge createChallenge(Challenge challenge) throws NullPointerException {//, String token) {
-        /*
-        String memberEmail = jwtTokenizer.getUsername(token)
-        Member member = memberService.findMemberByEmail(memberEmail);
-        int id = member.getId()
-        int point = member.getPoint()
-        challenge.setMemberId(id);
-         */
-        //challenge.setImage();
-        challenge.setMemberId(1); //임시아이디 변수로 만들기
-        Challenge saveChallenge = challengeRepository.save(challenge);
-        return saveChallenge;
+    public ChallengeDto.Response createChallenge(Challenge challenge, String token, MultipartFile file) throws NullPointerException, IOException {
+        Member member = findMemberByToken(token);
+
+        challenge.setMemberId(member.getMemberId());
+
+        Challenge imageSaveChallenge = saveImage(challenge, file);
+
+        Challenge saveChallenge = challengeRepository.save(imageSaveChallenge);
+
+        ChallengeDto.Response response = ChallengeDto.Response.from(saveChallenge);
+        response.setName(member.getName());
+        response.setPoint(member.getPoint());
+        return response;
     }
 
     public Challenge saveImage(Challenge challenge, MultipartFile file) throws IOException {
@@ -59,12 +64,10 @@ public class ChallengeService {
             return challenge;
         }
         log.info("patch 요청에 image 있음");
-        String projectPath = System.getProperty("user.dir")+"\\src\\main\\resources\\static\\images";
-        // 상수 값은 모두 변수로 만들기
+        String projectPath = System.getProperty("user.dir")+ IMAGE_SAVE_URL; // * 상수 값은 모두 변수로 만들기
 
         UUID uuid = UUID.randomUUID();
-        String fileName = uuid + "_" + file.getOriginalFilename(); // 숨기기. 파일 객체가 이메서드를 갖고 있도록
-        //_도 seperator로 변수 선언
+        String fileName = uuid + SEPERATOR + file.getOriginalFilename(); // 숨기기. 파일 객체가 이메서드를 갖고 있도록
 
         File saveFile = new File(projectPath, fileName);
         file.transferTo(saveFile);
@@ -74,29 +77,34 @@ public class ChallengeService {
 
         challenge.setImage(image);
         return challengeRepository.save(challenge);
-        //return challenge;
     }
 
     public List<ChallengeDto.PageResponse> getChallenges(Pageable pageable) {
-        log.info("@@@@ getChallenges 호출됨");
-        //int pageNumber = pageable.getPageNumber();
-        //int pageSize = pageable.getPageSize();
+        log.info("@@@@ getChallenges 호출");
 
         Page<Challenge> challengePage = challengeRepository.findAll(pageable);
-        //challengeRepository.findAll(pageable);//pageable.getPageNumber(), pageable.getPageSize(), pageable.getSort());
 
         List<ChallengeDto.PageResponse> challenges = challengePage.stream()
-                .map(challenge -> new ChallengeDto.PageResponse(
+                .map(challenge -> {
+                    ChallengeDto.PageResponse response =  ChallengeDto.PageResponse.from(challenge);
+                    Member member = memberService.findMemberById(challenge.getMemberId());
+                    response.setName(member.getName());
+                    response.setPoint(member.getPoint());
+
+                    //response.setName(findUsername(challenge.getMemberId()));
+                    //response.setPoint(findPoint(challenge.getMemberId()));
+                    return response;
+                }
+                        /*
+                        new ChallengeDto.PageResponse(
                         challenge.getChallengeId(),
                         challenge.getMemberId(),
                         challenge.getTitle(),
-                        "name",10,
-                        //findUsername(challenge.getMemberId()),
-                        //findPoint(challenge.getMemberId()),
+                        findUsername(challenge.getMemberId()),
+                        findPoint(challenge.getMemberId()),
                         challenge.getCreatedAt(),
-                        challenge.getUpdatedAt()
-                )).collect(Collectors.toList());
-        log.info("challenge List : {}", challenges);
+                        challenge.getUpdatedAt())*/
+                ).collect(Collectors.toList());
         return challenges;
     }
     public Page<Challenge> getChallengesPage(Pageable pageable) {
@@ -108,7 +116,7 @@ public class ChallengeService {
         log.info("@@@ challengePage content : {}", challengePage.getNumber());
         return challengePage;
     }
-
+/*
     public Page<Object[]> getAllChallengeWithUsername(Pageable pageable) {
         return challengeRepository.getAllChallengeWithUsername(pageable);
         /*Page<Challenge> challengeList =  challengeRepository.findAll(PageRequest.of(page, size,
@@ -122,7 +130,7 @@ public class ChallengeService {
                         challenge.getCreatedAt(),
                         challenge.getImage()
                 ))*/
-    }
+    //}
 
     public ChallengeDto.Response getChallenge(int challengeId) {
         log.info(String.valueOf("#### get challenge 시작 / challengeId :"+  String.valueOf(challengeId)));
@@ -130,7 +138,11 @@ public class ChallengeService {
         Challenge challenge = findVerifideChallenge(challengeId);
         log.info("### challenge content : {}", challenge.getContent());
         //ChallengeDto.Response response = challengeRepository.findByMemberId(challenge.getMemberId());
-        ChallengeDto.Response response = new ChallengeDto.Response(
+        ChallengeDto.Response response = ChallengeDto.Response.from(challenge);
+
+        //response.setName(findUsername(challenge.getMemberId()));
+        //response.setPoint(findPoint(challenge.getMemberId()));
+        /*new ChallengeDto.Response(
                 challenge.getChallengeId(),
                 challenge.getMemberId(),
                 challenge.getTitle(),
@@ -138,20 +150,18 @@ public class ChallengeService {
                 challenge.getUpdatedAt(),
                 challenge.getCreatedAt(),
                 challenge.getImage(),
-                "name",10
-                //findUsername(challenge.getMemberId()),
-                //findPoint(challenge.getMemberId())
-        );
+                findUsername(challenge.getMemberId()),
+                findPoint(challenge.getMemberId())
+        );*/
         log.info("response : {}", response.getName());
 
-        //int memberId = challenge.getMemberId();
-        //findWriterInfo(memberId, response);
+        return addWriterInfo(challenge.getMemberId(), response);
 
-        return response;
     }
 
-    public ChallengeDto.Response updateChallenge(Challenge challenge, int challengeId, MultipartFile image) throws IOException {
+    public ChallengeDto.Response updateChallenge(Challenge challenge, int challengeId, MultipartFile image, String token) throws IOException {
         Challenge findChallenge = findVerifideChallenge(challengeId);
+        validateWriter(challenge, token);
 
         File file = new File(System.getProperty("user.dir")+"/src/main/resources/static"+findChallenge.getImage());
         deleteImage(file);
@@ -170,7 +180,10 @@ public class ChallengeService {
         challengeRepository.save(imageSaveChallenge);
         //ChallengeDto.Response response = challengeRepository.findByMemberId(challenge.getMemberId());
         //ChallengeDto.Response challengeResponseDto = ChallengeDto.Response.from(imageSaveChallenge);
-        ChallengeDto.Response response = new ChallengeDto.Response(
+        ChallengeDto.Response response = ChallengeDto.Response.from(imageSaveChallenge);
+        //response.setName(findUsername(challenge.getMemberId()));
+        //response.setPoint(findPoint(challenge.getMemberId()));
+                /*new ChallengeDto.Response(
                 imageSaveChallenge.getChallengeId(),
                 imageSaveChallenge.getMemberId(),
                 imageSaveChallenge.getTitle(),
@@ -178,14 +191,11 @@ public class ChallengeService {
                 imageSaveChallenge.getUpdatedAt(),
                 imageSaveChallenge.getCreatedAt(),
                 imageSaveChallenge.getImage(),
-                "name", 10
-                //findUsername(challenge.getMemberId()),
-                //findPoint(challenge.getMemberId())
-        );
-        int memberId = imageSaveChallenge.getMemberId();
-        //ChallengeDto.Response response = findWriterInfo(memberId, challengeResponseDto);
+                findUsername(challenge.getMemberId()),
+                findPoint(challenge.getMemberId())
 
-        return response;
+        );*/
+        return addWriterInfo(imageSaveChallenge.getMemberId(), response);
     }
 
     public void deleteChallenge(int challengeId, String token){
@@ -201,34 +211,34 @@ public class ChallengeService {
         challengeRepository.delete(findChallenge);
     }
 
-    public ChallengeDto.Response findWriterInfo(int memberId, ChallengeDto.Response response) {
+    public ChallengeDto.Response addWriterInfo(int memberId, ChallengeDto.Response response) {
         Member member = memberService.findMemberById(memberId);
         response.setName(member.getName());
         response.setPoint(member.getPoint());
         return response;
     }
-    public String findUsername(int memberId) {
-        Member member = memberService.findMemberById(memberId);
-        log.info(member.getName());
-        return member.getName();
-    }
-    public int findPoint(int memberId) {
-        Member member = memberService.findMemberById(memberId);
-        log.info(String.valueOf(member.getPoint()));
-        return member.getPoint();
-    }
+
     public Challenge findVerifideChallenge(int challengeId) {
         log.info("findVerifiedChallenge challengeId : {}", challengeId);
         Optional<Challenge> optionalChallenge =
                 challengeRepository.findById(challengeId);
-        log.info("optionalChallenge : {}",optionalChallenge);
         Challenge findChallenge = optionalChallenge.orElseThrow(() ->
                 new BusinessLogicException(ExceptionCode.CHALLENGE_NOT_FOUND));
-        log.info("findChallenge : {}",findChallenge);
         log.info("성공");
         return findChallenge;
     }
     public void deleteImage(File file){
         if(file.exists()) file.delete();
+    }
+
+    public Member findMemberByToken(String token) {
+        int memberId = jwtTokenizer.getMemberId(token);
+        return memberService.findMemberById(memberId);
+    }
+
+    public void validateWriter(Challenge challenge, String token) {
+        if (findMemberByToken(token).getMemberId() != challenge.getMemberId()) {
+            throw new BusinessLogicException(ExceptionCode.UNMATCHED_WRITER);
+        }
     }
 }
