@@ -46,9 +46,9 @@ const MyProfile = () => {
         },
       });
       console.log(res);
-      setUserName(res?.data.name);
-      setUserEmail(res?.data.email);
-      setPoint(res?.data.point);
+      setUserName(res?.data.data.name);
+      setUserEmail(res?.data.data.email);
+      setPoint(res?.data.data.point);
     } catch (err) {
       console.log(err);
     }
