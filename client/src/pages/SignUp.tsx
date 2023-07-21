@@ -6,7 +6,7 @@ import logo from '../assets/img/logo.png';
 import { Modal } from 'feature/Modal';
 import { modalAtom } from 'jotai/atom';
 import API from '../api/index';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 interface StyledChangeModal {
   modalOpen: boolean;
 }
@@ -88,7 +88,7 @@ export const SignUp = () => {
   const [password, setPassword] = useState(''); // 비밀번호
   const [errors, setErrors] = useState([]); //에러
   const [modal, setModal] = useAtom(modalAtom);
-
+  const navitator = useNavigate();
   const PostSignUp = async () => {
     try {
       const postData = {
@@ -110,7 +110,6 @@ export const SignUp = () => {
         const { memberId }: { memberId: number } = response.data;
         const postData: { memberId: number } = { memberId };
         localStorage.setItem('user', JSON.stringify(postData));
-
         setModal(true);
       } else if (response.status === 409) {
         // 회원가입 실패 했을 경우
@@ -164,6 +163,7 @@ export const SignUp = () => {
   const handleCloseModal = () => {
     // 모달 닫기
     setModal(false);
+    navitator('/');
   };
   return (
     <>
