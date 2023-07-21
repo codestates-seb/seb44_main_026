@@ -56,11 +56,7 @@ public class ReplyController {
     public ResponseEntity createReply(@PathVariable int challengeId,
                                       @RequestHeader(value = "Authorization", required = false) String token,
                                       @RequestBody ReplyDto.Post replyPostDto) {
-        log.info("#####  createReply controller");
-        log.info("content = {}", replyPostDto.getContent());
         Reply reply = mapper.replyPostDtoToReply(replyPostDto);
-        log.info("#####  createReply mapper");
-        int memberId = 1;
         ReplyDto.Response response = replyService.createReply(reply, challengeId, token);
         return new ResponseEntity<>(new SingleResponseDto<>(response), HttpStatus.OK);
     }
@@ -80,7 +76,7 @@ public class ReplyController {
     public ResponseEntity deleteReply(@PathVariable int replyId,
                                       @RequestHeader(value = "Authorization", required = false) String token){
         int memberId  = 1;
-        replyService.deleteReply(replyId, memberId);
+        replyService.deleteReply(replyId, token);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }
