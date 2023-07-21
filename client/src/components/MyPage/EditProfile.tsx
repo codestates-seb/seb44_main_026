@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
+import API from '../../api/index';
 
 interface MyPageItemProps {
   username: string;
@@ -15,11 +16,38 @@ const EditProfile: React.FC<MyPageItemProps> = ({
   setIsEdit,
 }) => {
   const [newName, setnewName] = useState('');
+  const [password, setPassword] = useState('');
+  const loginAccToken = localStorage.getItem('accessToken');
   const textHandler = (e: React.FormEvent<HTMLInputElement>) => {
     setnewName(e.currentTarget.value);
   };
+
+  const passwordtextHandler = (e: React.FormEvent<HTMLInputElement>) => {
+    setPassword(e.currentTarget.value);
+  };
+
+  const patchProfile = async () => {
+    if (password && newName) {
+      try {
+        const res = await API.PATCH({
+          url: `https://ok.greennare.store/user/info`,
+          data: { name: newName, password: password },
+          headers: {
+            Authorization: loginAccToken,
+          },
+        });
+        console.log('patch');
+      } catch (err) {
+        console.log(err);
+      }
+    } else {
+      alert('내용을 입력하세요!');
+    }
+  };
+
   const onClickHandler = () => {
-    setUserName(newName);
+    patchProfile();
+    location.reload();
     setIsEdit(false);
   };
   const isEditHandler = () => {
@@ -35,6 +63,13 @@ const EditProfile: React.FC<MyPageItemProps> = ({
           onChange={textHandler}
           className="input-content"
           placeholder={username}
+        ></input>
+      </InputTitleContainer>
+      <InputTitleContainer>
+        <input
+          onChange={passwordtextHandler}
+          className="input-content"
+          placeholder={'수정하기 위해서는 비밀 번호를 입력하세요'}
         ></input>
       </InputTitleContainer>
       <ButtonContainer>
@@ -74,7 +109,6 @@ const InputTitleContainer = styled.div`
   input {
     width: 80%;
     margin: 0 auto;
-    margin-bottom: 1rem;
     height: 2rem;
     padding: 1rem;
     font-size: 16px;
