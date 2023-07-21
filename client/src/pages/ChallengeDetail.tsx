@@ -32,7 +32,9 @@ const ChallengeDetail = () => {
   const getChallenge = async () => {
     try {
       setloading(true);
-      const res = await API.GET(`https://ok.greennare.store/nare/${id}`);
+      const res = await API.GET({
+        url: `https://ok.greennare.store/nare/${id}`,
+      });
       console.log(res);
       setTitle(res?.data.data.title);
       setBody(res?.data.data.content);
@@ -67,11 +69,11 @@ const ChallengeDetail = () => {
   const getComment = async () => {
     try {
       setloading(true);
-      const res = await API.GET(
-        `https://ok.greennare.store/nare/reply/${id}?size=${postPerPage}&page=${
+      const res = await API.GET({
+        url: `https://ok.greennare.store/nare/reply/${id}?size=${postPerPage}&page=${
           currentPage - 1
         }`,
-      );
+      });
       console.log(res);
 
       setCommentList([...res?.data.data]);

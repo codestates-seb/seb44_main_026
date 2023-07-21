@@ -8,9 +8,9 @@ const MainSlide = () => {
   const [items, setItems] = useState([]);
   const getItem = async () => {
     try {
-      const res = await API.GET(
-        'https://ok.greennare.store/green?size=3&page=1&category=all',
-      );
+      const res = await API.GET({
+        url: 'https://ok.greennare.store/green?size=3&page=1&category=all',
+      });
       console.log(res);
       setItems([...res?.data.data]);
     } catch (err) {

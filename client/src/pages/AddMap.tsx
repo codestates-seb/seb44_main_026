@@ -103,7 +103,9 @@ export const AddMap = () => {
   }
   const DeleteMapData = async () => {
     try {
-      const response = await API.GET('https://ok.greennare.store/nare/map');
+      const response = await API.GET({
+        url: 'https://ok.greennare.store/nare/map',
+      });
       if (response?.data?.length > 0) {
         // 배열의 모든 객체에 접근하여 placeId 값을 추출
         const placeIds = response.data.map(

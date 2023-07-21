@@ -64,7 +64,9 @@ const EditChallenge: React.FC = () => {
 
   const getDataurl = async () => {
     try {
-      const res = await API.GET(`https://ok.greennare.store/nare/${id}`);
+      const res = await API.GET({
+        url: `https://ok.greennare.store/nare/${id}`,
+      });
       setFileurl(`https://ok.greennare.store` + res?.data.data.image);
       console.log(fileurl);
       console.log(res);
@@ -80,9 +82,9 @@ const EditChallenge: React.FC = () => {
 
   const getMyChallenge = async () => {
     try {
-      const res = await API.GET(
-        `http://greennarealb-281283380.ap-northeast-2.elb.amazonaws.com/nare/${id}`,
-      );
+      const res = await API.GET({
+        url: `http://greennarealb-281283380.ap-northeast-2.elb.amazonaws.com/nare/${id}`,
+      });
       console.log(res);
       setTitle(res?.data.data.title);
       setContents(res?.data.data.content);

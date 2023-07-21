@@ -16,11 +16,11 @@ const ChallengeList = () => {
   const getChallenge = async () => {
     try {
       setLoading(true);
-      const res = await API.GET(
-        `https://ok.greennare.store/nare/challenge?&size=${postPerPage}&page=${
+      const res = await API.GET({
+        url: `https://ok.greennare.store/nare/challenge?&size=${postPerPage}&page=${
           currentPage - 1
         }`,
-      );
+      });
       console.log(res?.data.data);
       console.log(res?.data.pageInfo);
       setChallengeList([...res?.data.data]);

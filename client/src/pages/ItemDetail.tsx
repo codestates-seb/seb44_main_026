@@ -47,11 +47,11 @@ export const ItemDetail = () => {
 
   const getReview = async () => {
     try {
-      const res = await API.GET(
-        `${process.env.REACT_APP_SERVER_URL}green/review/${id}?page=${
+      const res = await API.GET({
+        url: `${process.env.REACT_APP_SERVER_URL}green/review/${id}?page=${
           currentPage - 1
         }&size=${5}`,
-      );
+      });
 
       const Reviews = res.data;
       setReviewList(Reviews.data);
@@ -68,9 +68,9 @@ export const ItemDetail = () => {
 
   const getItemDetail = async () => {
     try {
-      const res = await API.GET(
-        `${process.env.REACT_APP_SERVER_URL}green/${id}`,
-      );
+      const res = await API.GET({
+        url: `${process.env.REACT_APP_SERVER_URL}green/${id}`,
+      });
 
       const itemDetail = res.data;
       setCurrentItem(itemDetail.data);

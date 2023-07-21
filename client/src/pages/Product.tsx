@@ -33,11 +33,11 @@ export const Product = () => {
 
   const getProduct = async () => {
     try {
-      const res = await API.GET(
-        `${process.env.REACT_APP_SERVER_URL}green?page=${
+      const res = await API.GET({
+        url: `${process.env.REACT_APP_SERVER_URL}green?page=${
           currentPage - 1
         }&size=${9}&category=${filter}`,
-      );
+      });
 
       const products = res.data;
       const setProducts = products.data.map((item: ItemType) => {

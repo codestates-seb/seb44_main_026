@@ -64,7 +64,9 @@ export const Map = () => {
 
   const getMapData = async () => {
     try {
-      const response = await API.GET('https://ok.greennare.store/nare/map');
+      const response = await API.GET({
+        url: 'https://ok.greennare.store/nare/map',
+      });
       console.log(response?.data);
       if (response?.data?.length > 0) {
         // 배열 안의 모든 객체에 접근하여 값을 추출

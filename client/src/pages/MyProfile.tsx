@@ -17,15 +17,35 @@ const MyProfile = () => {
   const [userName, setUserName] = useState('');
   const [userEmail, setUserEmail] = useState('');
   const [isEdit, setIsEdit] = useState(false);
+  //const memberId = localStorage.getItem('memberId');
+  const loginAccToken = localStorage.getItem('accessToken');
   const [point, setPoint] = useState(0);
   const userData = {};
 
   const getChallenge = async () => {
     try {
       setloading(true);
-      const res = await API.GET(
-        `https://jsonplaceholder.typicode.com/users/${memberId}`,
-      );
+      const res = await API.GET({
+        url: `https://jsonplaceholder.typicode.com/users/${memberId}`,
+      });
+      console.log(res);
+      setUserName(res.data.name);
+      setUserEmail(res.data.email);
+    } catch (err) {
+      console.log(err);
+    }
+    setloading(false);
+  };
+
+  const getProfile = async () => {
+    try {
+      setloading(true);
+      const res = await API.GET({
+        url: `https://ok.greennare.store/user/info`,
+        headers: {
+          Authorization: loginAccToken,
+        },
+      });
       console.log(res);
       setUserName(res.data.name);
       setUserEmail(res.data.email);
