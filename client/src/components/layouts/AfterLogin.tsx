@@ -40,6 +40,7 @@ export const AfterLogin = () => {
   const [logout, setLogout] = useState(true);
   const handlelogout = () => {
     localStorage.removeItem('accessToken');
+    localStorage.removeItem('memberId');
     setLogout(false);
   };
   if (!logout) {

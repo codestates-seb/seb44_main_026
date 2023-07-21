@@ -11,12 +11,14 @@ class API {
     method,
     url,
     data = null,
+    headers,
   }: AxiosRequestConfig): Promise<AxiosResponse> {
     try {
       const response: AxiosResponse = await axiosClient({
         url,
         method,
         data,
+        headers,
       });
 
       return response;

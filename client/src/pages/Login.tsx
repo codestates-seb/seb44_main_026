@@ -139,7 +139,7 @@ export const Login = () => {
 
         localStorage.setItem('accessToken', accessToken);
         localStorage.setItem('refreshToken', refreshToken);
-        localStorage.setItem('userId', memberId);
+        localStorage.setItem('memberId', memberId);
         console.log(accessToken);
         console.log(memberId);
         // 상태 업데이트
