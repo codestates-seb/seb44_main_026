@@ -74,8 +74,9 @@ public class ReplyService {
         ReplyDto.Response response = ReplyDto.Response.from(findReply, member);
         return response;
     }
-    public void deleteReply(int replyId, int memberId) {
+    public void deleteReply(int replyId, String token) {
         Reply reply = findVerifyReply(replyId);
+        int memberId = jwtTokenizer.getMemberId(token);
         validateWriter(reply, memberId);
         replyRepository.delete(reply);
     }
@@ -99,14 +100,6 @@ public class ReplyService {
         Page<Reply> replyPage = replyRepository.findByChallengeId(challengeId, pageable);
         return replyPage;
 
-    }
-    public String findUsername(int memberId) {
-        Member member = memberService.findMemberById(memberId);
-        return member.getName();
-    }
-    public int findPoint(int memberId) {
-        Member member = memberService.findMemberById(memberId);
-        return member.getPoint();
     }
 
     public int countChallenge(int challengeId){
