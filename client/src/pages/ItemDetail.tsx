@@ -48,7 +48,7 @@ export const ItemDetail = () => {
   const getReview = async () => {
     try {
       const res = await API.GET(
-        `http://greennarealb-281283380.ap-northeast-2.elb.amazonaws.com/green/review/${id}?page=${
+        `${process.env.REACT_APP_SERVER_URL}green/review/${id}?page=${
           currentPage - 1
         }&size=${5}`,
       );
@@ -69,7 +69,7 @@ export const ItemDetail = () => {
   const getItemDetail = async () => {
     try {
       const res = await API.GET(
-        `http://greennarealb-281283380.ap-northeast-2.elb.amazonaws.com/green/${id}`,
+        `${process.env.REACT_APP_SERVER_URL}green/${id}`,
       );
 
       const itemDetail = res.data;

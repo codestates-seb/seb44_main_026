@@ -50,12 +50,14 @@ export const UploadReview = ({
 
     try {
       const res = await API.POST({
-        url: `http://greennareALB-281283380.ap-northeast-2.elb.amazonaws.com/green/review/${id}`,
+        url: `${process.env.REACT_APP_SERVER_URL}green/review/${id}`,
         data: { context: review },
         // data: formData,
         headers: {
           Authorization: accessToken,
-          'Content-Type': 'multipart/form-data',
+          // 'Content-Type': 'multipart/form-data',
+
+          'Content-Type': 'application/json',
         },
       });
 
@@ -99,12 +101,13 @@ export const UploadReview = ({
 
     try {
       const res = await API.PATCH({
-        url: `http://greennareALB-281283380.ap-northeast-2.elb.amazonaws.com/green/review/${id}`,
+        url: `${process.env.REACT_APP_SERVER_URL}green/review/${id}`,
         data: { context: review },
         // data: formData,
         headers: {
           Authorization: accessToken,
-          'Content-Type': 'multipart/form-data',
+          // 'Content-Type': 'multipart/form-data',
+          'Content-Type': 'application/json',
         },
       });
 

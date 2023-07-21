@@ -32,7 +32,7 @@ export const Review = ({
 
   const accessToken = localStorage.getItem('accessToken');
   // 임시
-  const username = 'name1';
+  const username = 'qweqwe';
 
   const onDeleteReview = () => {
     setModalContent('정말 삭제하시겠습니까?');
@@ -43,7 +43,7 @@ export const Review = ({
   const deleteReview = async () => {
     try {
       const res = await API.DELETE({
-        url: `http://greennarealb-281283380.ap-northeast-2.elb.amazonaws.com/green/review/${id}`,
+        url: `${process.env.REACT_APP_SERVER_URL}green/review/${id}`,
         headers: {
           Authorization: accessToken,
         },

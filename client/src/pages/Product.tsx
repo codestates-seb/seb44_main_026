@@ -34,7 +34,7 @@ export const Product = () => {
   const getProduct = async () => {
     try {
       const res = await API.GET(
-        `http://greennarealb-281283380.ap-northeast-2.elb.amazonaws.com/green?page=${
+        `${process.env.REACT_APP_SERVER_URL}green?page=${
           currentPage - 1
         }&size=${9}&category=${filter}`,
       );
