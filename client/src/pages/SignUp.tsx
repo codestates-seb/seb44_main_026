@@ -98,7 +98,7 @@ export const SignUp = () => {
       };
 
       const response = await API.POST({
-        url: 'http://greennareALB-281283380.ap-northeast-2.elb.amazonaws.com/user/join',
+        url: 'https://ok.greennare.store/user/join',
         headers: {
           'Content-Type': 'application/json',
         },

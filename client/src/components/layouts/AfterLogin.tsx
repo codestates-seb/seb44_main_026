@@ -38,10 +38,12 @@ const StyledButton = styled.button`
 
 export const AfterLogin = () => {
   const [logout, setLogout] = useState(true);
+  const navigator = useNavigate();
   const handlelogout = () => {
     localStorage.removeItem('accessToken');
     localStorage.removeItem('memberId');
     setLogout(false);
+    navigator('/');
   };
   if (!logout) {
     return <BeforeLogin />;

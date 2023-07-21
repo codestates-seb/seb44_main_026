@@ -83,7 +83,7 @@ export const AddMap = () => {
       };
       console.log('보낼 데이터:', postData);
       const response = await API.POST({
-        url: 'http://greennarealb-281283380.ap-northeast-2.elb.amazonaws.com/nare/map',
+        url: 'https://ok.greennare.store/nare/map',
         data: postData,
         headers: {
           Authorization: accessToken, // 필요한 헤더를 추가합니다.
@@ -103,9 +103,7 @@ export const AddMap = () => {
   }
   const DeleteMapData = async () => {
     try {
-      const response = await API.GET(
-        'http://greennarealb-281283380.ap-northeast-2.elb.amazonaws.com/nare/map',
-      );
+      const response = await API.GET('https://ok.greennare.store/nare/map');
       if (response?.data?.length > 0) {
         // 배열의 모든 객체에 접근하여 placeId 값을 추출
         const placeIds = response.data.map(
@@ -119,7 +117,7 @@ export const AddMap = () => {
         placeIds.map(async (id: ID) => {
           try {
             const deleteResponse = await API.DELETE({
-              url: `http://greennarealb-281283380.ap-northeast-2.elb.amazonaws.com/nare/map/${id}`,
+              url: `https://ok.greennare.store/nare/map/${id}`,
               headers: {
                 Authorization: accessToken, // 필요한 헤더를 추가합니다.
                 'Content-Type': 'application/json', // 필요에 따라 content type을 설정합니다.
