@@ -91,7 +91,7 @@ public class JwtTokenizer {
     public int getMemberId(String token) {
         String jws = token.replace("Bearer ", "");
         String base64EncodedSecretKey = encodeBase64SecretKey(getSecretKey());
-        Jws<Claims> claimsJws = getClaims(jws, base64EncodedSecretKey);
+        Jws<Claims> claimsJws = getClaims(token, base64EncodedSecretKey);
         Claims claims = claimsJws.getBody();
 
         return (int) claims.get("memberId");

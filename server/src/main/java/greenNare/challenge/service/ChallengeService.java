@@ -47,9 +47,14 @@ public class ChallengeService {
     }
 
     public ChallengeDto.Response createChallenge(Challenge challenge, String token, MultipartFile file) throws NullPointerException, IOException {
+        if(token.isBlank()) {
+            throw new BusinessLogicException(ExceptionCode.INVALID_TOKEN);
+        }
+        int memberId = jwtTokenizer.getMemberId(token);
         Member member = findMemberByToken(token);
 
-        challenge.setMemberId(member.getMemberId());
+        //challenge.setMemberId(member.getMemberId());
+        challenge.setMemberId(memberId);
 
         Challenge imageSaveChallenge = saveImage(challenge, file);
 
@@ -153,7 +158,7 @@ public class ChallengeService {
 
     public void deleteChallenge(int challengeId, String token){
         log.info("##### delete challenge start");
-        if(token.isEmpty()){
+        if(token.isBlank()){
             throw new BusinessLogicException(ExceptionCode.INVALID_TOKEN);
         }
         log.info("##### token empty 통과");
@@ -187,12 +192,18 @@ public class ChallengeService {
     }
 
     public Member findMemberByToken(String token) {
+        if(token.isBlank()) {
+            throw new BusinessLogicException(ExceptionCode.INVALID_TOKEN);
+        }
         int memberId = jwtTokenizer.getMemberId(token);
         log.info("token에서 추출한 memberId : {}", memberId);
         return memberService.findMemberById(memberId);
     }
 
     public void validateWriter(int writerMemberId, String token) {
+        if(token.isBlank()) {
+            throw new BusinessLogicException(ExceptionCode.INVALID_TOKEN);
+        }
         if (findMemberByToken(token).getMemberId() != writerMemberId) {
             log.info("작성자와 접근자(수정) 불일치");
             log.info("token 주인 : {}", findMemberByToken(token).getMemberId());
