@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { SyntheticEvent } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import API from '../api/index';
 import { useEffect, useState } from 'react';
@@ -19,23 +19,25 @@ const ChallengeDetail = () => {
   const [loading, setloading] = useState(false); //데이터 받아올 때 로딩
   const [comment, setComment] = useState(''); //새로 작성할 댓글 내용
   const [commentList, setCommentList] = useState([]);
-  const memberId = 1;
+  const memberId = 33; // 나중에 수정
   const [commentCount, setCommentCount] = useState(0);
   const [admin, setAdmin] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
+  const [img, setImg] = useState('');
   const postPerPage = 10;
+  const loginAccToken = localStorage.getItem('accessToken');
   const [total, setTotal] = useState(0);
+  const [isReady, setIsReady] = useState(true);
 
   const getChallenge = async () => {
     try {
       setloading(true);
-      const res = await API.GET(
-        `http://greennarealb-281283380.ap-northeast-2.elb.amazonaws.com/nare/${id}`,
-      );
+      const res = await API.GET(`https://ok.greennare.store/nare/${id}`);
       console.log(res);
       setTitle(res?.data.data.title);
       setBody(res?.data.data.content);
       setName(res?.data.data.name);
+      setImg(res?.data.data.image);
       if (memberId === res?.data.data.memberId) {
         setAdmin(true);
       }
@@ -49,7 +51,10 @@ const ChallengeDetail = () => {
     try {
       setloading(true);
       const res = await API.DELETE({
-        url: `http://greennarealb-281283380.ap-northeast-2.elb.amazonaws.com/nare/${id}`,
+        url: `https://ok.greennare.store/nare/${id}`,
+        headers: {
+          Authorization: loginAccToken,
+        },
       });
       console.log(res);
     } catch (err) {
@@ -63,7 +68,7 @@ const ChallengeDetail = () => {
     try {
       setloading(true);
       const res = await API.GET(
-        `http://greennarealb-281283380.ap-northeast-2.elb.amazonaws.com/nare/reply/${id}?size=${postPerPage}&page=${
+        `https://ok.greennare.store/nare/reply/${id}?size=${postPerPage}&page=${
           currentPage - 1
         }`,
       );
@@ -93,6 +98,10 @@ const ChallengeDetail = () => {
 
   const goToEdit = () => {
     navigate(`/challenge/edit/${id}`);
+  };
+
+  const addDefaultImg = (e: SyntheticEvent<HTMLImageElement, Event>) => {
+    e.currentTarget.src = '';
   };
 
   return (
@@ -125,11 +134,21 @@ const ChallengeDetail = () => {
             </TitleContainer>
             <BodyContainer>
               <div dangerouslySetInnerHTML={{ __html: body }}></div>
+              {img ? (
+                <img
+                  src={`https://ok.greennare.store${img}`}
+                  onError={addDefaultImg}
+                  width={500}
+                  height={400}
+                />
+              ) : null}
             </BodyContainer>
           </ItemContainer>
           <CommentContainer>
             <CommentTitle>참여 댓글 {commentCount}개</CommentTitle>
-            <InputItem setComment={setComment} value={comment} />
+            {loginAccToken ? (
+              <InputItem setComment={setComment} value={comment} />
+            ) : null}
             {commentList.map((item: any, index: any) => (
               <CommentBox
                 name={item.memberId}
@@ -228,6 +247,7 @@ const TitleContainer = styled.div`
 
 const BodyContainer = styled.div`
   display: flex;
+  flex-direction: column;
   margin: 1rem;
   margin-left: 3rem;
   font-size: 21px;

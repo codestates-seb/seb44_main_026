@@ -11,6 +11,7 @@ interface InputItemProps {
 const InputItem: React.FC<InputItemProps> = ({ setComment, value }) => {
   const id = useParams().id;
   const [loading, setloading] = useState(false);
+  const [isReady, setIsReady] = useState(false);
   const loginAccToken = localStorage.getItem('accessToken');
 
   const textHandler = (e: React.FormEvent<HTMLInputElement>) => {
@@ -18,34 +19,51 @@ const InputItem: React.FC<InputItemProps> = ({ setComment, value }) => {
   };
 
   const postComment = async () => {
-    try {
-      setloading(true);
-      const res = await API.POST({
-        url: `http://greennarealb-281283380.ap-northeast-2.elb.amazonaws.com/nare/reply/${id}`,
-        data: { content: value },
-        headers: {
-          Authorization: loginAccToken,
-        },
-      });
-    } catch (err) {
-      console.log(err);
+    if (isReady) {
+      try {
+        setloading(true);
+        const res = await API.POST({
+          url: `https://ok.greennare.store/nare/reply/${id}`,
+          data: { content: value },
+          headers: {
+            Authorization: loginAccToken,
+          },
+        });
+      } catch (err) {
+        console.log(err);
+      }
+      setComment('');
+      alert('댓글이 등록되었습니다.');
+      setloading(false);
+      location.reload();
+    } else {
+      alert('댓글을 15자 이상 입력하세요!');
     }
-    setComment('');
-    alert('댓글이 등록되었습니다.');
-    setloading(false);
-    location.reload();
   };
 
+  useEffect(() => {
+    if (value.length > 15) {
+      setIsReady(true);
+    } else {
+      setIsReady(false);
+    }
+  }, [value]);
+
   return (
-    <InputContainer>
-      <input
-        onChange={textHandler}
-        className="input-content"
-        value={value}
-        placeholder="댓글을 달고 챌린지에 참여해보세요!"
-      ></input>
-      <InputButton onClick={postComment}>등록</InputButton>
-    </InputContainer>
+    <>
+      <InputContainer>
+        <input
+          onChange={textHandler}
+          className="input-content"
+          value={value}
+          placeholder="댓글을 달고 챌린지에 참여해보세요!"
+        ></input>
+        <InputButton onClick={postComment}>등록</InputButton>
+      </InputContainer>
+      {!isReady ? (
+        <WarningContainer>15자 이상 입력하세요😀</WarningContainer>
+      ) : null}
+    </>
   );
 };
 /*
@@ -98,6 +116,7 @@ const InputContainer = styled.div`
   display: flex;
   margin-left: 1rem;
   margin-bottom: 1rem;
+
   input {
     width: 90%;
     height: 2rem;
@@ -109,6 +128,13 @@ const InputContainer = styled.div`
   input::placeholder {
     color: var(--gray);
   }
+`;
+
+const WarningContainer = styled.div`
+  width: 100%;
+  margin-left: 3%;
+  font-size: 12px;
+  color: red;
 `;
 
 const InputTitleContainer = styled.div`

@@ -9,7 +9,7 @@ const MainSlide = () => {
   const getItem = async () => {
     try {
       const res = await API.GET(
-        'http://greennarealb-281283380.ap-northeast-2.elb.amazonaws.com/green?size=3&page=1&category=all',
+        'https://ok.greennare.store/green?size=3&page=1&category=all',
       );
       console.log(res);
       setItems([...res?.data.data]);
