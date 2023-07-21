@@ -12,10 +12,6 @@ import { Pagination } from 'feature/Pagination';
 import { Review } from 'feature/Review';
 import { ReviewSkeleton } from 'feature/skeletonUI/ReviewSkeleton';
 
-interface ImageProps {
-  img: string;
-}
-
 interface ReviewType {
   reviewId: number;
   context: string;
@@ -52,7 +48,7 @@ export const ItemDetail = () => {
   const getReview = async () => {
     try {
       const res = await API.GET(
-        `http://greennarealb-281283380.ap-northeast-2.elb.amazonaws.com/green/review/${id}?page=${
+        `${process.env.REACT_APP_SERVER_URL}green/review/${id}?page=${
           currentPage - 1
         }&size=${5}`,
       );
@@ -73,7 +69,7 @@ export const ItemDetail = () => {
   const getItemDetail = async () => {
     try {
       const res = await API.GET(
-        `http://greennarealb-281283380.ap-northeast-2.elb.amazonaws.com/green/${id}`,
+        `${process.env.REACT_APP_SERVER_URL}green/${id}`,
       );
 
       const itemDetail = res.data;
@@ -96,7 +92,9 @@ export const ItemDetail = () => {
       <Nav />
       <Wrapper>
         <div className="itemWrapper">
-          <Image img={currentItem.imageLinks} />
+          <Image>
+            <img src={currentItem.imageLinks} />
+          </Image>
           <ItemInfo>
             <div>
               <h1 className="title">{currentItem.productName}</h1>
@@ -172,15 +170,18 @@ const Wrapper = styled.main`
   }
 `;
 
-const Image = styled.div<ImageProps>`
+const Image = styled.div`
   width: 16rem;
   height: 13rem;
   flex-shrink: 0;
 
-  background-image: url(${(props) => props.img});
-  background-size: cover;
-  background-position: center;
   background-color: var(--gray);
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
 `;
 
 const ItemInfo = styled.div`

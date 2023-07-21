@@ -13,6 +13,10 @@ interface UploadReviewProps {
   context?: string;
   imageLinks?: string[];
 }
+interface imageFilesType {
+  file: File[];
+  url: string[];
+}
 
 export const UploadReview = ({
   id,
@@ -23,16 +27,21 @@ export const UploadReview = ({
 }: UploadReviewProps) => {
   //리뷰 작성
   const [review, setReview] = useState(context || '');
-  const [imageFiles, setImageFiles] = useState([]);
+  const [imageFiles, setImageFiles] = useState<imageFilesType>({
+    file: [],
+    url: imageLinks || [],
+  });
+  const [deleteUrl, setDeleteUrl] = useState([]);
   const [preview, setPreview] = useState(imageLinks || []);
   const [errorMessage, setErrorMessage] = useState('');
   //모달
   const [isOpen, setIsOpen] = useState(false);
   const [isAlert, setIsAlert] = useState(true);
   const [modalContent, setModalContent] = useState('');
-
+  // 인증 토큰
   const accessToken = localStorage.getItem('accessToken');
 
+  // 리뷰 등록
   const postReview = async (formData: FormData) => {
     // formData값 확인
     for (const [key, value] of formData.entries()) {
@@ -41,17 +50,19 @@ export const UploadReview = ({
 
     try {
       const res = await API.POST({
-        url: `http://greennareALB-281283380.ap-northeast-2.elb.amazonaws.com/green/review/${id}`,
+        url: `${process.env.REACT_APP_SERVER_URL}green/review/${id}`,
         data: { context: review },
         // data: formData,
         headers: {
           Authorization: accessToken,
-          'Content-Type': 'multipart/form-data',
+          // 'Content-Type': 'multipart/form-data',
+
+          'Content-Type': 'application/json',
         },
       });
 
       setReview('');
-      setImageFiles([]);
+      setImageFiles({ file: [], url: [] });
       setPreview([]);
 
       if (res.data.exceptionCode === 'REVIEW_EXIST') {
@@ -81,6 +92,7 @@ export const UploadReview = ({
     }
   };
 
+  //리뷰 수정
   const patchReview = async (formData: FormData) => {
     // formData값 확인
     for (const [key, value] of formData.entries()) {
@@ -89,17 +101,18 @@ export const UploadReview = ({
 
     try {
       const res = await API.PATCH({
-        url: `http://greennareALB-281283380.ap-northeast-2.elb.amazonaws.com/green/review/${id}`,
+        url: `${process.env.REACT_APP_SERVER_URL}green/review/${id}`,
         data: { context: review },
         // data: formData,
         headers: {
           Authorization: accessToken,
-          'Content-Type': 'multipart/form-data',
+          // 'Content-Type': 'multipart/form-data',
+          'Content-Type': 'application/json',
         },
       });
 
       if (res.status === 500) {
-        setModalContent('리뷰 등록에 실패하였습니다.');
+        setModalContent('리뷰 수정에 실패하였습니다.');
         setIsAlert(true);
         setIsOpen(true);
         return;
@@ -127,23 +140,54 @@ export const UploadReview = ({
   };
   // 이미지 파일 업로드, 프리뷰
   const uploadFileHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const files = Array.from(e.target.files);
-    const addFiles = [...imageFiles, ...files];
-    setImageFiles(addFiles);
+    // const files = Array.from(e.target.files);
+    // const addFiles = [...imageFiles, ...files];
+    // setImageFiles(addFiles);
 
-    const previewArray = addFiles.map((data) =>
-      window.URL.createObjectURL(data),
-    );
-    setPreview(previewArray);
+    // const previewArray = addFiles.map((data) =>
+    //   window.URL.createObjectURL(data),
+    // );
+    // setPreview(previewArray);
+    const files = Array.from(e.target.files);
+    const addFiles = [...imageFiles.file, ...files];
+    setImageFiles({
+      ...imageFiles,
+      file: addFiles,
+    });
+
+    const previewArray = files.map((data) => window.URL.createObjectURL(data));
+    const addPreviews = [...preview, ...previewArray];
+    setPreview(addPreviews);
 
     e.target.value = '';
   };
   // 이미지 파일 삭제
   const deleteFileHandler = (index: number) => {
-    setImageFiles([
-      ...imageFiles.slice(0, index),
-      ...imageFiles.slice(index + 1, preview.length),
-    ]);
+    const fileLen = imageFiles.file.length;
+    const urlLen = imageFiles.url.length;
+    const sliceIndex = index - urlLen;
+    if (sliceIndex >= 0) {
+      setImageFiles({
+        ...imageFiles,
+        file: [
+          ...imageFiles.file.slice(0, sliceIndex),
+          ...imageFiles.file.slice(sliceIndex + 1, fileLen),
+        ],
+      });
+    } else {
+      setImageFiles({
+        ...imageFiles,
+        url: [
+          ...imageFiles.url.slice(0, index),
+          ...imageFiles.url.slice(index + 1, urlLen),
+        ],
+      });
+      setDeleteUrl([...deleteUrl, imageFiles.url[index]]);
+    }
+    // setImageFiles([
+    //   ...imageFiles.slice(0, index),
+    //   ...imageFiles.slice(index + 1, preview.length),
+    // ]);
     setPreview([
       ...preview.slice(0, index),
       ...preview.slice(index + 1, preview.length),
@@ -162,7 +206,9 @@ export const UploadReview = ({
 
     const formData = new FormData();
     formData.append('context', review);
-    imageFiles.forEach((file) => formData.append('image', file));
+    // imageFiles.url.forEach((url) => formData.append('image', url));
+    deleteUrl.forEach((url) => formData.append('image', url));
+    imageFiles.file.forEach((file) => formData.append('image', file));
 
     if (isEdit) {
       return patchReview(formData);
@@ -173,6 +219,7 @@ export const UploadReview = ({
 
   const handleClose = () => {
     setIsOpen(false);
+    // 새로고침
     location.reload();
   };
 
@@ -288,7 +335,6 @@ const Form = styled.form`
   .errorMessage {
     color: var(--red);
     font-size: 0.75rem;
-    /* margin-top: 0.5rem; */
     padding: 0.5rem;
   }
 `;
@@ -301,11 +347,8 @@ const InputWrapper = styled.div`
 
 const Input = styled(TextareaAutosize)`
   width: 100%;
-
   padding: 1rem;
   border-radius: 0.5rem;
-  /* border: none;
-  box-shadow: rgba(0, 0, 0, 0.3) 1px 1px 4px; */
   border: 0.1rem solid var(--gray);
   resize: none;
 

@@ -18,7 +18,7 @@ export interface ItemType {
   point: number;
   category: string;
   storeLink: string;
-  imageLink: string;
+  imageLinks: string;
   heart?: boolean;
 }
 
@@ -34,14 +34,17 @@ export const Product = () => {
   const getProduct = async () => {
     try {
       const res = await API.GET(
-        `http://greennarealb-281283380.ap-northeast-2.elb.amazonaws.com/green?page=${
+        `${process.env.REACT_APP_SERVER_URL}green?page=${
           currentPage - 1
         }&size=${9}&category=${filter}`,
       );
 
-      const Products = res.data;
-      setItemList(Products.data);
-      setTotalPages(Products.pageInfo.totalPages);
+      const products = res.data;
+      const setProducts = products.data.map((item: ItemType) => {
+        return { ...item, imageLink: item.imageLinks[0] };
+      });
+      setItemList(setProducts);
+      setTotalPages(products.pageInfo.totalPages);
       setIsLoding(false);
 
       console.log(res?.data);
