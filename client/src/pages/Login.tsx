@@ -96,6 +96,7 @@ export const Login = () => {
   const PostLogin = async () => {
     interface UserData {
       memberId: string;
+      name: string;
     }
 
     try {
@@ -124,12 +125,14 @@ export const Login = () => {
         const userData: UserData = response.data;
         console.log(userData);
         const { memberId } = userData;
+        const { name } = userData;
 
         // 토큰 저장
 
-        localStorage.setItem('accessToken', accessToken);
-        localStorage.setItem('refreshToken', refreshToken);
-        localStorage.setItem('memberId', memberId);
+        localStorage.setItem('accessToken', accessToken); // 토큰 저장
+        localStorage.setItem('refreshToken', refreshToken); // refresh 토큰 저장
+        localStorage.setItem('memberId', memberId); // memberId 저장
+        localStorage.setItem('name', name); // name 저장
         console.log(accessToken);
         console.log(memberId);
 
