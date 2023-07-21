@@ -2,8 +2,6 @@ import { GreenButton } from 'feature/GreenButton';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { useState } from 'react';
-import { useAtom } from 'jotai';
-import { AccessTokenAtom, RefreshTokenAtom, UserIdAtom } from 'jotai/atom';
 import { useNavigate } from 'react-router-dom';
 import logo from '../assets/img/logo.png';
 import API from '../api/index';
@@ -93,9 +91,6 @@ export const Login = () => {
   const [email, setEmail] = useState(''); // 이메일
   const [password, setPassword] = useState(''); // 비밀번호
   const [errors, setErrors] = useState([]); //에러
-  const [loginAccToken, setLoginAccToken] = useAtom(AccessTokenAtom); // 토큰
-  const [loginRefToken, setLoginRefToken] = useAtom(RefreshTokenAtom); // Jotai atom 사용
-  const [loginUserId, setLoginUserId] = useAtom(UserIdAtom); // Jotai atom 사용
   const navigate = useNavigate();
 
   const PostLogin = async () => {
@@ -103,18 +98,13 @@ export const Login = () => {
       memberId: string;
     }
 
-    interface LoginData {
-      accessToken: string;
-      refreshToken: string;
-      memberId: string;
-    }
     try {
       const postData = {
         username: email, // 이메일
         password: password, // 비밀번호
       };
       const response = await API.POST({
-        url: 'http://greennareALB-281283380.ap-northeast-2.elb.amazonaws.com/user/login',
+        url: 'https://ok.greennare.store/user/login',
         headers: {
           'Content-Type': 'application/json',
         },
@@ -139,18 +129,10 @@ export const Login = () => {
 
         localStorage.setItem('accessToken', accessToken);
         localStorage.setItem('refreshToken', refreshToken);
-        localStorage.setItem('userId', memberId);
+        localStorage.setItem('memberId', memberId);
         console.log(accessToken);
         console.log(memberId);
-        // 상태 업데이트
-        const loginData: LoginData = {
-          accessToken,
-          refreshToken,
-          memberId,
-        };
-        setLoginAccToken(loginData.accessToken);
-        setLoginRefToken(loginData.refreshToken);
-        setLoginUserId(loginData.memberId);
+
         console.log(accessToken);
         console.log(memberId);
         // 페이지 이동
