@@ -12,6 +12,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class GetReviewWithImageDto {
+    private int memberId;
     //@Column(name = "REVIEW_ID")
     private int reviewId;
     //@Column(name = "CONTEXT")
