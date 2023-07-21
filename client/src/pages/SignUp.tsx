@@ -1,5 +1,5 @@
 import { GreenButton } from 'feature/GreenButton';
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { useAtom } from 'jotai';
 import styled from 'styled-components';
 import logo from '../assets/img/logo.png';
@@ -7,6 +7,7 @@ import { Modal } from 'feature/Modal';
 import { modalAtom } from 'jotai/atom';
 import API from '../api/index';
 import { Link, useNavigate } from 'react-router-dom';
+import ConfettiExplosion from 'react-confetti-explosion';
 interface StyledChangeModal {
   modalOpen: boolean;
 }
@@ -89,6 +90,7 @@ export const SignUp = () => {
   const [errors, setErrors] = useState([]); //에러
   const [modal, setModal] = useAtom(modalAtom);
   const navitator = useNavigate();
+  const [isExploding, setIsExploding] = React.useState(false);
   const PostSignUp = async () => {
     try {
       const postData = {
@@ -111,6 +113,10 @@ export const SignUp = () => {
         const postData: { memberId: number } = { memberId };
         localStorage.setItem('user', JSON.stringify(postData));
         setModal(true);
+        setIsExploding(true);
+        setTimeout(() => {
+          setIsExploding(false);
+        }, 3000);
       } else if (response.status === 409) {
         // 회원가입 실패 했을 경우
         return response.data.then((data: { message: string }) => {
@@ -165,6 +171,7 @@ export const SignUp = () => {
     setModal(false);
     navitator('/');
   };
+
   return (
     <>
       <StyledLoginContainer modalOpen={modal}>
@@ -251,8 +258,20 @@ export const SignUp = () => {
           )}
         </StyledLoginMain>
         <GreenButton onClick={handleSignupChange}>SignUp</GreenButton>
+
         {modal && (
           <Modal onClick={handleCloseModal}>회원가입이 되었습니다!</Modal>
+        )}
+
+        {isExploding && (
+          <ConfettiExplosion
+            force={0.8}
+            duration={3500}
+            particleCount={250}
+            width={1600}
+            colors={['#FF5733', '#33FF57', '#5733FF', '#FFFF33', '#33FFFF']}
+            style={{ zIndex: 10, position: 'relative', top: 0, left: 0 }}
+          />
         )}
       </StyledLoginContainer>
     </>
