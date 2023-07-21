@@ -31,6 +31,7 @@ export const UploadReview = ({
     file: [],
     url: imageLinks || [],
   });
+  const [deleteUrl, setDeleteUrl] = useState([]);
   const [preview, setPreview] = useState(imageLinks || []);
   const [errorMessage, setErrorMessage] = useState('');
   //모달
@@ -178,6 +179,7 @@ export const UploadReview = ({
           ...imageFiles.url.slice(index + 1, urlLen),
         ],
       });
+      setDeleteUrl([...deleteUrl, imageFiles.url[index]]);
     }
     // setImageFiles([
     //   ...imageFiles.slice(0, index),
@@ -201,7 +203,8 @@ export const UploadReview = ({
 
     const formData = new FormData();
     formData.append('context', review);
-    imageFiles.url.forEach((url) => formData.append('image', url));
+    // imageFiles.url.forEach((url) => formData.append('image', url));
+    deleteUrl.forEach((url) => formData.append('image', url));
     imageFiles.file.forEach((file) => formData.append('image', file));
 
     if (isEdit) {
