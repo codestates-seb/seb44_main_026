@@ -15,6 +15,7 @@ const EditChallenge: React.FC = () => {
   const [contents, setContents] = useState('');
   const [fileurl, setFileurl] = useState<string>(''); //기본파일세팅
   const [newfile, setnewFile] = useState<File | null>(null); //새로업로드할 파일
+  const loginAccToken = localStorage.getItem('accessToken');
 
   const newData = {
     title: title,
@@ -34,12 +35,18 @@ const EditChallenge: React.FC = () => {
           type: 'application/json',
         }),
       );
-      formData.append('image', null);
+      formData.append(
+        'image',
+        new Blob([null], {
+          type: 'multipart/form-data',
+        }),
+      );
       const res = await API.POST({
-        url: `http://greennarealb-281283380.ap-northeast-2.elb.amazonaws.com/nare/update/1`,
+        url: `https://ok.greennare.store/nare/update/${id}`,
         data: formData,
         headers: {
           'Content-Type': 'multipart/form-data',
+          Authorization: loginAccToken,
         },
       });
       console.log('수정');

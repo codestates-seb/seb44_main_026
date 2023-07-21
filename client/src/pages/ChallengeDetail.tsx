@@ -19,19 +19,18 @@ const ChallengeDetail = () => {
   const [loading, setloading] = useState(false); //데이터 받아올 때 로딩
   const [comment, setComment] = useState(''); //새로 작성할 댓글 내용
   const [commentList, setCommentList] = useState([]);
-  const memberId = 1;
+  const memberId = 1; // 나중에 수정
   const [commentCount, setCommentCount] = useState(0);
   const [admin, setAdmin] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const postPerPage = 10;
+  const loginAccToken = localStorage.getItem('accessToken');
   const [total, setTotal] = useState(0);
 
   const getChallenge = async () => {
     try {
       setloading(true);
-      const res = await API.GET(
-        `http://greennarealb-281283380.ap-northeast-2.elb.amazonaws.com/nare/${id}`,
-      );
+      const res = await API.GET(`https://ok.greennare.store/nare/${id}`);
       console.log(res);
       setTitle(res?.data.data.title);
       setBody(res?.data.data.content);
@@ -49,7 +48,10 @@ const ChallengeDetail = () => {
     try {
       setloading(true);
       const res = await API.DELETE({
-        url: `http://greennarealb-281283380.ap-northeast-2.elb.amazonaws.com/nare/${id}`,
+        url: `https://ok.greennare.store/nare/${id}`,
+        headers: {
+          Authorization: loginAccToken,
+        },
       });
       console.log(res);
     } catch (err) {
@@ -63,7 +65,7 @@ const ChallengeDetail = () => {
     try {
       setloading(true);
       const res = await API.GET(
-        `http://greennarealb-281283380.ap-northeast-2.elb.amazonaws.com/nare/reply/${id}?size=${postPerPage}&page=${
+        `https://ok.greennare.store/nare/reply/${id}?size=${postPerPage}&page=${
           currentPage - 1
         }`,
       );

@@ -10,6 +10,7 @@ import { isShopAtom } from 'jotai/atom';
 
 const ChallengePage = () => {
   const setIsShop = useSetAtom(isShopAtom);
+  const login = localStorage.getItem('accessToken');
 
   const navigate = useNavigate();
   const gotoWrite = () => {
@@ -32,7 +33,9 @@ const ChallengePage = () => {
       <StyledWrapper>
         <HeadLine>
           <h1>☘️ 챌린지</h1>
-          <WriteButton onClick={gotoWrite}>글 작성하기</WriteButton>
+          {login ? (
+            <WriteButton onClick={gotoWrite}>글 작성하기</WriteButton>
+          ) : null}
         </HeadLine>
         <ChallengeList />
         <div className="scroll-container">

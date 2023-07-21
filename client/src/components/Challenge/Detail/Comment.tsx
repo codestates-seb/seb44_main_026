@@ -21,7 +21,7 @@ const InputItem: React.FC<InputItemProps> = ({ setComment, value }) => {
     try {
       setloading(true);
       const res = await API.POST({
-        url: `http://greennarealb-281283380.ap-northeast-2.elb.amazonaws.com/nare/reply/${id}`,
+        url: `https://ok.greennare.store/nare/reply/${id}`,
         data: { content: value },
         headers: {
           Authorization: loginAccToken,

@@ -24,13 +24,13 @@ const CommentBox: React.FC<CommentProps> = ({
 }) => {
   const [isEdit, setIsEdit] = useState(false);
   const [comment, setComment] = useState(body);
-  //멤버아이디 비교해서 멤버아이디가 맞으면 수정 삭제 표시
-  const memberId = 1;
+  //멤버아이디 비교해서 멤버아이디가 맞으면 수정 삭제 표시 나중에 수정
+  const memberId = 31;
 
   const deleteComment = async () => {
     try {
       const res = await API.DELETE({
-        url: `http://greennarealb-281283380.ap-northeast-2.elb.amazonaws.com/nare/reply/${id}`,
+        url: `https://ok.greennare.store/nare/reply/${id}`,
       });
       console.log(res);
     } catch (err) {

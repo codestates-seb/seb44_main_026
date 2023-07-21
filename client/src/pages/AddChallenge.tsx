@@ -50,7 +50,12 @@ const AddChallenge = () => {
           }),
         );
         console.log(loginAccToken);
-        formData.append('image', null);
+        formData.append(
+          'image',
+          new Blob([null], {
+            type: 'multipart/form-data',
+          }),
+        );
         const res = await API.POST({
           url: 'http://greennarealb-281283380.ap-northeast-2.elb.amazonaws.com/nare/challenge',
           data: formData,

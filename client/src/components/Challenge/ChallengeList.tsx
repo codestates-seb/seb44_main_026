@@ -17,7 +17,7 @@ const ChallengeList = () => {
     try {
       setLoading(true);
       const res = await API.GET(
-        `http://greennarealb-281283380.ap-northeast-2.elb.amazonaws.com/nare/challenge?&size=${postPerPage}&page=${
+        `https://ok.greennare.store/nare/challenge?&size=${postPerPage}&page=${
           currentPage - 1
         }`,
       );

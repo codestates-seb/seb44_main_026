@@ -18,12 +18,15 @@ const EditComment: React.FC<EditCommentProps> = ({
   const textHandler = (e: React.FormEvent<HTMLInputElement>) => {
     setnewComment(e.currentTarget.value);
   };
-
+  const loginAccToken = localStorage.getItem('accessToken');
   const EditComment = async () => {
     try {
       const res = await API.PATCH({
         url: `http://greennarealb-281283380.ap-northeast-2.elb.amazonaws.com/nare/reply/${id}`,
         data: { content: newComment },
+        headers: {
+          Authorization: loginAccToken,
+        },
       });
     } catch (err) {
       console.log(err);
