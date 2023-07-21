@@ -12,10 +12,6 @@ import { Pagination } from 'feature/Pagination';
 import { Review } from 'feature/Review';
 import { ReviewSkeleton } from 'feature/skeletonUI/ReviewSkeleton';
 
-interface ImageProps {
-  img: string;
-}
-
 interface ReviewType {
   reviewId: number;
   context: string;
@@ -96,7 +92,9 @@ export const ItemDetail = () => {
       <Nav />
       <Wrapper>
         <div className="itemWrapper">
-          <Image img={currentItem.imageLinks} />
+          <Image>
+            <img src={currentItem.imageLinks} />
+          </Image>
           <ItemInfo>
             <div>
               <h1 className="title">{currentItem.productName}</h1>
@@ -172,15 +170,18 @@ const Wrapper = styled.main`
   }
 `;
 
-const Image = styled.div<ImageProps>`
+const Image = styled.div`
   width: 16rem;
   height: 13rem;
   flex-shrink: 0;
 
-  background-image: url(${(props) => props.img});
-  background-size: cover;
-  background-position: center;
   background-color: var(--gray);
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
 `;
 
 const ItemInfo = styled.div`

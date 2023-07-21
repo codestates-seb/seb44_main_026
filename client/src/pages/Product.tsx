@@ -18,7 +18,7 @@ export interface ItemType {
   point: number;
   category: string;
   storeLink: string;
-  imageLink: string;
+  imageLinks: string;
   heart?: boolean;
 }
 
@@ -39,9 +39,12 @@ export const Product = () => {
         }&size=${9}&category=${filter}`,
       );
 
-      const Products = res.data;
-      setItemList(Products.data);
-      setTotalPages(Products.pageInfo.totalPages);
+      const products = res.data;
+      const setProducts = products.data.map((item: ItemType) => {
+        return { ...item, imageLink: item.imageLinks[0] };
+      });
+      setItemList(setProducts);
+      setTotalPages(products.pageInfo.totalPages);
       setIsLoding(false);
 
       console.log(res?.data);
