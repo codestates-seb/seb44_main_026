@@ -32,11 +32,11 @@ class API {
     }
   }
 
-  public GET({ url, ...params }: AxiosRequestConfig): Promise<AxiosResponse> {
+  public GET({ url, headers }: AxiosRequestConfig): Promise<AxiosResponse> {
     return this.CALL({
       method: 'GET',
       url,
-      params,
+      headers,
     });
   }
 
