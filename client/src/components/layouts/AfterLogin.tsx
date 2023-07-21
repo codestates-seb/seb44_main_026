@@ -40,8 +40,9 @@ export const AfterLogin = () => {
   const [logout, setLogout] = useState(true);
   const navigator = useNavigate();
   const handlelogout = () => {
-    localStorage.removeItem('accessToken');
-    localStorage.removeItem('memberId');
+    localStorage.removeItem('accessToken'); // 토큰 저장
+    localStorage.removeItem('memberId'); //memberId 저장
+    localStorage.removeItem('name'); // name 저장
     setLogout(false);
     navigator('/');
   };
