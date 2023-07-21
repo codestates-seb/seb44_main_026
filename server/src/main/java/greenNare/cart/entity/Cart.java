@@ -7,6 +7,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Entity
 @Getter
@@ -23,6 +25,10 @@ public class Cart {
     @ManyToOne
     @JoinColumn(name = "productId")
     private Product product;
+
+    private LocalDateTime createdAt;
+
+
 
     public Cart(Member member, Product product) {
         this.member = member;

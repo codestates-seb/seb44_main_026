@@ -35,7 +35,7 @@ public class ChallengeService {
     private final JwtTokenizer jwtTokenizer;
     private final ReplyService replyService;
 
-    public static final String IMAGE_SAVE_URL = "/src/main/resources/static/images";
+    public static final String IMAGE_SAVE_URL = "/home/ssm-user/seb44_main_026/images/";
     public static final String SEPERATOR  = "_";
 
     public ChallengeService(ChallengeRepository challengeRepository, MemberService memberService, SecurityConfiguration securityConfiguration, JwtTokenizer jwtTokenizer, ReplyService replyService) {
@@ -47,9 +47,14 @@ public class ChallengeService {
     }
 
     public ChallengeDto.Response createChallenge(Challenge challenge, String token, MultipartFile file) throws NullPointerException, IOException {
+        if(token.isBlank()) {
+            throw new BusinessLogicException(ExceptionCode.INVALID_TOKEN);
+        }
+        int memberId = jwtTokenizer.getMemberId(token);
         Member member = findMemberByToken(token);
 
-        challenge.setMemberId(member.getMemberId());
+        //challenge.setMemberId(member.getMemberId());
+        challenge.setMemberId(memberId);
 
         Challenge imageSaveChallenge = saveImage(challenge, file);
 
@@ -68,8 +73,8 @@ public class ChallengeService {
         }
         log.info("patch 요청에 image 있음");
         //String projectPath = System.getProperty("user.dir")+ IMAGE_SAVE_URL; // * 상수 값은 모두 변수로 만들기
-        //String path = "/home/ssm-user/seb44_main_026/img";
-        String projectPath = "/home/ssm-user/seb44_main_026/server"+IMAGE_SAVE_URL;
+        String projectPath = IMAGE_SAVE_URL;
+        //String projectPath = "C:/Users/eheka/seb44_main_026/images/";
         log.info("user.dir: {}", System.getProperty("user.dir"));
 
         UUID uuid = UUID.randomUUID();
@@ -153,7 +158,7 @@ public class ChallengeService {
 
     public void deleteChallenge(int challengeId, String token){
         log.info("##### delete challenge start");
-        if(token.isEmpty()){
+        if(token.isBlank()){
             throw new BusinessLogicException(ExceptionCode.INVALID_TOKEN);
         }
         log.info("##### token empty 통과");
@@ -187,12 +192,18 @@ public class ChallengeService {
     }
 
     public Member findMemberByToken(String token) {
+        if(token.isBlank()) {
+            throw new BusinessLogicException(ExceptionCode.INVALID_TOKEN);
+        }
         int memberId = jwtTokenizer.getMemberId(token);
         log.info("token에서 추출한 memberId : {}", memberId);
         return memberService.findMemberById(memberId);
     }
 
     public void validateWriter(int writerMemberId, String token) {
+        if(token.isBlank()) {
+            throw new BusinessLogicException(ExceptionCode.INVALID_TOKEN);
+        }
         if (findMemberByToken(token).getMemberId() != writerMemberId) {
             log.info("작성자와 접근자(수정) 불일치");
             log.info("token 주인 : {}", findMemberByToken(token).getMemberId());

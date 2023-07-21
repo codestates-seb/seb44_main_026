@@ -3,6 +3,7 @@ package greenNare.place.service;
 import greenNare.auth.jwt.JwtTokenizer;
 import greenNare.exception.BusinessLogicException;
 import greenNare.exception.ExceptionCode;
+import greenNare.member.entity.Member;
 import greenNare.place.dto.PlaceDto;
 import greenNare.place.entity.Place;
 import greenNare.place.repository.PlaceRepository;
@@ -24,7 +25,7 @@ public class PlaceService {
     }
 
     public Place createPlace(Place place, String token) {
-        int memberId =1;// jwtTokenizer.getMemberId(token);
+        int memberId = findMemberIdByToken(token);
         verifyExistsPlace(place.getLat(), place.getLongi());
         place.setMemberId(memberId);
         return placeRepository.save(place);
@@ -33,8 +34,9 @@ public class PlaceService {
     public List<Place> getPlaces() {
         return placeRepository.findAll();
     }
+
     public void deletePlace(int placeId, String token) {
-        int memberId = jwtTokenizer.getMemberId(token);
+        int memberId = findMemberIdByToken(token);
         validateWriter(memberId, placeId);
 
         Optional<Place> findPlace = placeRepository.findById(placeId);
@@ -43,10 +45,18 @@ public class PlaceService {
         placeRepository.delete(place);
     }
 
+    public int findMemberIdByToken(String token) {
+        if(token.isBlank()) {
+            throw new BusinessLogicException(ExceptionCode.INVALID_TOKEN);
+        }
+        return  jwtTokenizer.getMemberId(token);
+    }
+
     public void verifyExistsPlace(double lat, double longi) {
         boolean exist = placeRepository.findByLatAndLongi(lat, longi).isPresent();
         if (exist) throw new BusinessLogicException(ExceptionCode.PLACE_EXIST);
     }
+
     public void validateWriter(int memberId, int placeId) {
         Optional<Place> place = placeRepository.findById(placeId);
         if(memberId != place.get().getMemberId()){

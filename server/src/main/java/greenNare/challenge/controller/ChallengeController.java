@@ -110,10 +110,11 @@ public class ChallengeController {
         challengeService.deleteChallenge(challengeId, token);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
+    /*
     @GetMapping("/images/{imageFileName}") // image
     public Resource showImage(@PathVariable String imageFileName) throws MalformedURLException {
         //return new UrlResource("file:" + "/home/ssm-user/seb44_main_026" + imageFileName);
         return new UrlResource("file:" + System.getProperty("user.dir") + "/images/" + imageFileName);
     }
-
+*/
 }

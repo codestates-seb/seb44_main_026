@@ -1,5 +1,8 @@
 package greenNare.member.service;
 
+import greenNare.cart.entity.Cart;
+import greenNare.cart.repository.CartRepository;
+import greenNare.cart.service.CartService;
 import greenNare.config.SecurityConfiguration;
 import greenNare.exception.BusinessLogicException;
 import greenNare.exception.ExceptionCode;
@@ -25,18 +28,22 @@ public class MemberService {
     private MemberRepository memberRepository;
     private SecurityConfiguration securityConfiguration;
 
+//    private CartService cartService;
+
     private ImageRepository imageRepository;
 
     private ProductService productService;
 
     public MemberService(MemberRepository memberRepository,
                          SecurityConfiguration securityConfiguration,
-                         ImageRepository imageRepository,
-                         ProductService productService) {
+                         /*CartService cartService,*/
+                         ProductService productService,
+                         ImageRepository imageRepository) {
         this.memberRepository = memberRepository;
         this.securityConfiguration = securityConfiguration;
-        this.imageRepository = imageRepository;
+//        this.cartService = cartService;
         this.productService = productService;
+        this.imageRepository = imageRepository;
     }
     public Member loginMember(String email, String password) {
         Optional<Member> optionalMember = memberRepository.findByEmail(email);
@@ -128,13 +135,48 @@ public class MemberService {
         memberRepository.save(member);
     }
 
-//    public Page<Product> getLikeProduts(int memberId, PageRequest pageable) {
-//
-//
-//    }
+    public Page<Cart> getLikeProduts(int memberId, PageRequest pageable) {
+        Page<Cart> likeProducts = memberRepository.findCartByMemberId(memberId,pageable);//cartService.findMyLikeProducts(memberId, pageable);
 
-    public List<GetProductWithImageDto> getLikeProductsWithImage(Page<Product> products) {
-        return productService.getProductWithImage(products);
+        return likeProducts;
+    }
+
+    public List<GetProductWithImageDto> getLikeProductsWithImage(Page<Cart> cartProducts) {
+        List<Product> myLikeProducts = cartProducts.getContent()
+                .stream()
+                .map( likeProduct -> {
+                            Product productDetail = productService.getProduct(likeProduct.getProduct().getProductId());
+                            return productDetail;
+
+                        }
+
+                ).collect(Collectors.toList());
+
+        List<GetProductWithImageDto> getProductWithImageDtos = myLikeProducts.stream()
+                .map(product -> {
+                    List<Image> images = imageRepository.findImagesUriByProductProductId(product.getProductId());
+                    List<String> imageLinks = images.stream()
+                            .map(image -> image.getImageUri())
+                            .collect(Collectors.toList());
+//                    Image image = imageRepository.findImageUriByProductProductId(product.getProductId());
+//                    String imageLink = image.getImageUri();
+
+                    GetProductWithImageDto resultDto = new GetProductWithImageDto(
+                            product.getProductId(),
+                            product.getProductName(),
+                            product.getPrice(),
+                            product.getCategory(),
+                            product.getPoint(),
+                            imageLinks
+//                            imageLink
+                    );
+
+                    return resultDto;
+                })
+                .collect(Collectors.toList());
+
+
+        return getProductWithImageDtos;
 
     }
 }

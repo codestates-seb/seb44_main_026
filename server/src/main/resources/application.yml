@@ -1,4 +1,10 @@
+#externalImagePath: C:/Users/eheka/seb44_main_026/images/
+externalImagePath: home/ssm-user/seb44_main_026/images/
 spring:
+  mvc:
+    static-path-pattern: /images/**
+  resources:
+    static-locations: file:${externalImagePath}
   h2:
     console:
       enabled: true

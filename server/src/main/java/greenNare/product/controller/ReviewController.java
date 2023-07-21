@@ -16,6 +16,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartRequest;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -60,10 +61,12 @@ public class ReviewController {
 
     @PostMapping("/{productId}")
     public ResponseEntity postReview(@PathVariable("productId") int productId,
-                                     @Valid @RequestBody ReviewDto.Post postDto,
+                                     @Valid @RequestPart ReviewDto.Post postDto,
+                                     @RequestPart (required = false) MultipartRequest imagefile,
                                      @RequestHeader(value = "Authorization", required = false) String token) {
 
         reviewService.createReview(reviewMapper.ReviewPostDtoToReview(postDto), jwtTokenizer.getMemberId(token), productId);
+
 
         return new ResponseEntity(HttpStatus.CREATED);
 
