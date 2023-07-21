@@ -36,7 +36,7 @@ public class ProductController {
                                       @RequestParam("category") String category){
 
         Page<Product> getProducts = productService.getProducts(page, size, category);
-        List<GetProductWithImageDto> responseProducts = productService.getProductWithImage(getProducts);
+        List<GetProductWithImageDto> responseProducts = productService.getProductsWithImage(getProducts);
         MultiResponseDto response = new MultiResponseDto(responseProducts, getProducts);
 
         return new ResponseEntity<>(response, HttpStatus.OK);

@@ -2,17 +2,26 @@ package greenNare.member.controller;
 
 
 
+import greenNare.Response.MultiResponseDto;
 import greenNare.Response.SingleResponseDto;
+import greenNare.auth.jwt.JwtTokenizer;
+import greenNare.cart.entity.Cart;
 import greenNare.member.entity.Member;
 import greenNare.member.mapper.MemberMapper;
 import greenNare.member.dto.MemberDto;
 import greenNare.member.service.MemberService;
+import greenNare.product.dto.GetProductWithImageDto;
+import greenNare.product.entity.Product;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import javax.validation.constraints.Positive;
+import java.util.List;
 
 @RestController
 @RequestMapping("/user")
@@ -22,9 +31,13 @@ import javax.validation.constraints.Positive;
     private final MemberMapper mapper;
     private final MemberService memberService;
 
-    public MemberController(MemberMapper mapper, MemberService memberService) {
+    private final JwtTokenizer jwtTokenizer;
+
+    public MemberController(MemberMapper mapper, MemberService memberService,
+                            JwtTokenizer jwtTokenizer) {
         this.mapper = mapper;
         this.memberService = memberService;
+        this.jwtTokenizer = jwtTokenizer;
     }
 
     @GetMapping
@@ -72,10 +85,15 @@ import javax.validation.constraints.Positive;
     }
 
     @GetMapping("/like")
-    public ResponseEntity getLikeProduct(@RequestHeader(value = "Authorization", required = false) String token) {
+    public ResponseEntity getLikeProduct(@RequestHeader(value = "Authorization", required = false) String token,
+                                         int page, int size) {
+        PageRequest pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "createdAt"));
+        Page<Cart> getLikeProducts = memberService.getLikeProduts(jwtTokenizer.getMemberId(token), pageable);
 
 
-        return new ResponseEntity<>(HttpStatus.OK);
+        List<GetProductWithImageDto> getLikeProductsWithImage = memberService.getLikeProductsWithImage(getLikeProducts);
+        MultiResponseDto response = new MultiResponseDto(getLikeProductsWithImage, getLikeProducts);
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 }
 
