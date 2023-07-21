@@ -3,16 +3,12 @@ import { LikeButton } from 'feature/LikeButton';
 import { useNavigate } from 'react-router-dom';
 import { ItemType } from 'pages/Product';
 
-interface ImageProps {
-  img: string;
-}
-
 export const Item = ({
   productId,
   productName,
   price,
   point,
-  imageLink,
+  imageLinks,
   heart,
 }: ItemType) => {
   const navigate = useNavigate();
@@ -23,7 +19,9 @@ export const Item = ({
 
   return (
     <ItemWrapper>
-      <Image img={imageLink} onClick={() => selectItemHandler(productId)} />
+      <Image onClick={() => selectItemHandler(productId)}>
+        <img src={imageLinks} />
+      </Image>
       <ItemInfoWrapper>
         <ItemInfo>
           <div className="title" onClick={() => selectItemHandler(productId)}>
@@ -36,7 +34,7 @@ export const Item = ({
           <LikeButton
             productId={productId}
             productName={productName}
-            image={imageLink}
+            image={imageLinks}
             price={price}
             point={point}
             heart={heart}
@@ -63,16 +61,19 @@ const ItemWrapper = styled.li`
   align-items: center;
 `;
 
-const Image = styled.div<ImageProps>`
+const Image = styled.div`
   cursor: pointer;
 
   width: 16rem;
   min-height: 13rem;
 
-  background-image: url(${(props) => props.img});
-  background-size: cover;
-  background-position: center;
   background-color: var(--gray);
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
 `;
 
 const ItemInfoWrapper = styled.div`
