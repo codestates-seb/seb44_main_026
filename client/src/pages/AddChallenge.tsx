@@ -45,16 +45,17 @@ const AddChallenge = () => {
           }),
         );
 
-        if (fileurl === null) {
+        if (fileurl && newfile) {
+          formData.append('image', newfile);
+        } else {
           formData.append(
             'image',
             new Blob([null], {
               type: 'multipart/form-data',
             }),
           );
-        } else {
-          formData.append('image', newfile);
         }
+
         const res = await API.POST({
           url: 'https://ok.greennare.store/nare/challenge',
           data: formData,
@@ -73,16 +74,17 @@ const AddChallenge = () => {
   };
 
   useEffect(() => {
+    console.log(fileurl);
+    console.log(newfile);
+  }, [fileurl, newfile]);
+
+  useEffect(() => {
     if (title.length > 0 && contents.length > 20) {
       setIsReady(true);
     } else {
       setIsReady(false);
     }
   }, [title, contents]);
-
-  useEffect(() => {
-    console.log(fileurl);
-  }, [fileurl]);
 
   /*
   //file upload 

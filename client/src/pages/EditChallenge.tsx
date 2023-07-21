@@ -35,7 +35,16 @@ const EditChallenge: React.FC = () => {
           type: 'application/json',
         }),
       );
-      formData.append('image', newfile);
+      if (fileurl && newfile) {
+        formData.append('image', newfile);
+      } else {
+        formData.append(
+          'image',
+          new Blob([null], {
+            type: 'multipart/form-data',
+          }),
+        );
+      }
       const res = await API.POST({
         url: `https://ok.greennare.store/nare/update/${id}`,
         data: formData,
