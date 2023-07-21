@@ -38,6 +38,16 @@ public class MemberService {
         this.imageRepository = imageRepository;
         this.productService = productService;
     }
+    public Member loginMember(String email, String password) {
+        Optional<Member> optionalMember = memberRepository.findByEmail(email);
+        Member member = optionalMember.orElse(null);
+
+        if (member != null && securityConfiguration.passwordEncoder().matches(password, member.getPassword())) {
+            return member;
+        }
+
+        return null;
+    }
 
     public Member createMember(Member member) {
         member.setPassword(securityConfiguration.passwordEncoder().encode(member.getPassword()));

@@ -3,9 +3,11 @@ package greenNare.auth.filter;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import greenNare.auth.dto.LoginDto;
 import greenNare.auth.jwt.JwtTokenizer;
+import greenNare.member.dto.MemberDto;
 import greenNare.member.entity.Member;
 import lombok.SneakyThrows;
 
+import org.springframework.http.MediaType;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
@@ -48,9 +50,16 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
                                             FilterChain chain,
                                             Authentication authResult) throws IOException, ServletException {
         Member member = (Member) authResult.getPrincipal();
+        MemberDto.Response responseBody = new MemberDto.Response(member.getMemberId(), member.getEmail(), member.getName(),0);;
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        String responseBodyJson = objectMapper.writeValueAsString(responseBody);
 
         String accessToken = delegateAccessToken(member);
         String refreshToken = delegateRefreshToken(member);
+
+        response.setContentType(MediaType.APPLICATION_JSON_VALUE);
+        response.getWriter().write(responseBodyJson);
 
         response.setHeader("Authorization", "Bearer " + accessToken);
         response.setHeader("Refresh", refreshToken);
