@@ -34,8 +34,8 @@ export const Review = ({
 
   const accessToken = localStorage.getItem('accessToken');
   // 임시
-  // const user = localStorage.getItem('memberId');
-  const user = 31;
+  const user = parseInt(localStorage.getItem('memberId'));
+  // const user = 31;
 
   const onDeleteReview = () => {
     setModalContent('정말 삭제하시겠습니까?');
