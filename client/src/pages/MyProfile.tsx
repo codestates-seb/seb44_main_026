@@ -12,16 +12,14 @@ import MyList from 'components/MyPage/MyList';
 import EditProfile from 'components/MyPage/EditProfile';
 
 const MyProfile = () => {
-  const memberId = 1;
   const [loading, setloading] = useState(false);
   const [userName, setUserName] = useState('');
   const [userEmail, setUserEmail] = useState('');
   const [isEdit, setIsEdit] = useState(false);
-  //const memberId = localStorage.getItem('memberId');
   const loginAccToken = localStorage.getItem('accessToken');
   const [point, setPoint] = useState(0);
   const userData = {};
-
+  /*
   const getChallenge = async () => {
     try {
       setloading(true);
@@ -36,6 +34,7 @@ const MyProfile = () => {
     }
     setloading(false);
   };
+  */
 
   const getProfile = async () => {
     try {
@@ -47,8 +46,9 @@ const MyProfile = () => {
         },
       });
       console.log(res);
-      setUserName(res.data.name);
-      setUserEmail(res.data.email);
+      setUserName(res?.data.name);
+      setUserEmail(res?.data.email);
+      setPoint(res?.data.point);
     } catch (err) {
       console.log(err);
     }
@@ -57,7 +57,7 @@ const MyProfile = () => {
 
   useEffect(() => {
     window.scrollTo(0, 0);
-    getChallenge();
+    getProfile();
   }, []);
 
   const GotoEdit = () => {
