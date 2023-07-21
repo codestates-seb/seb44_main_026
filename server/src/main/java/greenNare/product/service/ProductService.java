@@ -41,7 +41,8 @@ public class ProductService {
 
     }
 
-    public List<GetProductWithImageDto> getProductWithImage(Page<Product> products) {
+    public List<GetProductWithImageDto> getProductsWithImage(Page<Product> products) {
+        //List<Product> productList = products.getContent();
         List<GetProductWithImageDto> getProductWithImageDtos = products.getContent().stream()
                 .map(product -> {
                     List<Image> images = imageRepository.findImagesUriByProductProductId(product.getProductId());

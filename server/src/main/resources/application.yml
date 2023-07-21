@@ -4,7 +4,7 @@ spring:
   mvc:
     static-path-pattern: /images/**
   resources:
-    static-locations: file:${externalImagePath
+    static-locations: file:${externalImagePath}
   h2:
     console:
       enabled: true
