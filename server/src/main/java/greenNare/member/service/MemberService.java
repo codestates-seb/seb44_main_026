@@ -28,22 +28,24 @@ public class MemberService {
     private MemberRepository memberRepository;
     private SecurityConfiguration securityConfiguration;
 
-//    private CartService cartService;
+    private CartService cartService;
 
     private ImageRepository imageRepository;
 
     private ProductService productService;
 
+
     public MemberService(MemberRepository memberRepository,
                          SecurityConfiguration securityConfiguration,
-                         /*CartService cartService,*/
+                         CartService cartService,
                          ProductService productService,
                          ImageRepository imageRepository) {
         this.memberRepository = memberRepository;
         this.securityConfiguration = securityConfiguration;
-//        this.cartService = cartService;
+        this.cartService = cartService;
         this.productService = productService;
         this.imageRepository = imageRepository;
+
     }
 
     public Member createMember(Member member) {

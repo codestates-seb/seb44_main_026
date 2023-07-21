@@ -90,7 +90,7 @@ import java.util.List;
     @GetMapping("/like")
     public ResponseEntity getLikeProduct(@RequestHeader(value = "Authorization", required = false) String token,
                                          int page, int size) {
-        PageRequest pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "createdAt"));
+        PageRequest pageable = PageRequest.of(page, size);
         Page<Cart> getLikeProducts = memberService.getLikeProduts(jwtTokenizer.getMemberId(token), pageable);
 
 

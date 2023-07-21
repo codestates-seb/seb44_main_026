@@ -1,5 +1,6 @@
 package greenNare.cart.entity;
 
+import greenNare.audit.Auditable;
 import greenNare.member.entity.Member;
 import greenNare.product.entity.Product;
 import lombok.Getter;
@@ -14,7 +15,7 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @NoArgsConstructor
-public class Cart {
+public class Cart extends Auditable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int likeId;

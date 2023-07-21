@@ -1,9 +1,8 @@
 package greenNare.product.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import greenNare.audit.Auditable;
+import lombok.*;
+
 
 import javax.persistence.*;
 
@@ -12,7 +11,7 @@ import javax.persistence.*;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Image {
+public class Image extends Auditable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     int imageId;

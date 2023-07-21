@@ -1,5 +1,6 @@
 package greenNare.product.entity;
 
+import greenNare.audit.Auditable;
 import greenNare.member.entity.Member;
 import lombok.*;
 
@@ -12,7 +13,7 @@ import java.util.List;
 @Getter
 @Setter
 //@Builder
-public class Review {
+public class Review extends Auditable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     int reviewId;

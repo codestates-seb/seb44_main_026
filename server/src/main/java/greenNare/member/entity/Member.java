@@ -27,11 +27,12 @@ public class Member {
     @Column(nullable = false)
     private int point;
 
-    @OneToMany(mappedBy = "member")
+    @OneToMany(mappedBy = "member", fetch = FetchType.EAGER)
     private List<Cart> carts;
 
     @ElementCollection(fetch = FetchType.EAGER)
     private List<String> roles = new ArrayList<>();
+
 
     public Member(String email, String name, String password, String image, int point){
         this.email = email;

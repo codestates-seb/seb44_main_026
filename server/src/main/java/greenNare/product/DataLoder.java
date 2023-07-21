@@ -60,7 +60,7 @@ public class DataLoder implements CommandLineRunner {
             productRepository.save(new Product("손수건"+i, "손수건입니다", i*100, i, "link", "hygiene"));
         }
         for(int i=1; i<=30; i++) {
-            memberRepository.save(new Member("email"+i, "name"+i,"password"+i,"image"+i,i));
+            memberRepository.save(new Member("email"+i, "name"+i,"password"+i,"/images/image.jpg",i));
         }
         for (int i=1; i<=30; i++) {
             Member member = memberRepository.findBymemberId(i);
