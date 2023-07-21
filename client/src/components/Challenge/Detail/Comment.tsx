@@ -60,9 +60,9 @@ const InputItem: React.FC<InputItemProps> = ({ setComment, value }) => {
         ></input>
         <InputButton onClick={postComment}>등록</InputButton>
       </InputContainer>
-      {isReady ? null : (
+      {!isReady ? (
         <WarningContainer>15자 이상 입력하세요😀</WarningContainer>
-      )}
+      ) : null}
     </>
   );
 };

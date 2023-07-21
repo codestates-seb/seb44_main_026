@@ -27,6 +27,7 @@ const ChallengeDetail = () => {
   const postPerPage = 10;
   const loginAccToken = localStorage.getItem('accessToken');
   const [total, setTotal] = useState(0);
+  const [isReady, setIsReady] = useState(true);
 
   const getChallenge = async () => {
     try {
