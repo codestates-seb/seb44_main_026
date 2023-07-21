@@ -151,7 +151,8 @@ export const Login = () => {
         setLoginAccToken(loginData.accessToken);
         setLoginRefToken(loginData.refreshToken);
         setLoginUserId(loginData.memberId);
-        console.log(loginAccToken);
+        console.log(accessToken);
+        console.log(memberId);
         // 페이지 이동
         navigate('/');
       } else if (response.status === 401) {
