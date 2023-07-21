@@ -30,10 +30,6 @@ const StyledButton = styled.button<{ transparent?: boolean }>`
   background-color: transparent;
   border: none;
 `;
-const StyledClose = styled.div`
-  width: rem;
-  height: 10rem;
-`;
 
 export const Modal = ({ children, onClick }: Props) => {
   return (
