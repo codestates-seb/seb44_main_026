@@ -33,31 +33,30 @@ const AddChallenge = () => {
     alert('제목을 1자 이상, 내용을 20자 이상 입력하세요. 등록이 불가능합니다.');
   };
 
-  useEffect(() => {
-    console.log(loginAccToken);
-  }, [loginAccToken]);
-
   const postChallenge = async () => {
     if (isReady) {
       try {
         const formData = new FormData();
         //formData.append('requestBody', JSON.stringify(newData));
-        console.log(loginAccToken);
         formData.append(
           'requestBody',
           new Blob([JSON.stringify(newData)], {
             type: 'application/json',
           }),
         );
-        console.log(loginAccToken);
-        formData.append(
-          'image',
-          new Blob([null], {
-            type: 'multipart/form-data',
-          }),
-        );
+
+        if (fileurl === null) {
+          formData.append(
+            'image',
+            new Blob([null], {
+              type: 'multipart/form-data',
+            }),
+          );
+        } else {
+          formData.append('image', newfile);
+        }
         const res = await API.POST({
-          url: 'http://greennarealb-281283380.ap-northeast-2.elb.amazonaws.com/nare/challenge',
+          url: 'https://ok.greennare.store/nare/challenge',
           data: formData,
           headers: {
             'Content-Type': 'multipart/form-data',
@@ -68,8 +67,8 @@ const AddChallenge = () => {
         console.log(err);
       }
 
-      //nav('/challenge');
-      //location.reload();
+      nav('/challenge');
+      location.reload();
     }
   };
 
@@ -81,32 +80,12 @@ const AddChallenge = () => {
     }
   }, [title, contents]);
 
+  useEffect(() => {
+    console.log(fileurl);
+  }, [fileurl]);
+
   /*
   //file upload 
-  const onSubmitForm = async (event: React.FormEvent<HTMLFormElement>) => {
-    try {
-      event.preventDefault(); // Prevent redirection
-
-      if (file) {
-        const formData = new FormData();
-        formData.append('files', file);
-
-        const res = await API.POST({
-          url: `url`,
-          data: formData,
-          headers: { 'Content-Type': 'multipart/form-data' },
-        });
-        console.log('file upload');
-        setSuccess(true);
-        if (res.status !== 200) throw res;
-      } else {
-        console.log('file is null');
-      }
-    } catch (err) {
-      console.log(err);
-    }
-  };
-  
   //수정할때 데이터 받아서 세팅
   const getDataurl = async () => {
     try {
@@ -132,13 +111,13 @@ const AddChallenge = () => {
         </HeadLine>
         <InputTitle setTitle={setTitle} value={title} />
         <NewChallenge setContents={setContents} contents={contents} />
-        {/*<UploadFile
+        <UploadFile
           fileurl={fileurl}
           setFileurl={setFileurl}
           newfile={newfile}
           setnewFile={setnewFile}
-  />*/}
-        <UploadChallenge />
+        />
+        {/*<UploadChallenge />*/}
       </InputContainer>
       {isReady ? null : (
         <WarningContainer>
@@ -198,7 +177,7 @@ const SubmitContainer = styled.div`
 const WarningContainer = styled.div`
   display: flex;
   color: red;
-  margin-left: 5rem;
+  margin-left: 10rem;
   font-size: 12px;
 `;
 

@@ -22,7 +22,7 @@ const EditComment: React.FC<EditCommentProps> = ({
   const EditComment = async () => {
     try {
       const res = await API.PATCH({
-        url: `http://greennarealb-281283380.ap-northeast-2.elb.amazonaws.com/nare/reply/${id}`,
+        url: `https://ok.greennare.store/nare/reply/${id}`,
         data: { content: newComment },
         headers: {
           Authorization: loginAccToken,

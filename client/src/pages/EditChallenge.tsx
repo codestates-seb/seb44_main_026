@@ -35,12 +35,7 @@ const EditChallenge: React.FC = () => {
           type: 'application/json',
         }),
       );
-      formData.append(
-        'image',
-        new Blob([null], {
-          type: 'multipart/form-data',
-        }),
-      );
+      formData.append('image', newfile);
       const res = await API.POST({
         url: `https://ok.greennare.store/nare/update/${id}`,
         data: formData,
@@ -53,42 +48,16 @@ const EditChallenge: React.FC = () => {
     } catch (err) {
       console.log(err);
     }
-    //alert('수정되었습니다');
-    //nav('/challenge/1');
-    //location.reload();
+    alert('수정되었습니다');
+    nav(`/challenge/${id}`);
+    location.reload();
   };
-
-  /*
-  //file upload 
-  const onSubmitForm = async (event: React.FormEvent<HTMLFormElement>) => {
-    try {
-      event.preventDefault(); // Prevent redirection
-
-      if (file) {
-        const formData = new FormData();
-        formData.append('files', file);
-
-        const res = await API.POST({
-          url: `url`,
-          data: formData,
-          headers: { 'Content-Type': 'multipart/form-data' },
-        });
-        console.log('file upload');
-        setSuccess(true);
-        if (res.status !== 200) throw res;
-      } else {
-        console.log('file is null');
-      }
-    } catch (err) {
-      console.log(err);
-    }
-  };
-  
 
   const getDataurl = async () => {
     try {
-      const res = await API.GET(`주소`);
-      setFileurl(`data:image/jpeg;base64,` + res.data[0]);
+      const res = await API.GET(`https://ok.greennare.store/nare/${id}`);
+      setFileurl(`https://ok.greennare.store` + res?.data.data.image);
+      console.log(fileurl);
       console.log(res);
     } catch (err) {
       console.log(err);
@@ -99,7 +68,6 @@ const EditChallenge: React.FC = () => {
     getDataurl();
     console.log(id);
   }, []);
-*/
 
   const getMyChallenge = async () => {
     try {
@@ -126,13 +94,12 @@ const EditChallenge: React.FC = () => {
         </HeadLine>
         <InputTitle setTitle={setTitle} value={title} />
         <NewChallenge setContents={setContents} contents={contents} />
-        {/*<UploadFile
+        <UploadFile
           fileurl={fileurl}
           setFileurl={setFileurl}
           newfile={newfile}
           setnewFile={setnewFile}
-        /> */}
-        <UploadChallenge />
+        />
       </InputContainer>
       <ButtonContainer>
         <SubmitContainer onClick={EditChallenge}>수정</SubmitContainer>
