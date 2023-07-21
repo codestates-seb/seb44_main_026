@@ -8,6 +8,7 @@ import greenNare.auth.jwt.JwtTokenizer;
 import greenNare.auth.utils.CustomAuthorityUtils;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
@@ -51,6 +52,9 @@ public class SecurityConfiguration {
                 .apply(new CustomFilterConfigurer())
                 .and()
                 .authorizeRequests(authorize -> authorize
+                        .antMatchers(HttpMethod.POST, "/*/").permitAll()
+                        .antMatchers(HttpMethod.PATCH, "/*/").hasRole("USER")
+                        .antMatchers(HttpMethod.GET, "/*/").hasAnyRole("USER", "ADMIN")
                         .anyRequest().permitAll()
                 );
 
