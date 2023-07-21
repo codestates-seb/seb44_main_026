@@ -50,7 +50,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
                                             FilterChain chain,
                                             Authentication authResult) throws IOException, ServletException {
         Member member = (Member) authResult.getPrincipal();
-        MemberDto.Response responseBody = new MemberDto.Response(member.getMemberId(), member.getEmail(), member.getName(),0);;
+        MemberDto.Response responseBody = new MemberDto.Response(member.getMemberId(), member.getEmail(), member.getName(), member.getPoint());
 
         ObjectMapper objectMapper = new ObjectMapper();
         String responseBodyJson = objectMapper.writeValueAsString(responseBody);
