@@ -13,10 +13,15 @@ import greenNare.product.repository.ReviewRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartRequest;
 
+import java.io.File;
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
@@ -30,6 +35,10 @@ public class ReviewService {
     private MemberRepository memberRepository;
 
     private MemberService memberService;
+
+    public static final String IMAGE_SAVE_URL = "/home/ssm-user/seb44_main_026/images/";
+
+    public static final String SEPERATOR  = "_";
 
 
     public ReviewService(ReviewRepository reviewRepository,
@@ -63,6 +72,7 @@ public class ReviewService {
                             .collect(Collectors.toList());
 
                     GetReviewWithImageDto resultDto = new GetReviewWithImageDto(
+                            review.getMember().getMemberId(),
                             review.getReviewId(),
                             review.getContext(),
                             review.getCreatedAt(),
@@ -96,7 +106,13 @@ public class ReviewService {
         review.setMember(memberRepository.findBymemberId(memberId));
         review.setProduct(productService.getProduct(productId));
         reviewRepository.save(review);
+
         System.out.println("createReview " + review);
+
+//        List<String> imageLinks =
+
+
+
 
         //updatePoint(response-변경된 포인트 전송)
         memberService.addPoint(memberId);
@@ -113,6 +129,36 @@ public class ReviewService {
         reviewRepository.save(findReview);
         System.out.println("updateReview " + review);
 
+    }
+
+
+    public List<String> saveImage(List<MultipartFile> images) throws IOException{
+        List<String> imageLinks = images.stream()
+                .map( image -> {
+                    UUID uuid = UUID.randomUUID();
+                    String imageName = uuid + SEPERATOR + image.getOriginalFilename();
+
+                    File imagefile = new File(IMAGE_SAVE_URL, imageName);
+                    try {
+                        image.transferTo(imagefile);
+
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+
+                    return "/images/" + imageName;
+                }
+
+        ).collect(Collectors.toList());
+
+        return imageLinks;
+
+    }
+
+
+    public String getImage() {
+        String imageLink = "";
+        return imageLink;
     }
 
 
