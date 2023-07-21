@@ -14,6 +14,7 @@ interface ReviewProps {
   imageLinks?: string[];
   name: string;
   point: number;
+  memberId: number;
 }
 
 export const Review = ({
@@ -23,6 +24,7 @@ export const Review = ({
   imageLinks,
   name,
   point,
+  memberId,
 }: ReviewProps) => {
   const [isEdit, setIsEdit] = useState(false);
   //모달
@@ -32,7 +34,8 @@ export const Review = ({
 
   const accessToken = localStorage.getItem('accessToken');
   // 임시
-  const username = 'qweqwe';
+  // const user = localStorage.getItem('memberId');
+  const user = 31;
 
   const onDeleteReview = () => {
     setModalContent('정말 삭제하시겠습니까?');
@@ -91,7 +94,7 @@ export const Review = ({
             createdAt,
           ).fromNow()}`}</div>
         </UserInfo>
-        {name === username && !isEdit ? (
+        {memberId === user && !isEdit ? (
           <div>
             <Button onClick={() => setIsEdit(true)}>수정</Button>
             <Button onClick={() => onDeleteReview()}>삭제</Button>

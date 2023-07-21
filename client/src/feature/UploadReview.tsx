@@ -65,7 +65,7 @@ export const UploadReview = ({
       setImageFiles({ file: [], url: [] });
       setPreview([]);
 
-      if (res.data.exceptionCode === 'REVIEW_EXIST') {
+      if (res.status === 409) {
         setModalContent('이미 등록한 리뷰가 존재합니다.');
         setIsAlert(true);
         setIsOpen(true);

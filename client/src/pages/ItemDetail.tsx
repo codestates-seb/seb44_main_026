@@ -21,6 +21,7 @@ interface ReviewType {
   imageLinks?: string[];
   name: string;
   point: number;
+  memberId: number;
 }
 
 export const ItemDetail = () => {
@@ -44,6 +45,7 @@ export const ItemDetail = () => {
   const [totalPages, setTotalPages] = useState(1);
   const [currentPage, setCurrentPage] = useState(1);
   const [isLoding, setIsLoding] = useState(true);
+  const accessToken = localStorage.getItem('accessToken');
 
   const getReview = async () => {
     try {
@@ -127,9 +129,11 @@ export const ItemDetail = () => {
         {/* 리뷰 표시 */}
         <div className="reviewWrapper">
           리뷰 {reviewList.length}개
-          <FormWrapper>
-            <UploadReview id={currentItem.productId} />
-          </FormWrapper>
+          {accessToken ? (
+            <FormWrapper>
+              <UploadReview id={currentItem.productId} />
+            </FormWrapper>
+          ) : null}
           <ul>
             {isLoding
               ? Array(3)
