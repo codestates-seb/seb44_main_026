@@ -27,7 +27,7 @@ public class Member {
     @Column(nullable = false)
     private int point;
 
-    @OneToMany(mappedBy = "member", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "member")
     private List<Cart> carts;
 
     @ElementCollection(fetch = FetchType.EAGER)

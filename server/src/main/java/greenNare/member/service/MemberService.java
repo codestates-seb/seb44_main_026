@@ -28,23 +28,23 @@ public class MemberService {
     private MemberRepository memberRepository;
     private SecurityConfiguration securityConfiguration;
 
-    private CartService cartService;
-
-    private ImageRepository imageRepository;
-
-    private ProductService productService;
+//    private CartService cartService;
+//
+//    private ImageRepository imageRepository;
+//
+//    private ProductService productService;
 
 
     public MemberService(MemberRepository memberRepository,
-                         SecurityConfiguration securityConfiguration,
+                         SecurityConfiguration securityConfiguration/*,
                          CartService cartService,
                          ProductService productService,
-                         ImageRepository imageRepository) {
+                         ImageRepository imageRepository*/) {
         this.memberRepository = memberRepository;
         this.securityConfiguration = securityConfiguration;
-        this.cartService = cartService;
-        this.productService = productService;
-        this.imageRepository = imageRepository;
+//        this.cartService = cartService;
+//        this.productService = productService;
+//        this.imageRepository = imageRepository;
 
     }
 
@@ -127,49 +127,49 @@ public class MemberService {
         memberRepository.save(member);
     }
 
-    public Page<Cart> getLikeProduts(int memberId, PageRequest pageable) {
-        Page<Cart> likeProducts = memberRepository.findCartByMemberId(memberId,pageable);//cartService.findMyLikeProducts(memberId, pageable);
-
-        return likeProducts;
-    }
-
-    public List<GetProductWithImageDto> getLikeProductsWithImage(Page<Cart> cartProducts) {
-        List<Product> myLikeProducts = cartProducts.getContent()
-                .stream()
-                .map( likeProduct -> {
-                            Product productDetail = productService.getProduct(likeProduct.getProduct().getProductId());
-                            return productDetail;
-
-                        }
-
-                ).collect(Collectors.toList());
-
-        List<GetProductWithImageDto> getProductWithImageDtos = myLikeProducts.stream()
-                .map(product -> {
-                    List<Image> images = imageRepository.findImagesUriByProductProductId(product.getProductId());
-                    List<String> imageLinks = images.stream()
-                            .map(image -> image.getImageUri())
-                            .collect(Collectors.toList());
-//                    Image image = imageRepository.findImageUriByProductProductId(product.getProductId());
-//                    String imageLink = image.getImageUri();
-
-                    GetProductWithImageDto resultDto = new GetProductWithImageDto(
-                            product.getProductId(),
-                            product.getProductName(),
-                            product.getPrice(),
-                            product.getCategory(),
-                            product.getPoint(),
-                            imageLinks
-//                            imageLink
-                    );
-
-                    return resultDto;
-                })
-                .collect(Collectors.toList());
-
-
-        return getProductWithImageDtos;
-
-    }
+//    public Page<Product> getLikeProduts(int memberId, PageRequest pageable) {
+//        Page<Product> likeProducts = cartService.findMyLikeProducts(memberId,pageable);//cartService.findMyLikeProducts(memberId, pageable);
+//
+//        return likeProducts;
+//    }
+//
+//    public List<GetProductWithImageDto> getLikeProductsWithImage(Page<Product> cartProducts) {
+////        List<Product> myLikeProducts = cartProducts.getContent()
+////                .stream()
+////                .map( likeProduct -> {
+////                            Product productDetail = productService.getProduct(likeProduct.getProduct().getProductId());
+////                            return productDetail;
+////
+////                        }
+////
+////                ).collect(Collectors.toList());
+//
+//        List<GetProductWithImageDto> getProductWithImageDtos = cartProducts.stream()
+//                .map(product -> {
+//                    List<Image> images = imageRepository.findImagesUriByProductProductId(product.getProductId());
+//                    List<String> imageLinks = images.stream()
+//                            .map(image -> image.getImageUri())
+//                            .collect(Collectors.toList());
+////                    Image image = imageRepository.findImageUriByProductProductId(product.getProductId());
+////                    String imageLink = image.getImageUri();
+//
+//                    GetProductWithImageDto resultDto = new GetProductWithImageDto(
+//                            product.getProductId(),
+//                            product.getProductName(),
+//                            product.getPrice(),
+//                            product.getCategory(),
+//                            product.getPoint(),
+//                            imageLinks
+////                            imageLink
+//                    );
+//
+//                    return resultDto;
+//                })
+//                .collect(Collectors.toList());
+//
+//
+//        return getProductWithImageDtos;
+//
+//    }
 }
 
