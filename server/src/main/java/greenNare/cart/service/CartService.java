@@ -60,9 +60,7 @@ public class CartService {
     }
 
     public Cart findExistLikeProduct(int memberId, int productId) {
-        Optional<Cart> optionalCart = cartRepository.findByMemberMemberIdAndProductProductId(
-                cartRepository.findMemberByMemberMemberId(memberId).getMemberId(),
-                productService.getProduct(productId).getProductId());
+        Optional<Cart> optionalCart = cartRepository.findByMemberMemberIdAndProductProductId(memberId, productId);
         Cart findCart = optionalCart.orElseThrow(() -> new BusinessLogicException(ExceptionCode.PRODUCT_NOT_FOUND));
 
         return findCart;
