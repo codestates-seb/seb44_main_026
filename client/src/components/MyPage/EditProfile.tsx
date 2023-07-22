@@ -16,7 +16,7 @@ const EditProfile: React.FC<MyPageItemProps> = ({
   setIsEdit,
 }) => {
   const [newName, setnewName] = useState('');
-  const [password, setPassword] = useState('');
+  const [newpassword, setPassword] = useState('');
   const loginAccToken = localStorage.getItem('accessToken');
   const textHandler = (e: React.FormEvent<HTMLInputElement>) => {
     setnewName(e.currentTarget.value);
@@ -24,19 +24,21 @@ const EditProfile: React.FC<MyPageItemProps> = ({
 
   const passwordtextHandler = (e: React.FormEvent<HTMLInputElement>) => {
     setPassword(e.currentTarget.value);
+    console.log(newpassword);
   };
 
   const patchProfile = async () => {
-    if (password && newName) {
+    if (newpassword && newName) {
       try {
         const res = await API.PATCH({
           url: `https://ok.greennare.store/user/info`,
-          data: { name: newName, password: password },
+          data: { name: newName, password: newpassword },
           headers: {
             Authorization: loginAccToken,
           },
         });
         console.log('patch');
+        setUserName(newName);
       } catch (err) {
         console.log(err);
       }
@@ -47,7 +49,6 @@ const EditProfile: React.FC<MyPageItemProps> = ({
 
   const onClickHandler = () => {
     patchProfile();
-    location.reload();
     setIsEdit(false);
   };
   const isEditHandler = () => {
@@ -69,7 +70,7 @@ const EditProfile: React.FC<MyPageItemProps> = ({
         <input
           onChange={passwordtextHandler}
           className="input-content"
-          placeholder={'수정하기 위해서는 비밀 번호를 입력하세요'}
+          placeholder={'비밀 번호를 입력하세요'}
         ></input>
       </InputTitleContainer>
       <ButtonContainer>
