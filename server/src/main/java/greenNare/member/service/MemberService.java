@@ -119,19 +119,19 @@ public class MemberService {
                 .orElseThrow(()-> new BusinessLogicException(ExceptionCode.MEMBER_NOT_FOUND));
     }
 
-    public void addPoint(int memberId) {
+    public void addPoint(int memberId, int point) {
         Member member = findMemberById(memberId);
-        int point = member.getPoint() + 1;
-        member.setPoint(point);
+        int changePoint = member.getPoint() + point;
+        member.setPoint(changePoint);
         memberRepository.save(member);
     }
-    public void deletePoint(int memberId) {
+    public void deletePoint(int memberId, int point) {
         Member member = findMemberById(memberId);
-        int point = member.getPoint() - 5;
-        if (point < 0) {
+        int changePoint = member.getPoint() - point;
+        if (changePoint < 0) {
             throw new BusinessLogicException(ExceptionCode.POINT_LAKE);
         }
-        member.setPoint(point);
+        member.setPoint(changePoint);
         memberRepository.save(member);
     }
 

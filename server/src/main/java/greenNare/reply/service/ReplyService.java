@@ -52,6 +52,16 @@ public class ReplyService {
 
         reply.setChallengeId(challengeId);
         reply.setMemberId(memberId);
+
+        List<Reply> replyList = replyRepository.findByChallengeId(challengeId);
+        int sameUserReplyCnt = (int) replyList.stream()
+                .filter(r -> r.getMemberId() == memberId)
+                .count();
+        if(sameUserReplyCnt < 1) {
+            throw new BusinessLogicException(ExceptionCode.ALREADY_JOINED);
+        }
+        memberService.addPoint(memberId, 100);
+
         replyRepository.save(reply);
 
         Member member = memberService.findMemberById(memberId);
@@ -105,5 +115,9 @@ public class ReplyService {
     public int countChallenge(int challengeId){
         log.info("challenge 댓글 수: {}",(int) replyRepository.findByChallengeId(challengeId).stream().count());
         return (int) replyRepository.findByChallengeId(challengeId).stream().count();
+    }
+
+    public List<Reply> findAllReply(int challengeId) {
+        return replyRepository.findByChallengeId(challengeId);
     }
 }

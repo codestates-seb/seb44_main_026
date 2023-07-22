@@ -9,6 +9,7 @@ import greenNare.exception.BusinessLogicException;
 import greenNare.exception.ExceptionCode;
 import greenNare.member.entity.Member;
 import greenNare.member.service.MemberService;
+import greenNare.reply.entity.Reply;
 import greenNare.reply.service.ReplyService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -57,6 +58,8 @@ public class ChallengeService {
         challenge.setMemberId(memberId);
 
         Challenge imageSaveChallenge = saveImage(challenge, file);
+
+        memberService.deletePoint(memberId, 500);
 
         Challenge saveChallenge = challengeRepository.save(imageSaveChallenge);
 

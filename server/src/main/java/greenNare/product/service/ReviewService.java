@@ -111,11 +111,9 @@ public class ReviewService {
 
 //        List<String> imageLinks =
 
-
-
-
         //updatePoint(response-변경된 포인트 전송)
-        memberService.addPoint(memberId);
+        int point = (int)Math.floor(review.getProduct().getPrice() * 0.01);
+        memberService.addPoint(memberId, point);
     }
 
 

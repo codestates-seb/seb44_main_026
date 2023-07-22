@@ -16,7 +16,8 @@ public enum ExceptionCode {
     REPLY_NOT_FOUND(404, "존재하지 않는 댓글입니다"),
     REPLY_WRITER_NOT_MATCHED(403, "댓글 접근 권한이 없습니다."),
     MEMBER_NOT_FOUND(404, "회원을 찾을 수 없습니다."),
-    POINT_LAKE(403, "포인트가 부족합니다");
+    POINT_LAKE(403, "포인트가 부족합니다"),
+    ALREADY_JOINED(403,"이미 참여한 챌린지 입니다.");
 
     @Getter
     private int status;
