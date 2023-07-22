@@ -19,7 +19,8 @@ const ChallengeDetail = () => {
   const [loading, setloading] = useState(false); //데이터 받아올 때 로딩
   const [comment, setComment] = useState(''); //새로 작성할 댓글 내용
   const [commentList, setCommentList] = useState([]);
-  const memberId = 33; // 나중에 수정
+  //const memberId = 33; // 나중에 수정
+  const memberId = localStorage.getItem('memberId');
   const [commentCount, setCommentCount] = useState(0);
   const [admin, setAdmin] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
@@ -40,7 +41,7 @@ const ChallengeDetail = () => {
       setBody(res?.data.data.content);
       setName(res?.data.data.name);
       setImg(res?.data.data.image);
-      if (memberId === res?.data.data.memberId) {
+      if (memberId == res?.data.data.memberId) {
         setAdmin(true);
       }
     } catch (err) {
@@ -90,6 +91,7 @@ const ChallengeDetail = () => {
     window.scrollTo(0, 0);
     getChallenge();
     getComment();
+    console.log(memberId);
   }, []);
 
   useEffect(() => {

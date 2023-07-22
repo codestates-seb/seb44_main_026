@@ -8,7 +8,7 @@ import { useState } from 'react';
 import EditComment from './EditComment';
 
 interface CommentProps {
-  name: number;
+  name: any;
   body: string;
   point: number;
   createdAt: string;
@@ -25,7 +25,8 @@ const CommentBox: React.FC<CommentProps> = ({
   const [isEdit, setIsEdit] = useState(false);
   const [comment, setComment] = useState(body);
   //멤버아이디 비교해서 멤버아이디가 맞으면 수정 삭제 표시 나중에 수정
-  const memberId = 33;
+  //const memberId = 33;
+  const memberId = localStorage.getItem('memberId');
   const loginAccToken = localStorage.getItem('accessToken');
 
   const deleteComment = async () => {
@@ -55,13 +56,13 @@ const CommentBox: React.FC<CommentProps> = ({
       ) : (
         <>
           <InfoContainer>
-            <div className="member-name">{'🐥 ' + name}</div>
+            <div className="member-name">{'🐥 '}</div>
             <div className="member-point">{'🏆 ' + point + '점'}</div>
             <div className="comment-date">
               {'⏱️ ' + moment(createdAt).fromNow()}
             </div>
             <>
-              {memberId === name ? (
+              {memberId == name ? (
                 <>
                   <div className="edit-button" onClick={() => setIsEdit(true)}>
                     수정

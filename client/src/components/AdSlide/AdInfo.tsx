@@ -16,7 +16,7 @@ export const slideArr = [
     '광고4',
   ],
   [
-    'https://lh3.google.com/u/0/d/1R02X_CEn75eTgFZQsXJMm4y3gICeXbc4=w1920-h944-iv1',
+    'https://cdn.fortunekorea.co.kr/news/photo/202106/13694_4992_4332.png',
     '광고5',
   ],
 ];
