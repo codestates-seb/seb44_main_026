@@ -20,7 +20,9 @@ export const LikeProducts = () => {
   const getLikeProducts = async () => {
     try {
       const res = await API.GET({
-        url: `${process.env.REACT_APP_SERVER_URL}user/like`,
+        url: `${process.env.REACT_APP_SERVER_URL}like?page=${
+          currentPage - 1
+        }&size=${9}`,
         headers: {
           Authorization: accessToken,
         },
@@ -28,7 +30,7 @@ export const LikeProducts = () => {
 
       const likeProducts = res.data;
       const setProducts = likeProducts.data.map((item: ItemType) => {
-        return { ...item, imageLink: item.imageLinks[0] };
+        return { ...item, imageLink: item.imageLinks[0], heart: true };
       });
       setLikeItems(setProducts);
       setTotalPages(likeProducts.pageInfo.totalPages);
@@ -46,7 +48,7 @@ export const LikeProducts = () => {
     // setLikeItems(JSON.parse(localStorage.getItem('likeItems') || '[]'));
     getLikeProducts();
     setIsShop(true);
-  }, []);
+  }, [currentPage]);
 
   return (
     <>

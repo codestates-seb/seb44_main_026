@@ -3,8 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHeart as solidHeart } from '@fortawesome/free-solid-svg-icons';
 import { faHeart as regularHeart } from '@fortawesome/free-regular-svg-icons';
 import { useState } from 'react';
-import { ItemType } from 'pages/Product';
-import axios from 'axios';
+import API from '../api/index';
 
 interface LikeButtonProps {
   productId: number;
@@ -31,51 +30,69 @@ export const LikeButton = ({
   heart,
 }: LikeButtonProps) => {
   const [isLike, setIsLike] = useState(heart);
+  const accessToken = localStorage.getItem('accessToken');
+
+  const postLike = async () => {
+    try {
+      const res = await API.POST({
+        url: `${process.env.REACT_APP_SERVER_URL}like/${productId}`,
+        headers: {
+          Authorization: accessToken,
+        },
+      });
+
+      console.log('like post');
+      console.log(res.data);
+    } catch (err) {
+      console.log('like post err');
+      console.log(err);
+    }
+  };
+
+  const deleteLike = async () => {
+    try {
+      const res = await API.DELETE({
+        url: `${process.env.REACT_APP_SERVER_URL}like/${productId}`,
+        headers: {
+          Authorization: accessToken,
+        },
+      });
+      console.log('delete like');
+      console.log(res.data);
+    } catch (err) {
+      console.log('delete like err');
+      console.log(err);
+    }
+  };
 
   const onLikeHandler = (productId: number) => {
     setIsLike(!isLike);
 
-    const likeItems = JSON.parse(localStorage.getItem('likeItems') || '[]');
+    // const likeItems = JSON.parse(localStorage.getItem('likeItems') || '[]');
 
     // 관심상품 여부 저장
-    if (isLike) {
-      const filterArr = likeItems.filter(
-        (obj: LikeButtonProps) => obj.productId !== productId,
-      );
-      localStorage.setItem('likeItems', JSON.stringify(filterArr));
-    } else {
-      likeItems.push({
-        productId: productId,
-        productName: productName,
-        image: image,
-        price: price,
-        point: point,
-        heart: !isLike,
-      });
-      localStorage.setItem('likeItems', JSON.stringify(likeItems));
-    }
-
-    // if (!isLike) {
-    //   axios
-    //     .post(`/green/${id}`, {
-    //       headers: {
-    //         Authorization: accessToken,
-    //       },
-    //     })
-    //     .catch((err) => {
-    //       console.log(err);
-    //     });
+    // if (isLike) {
+    //   const filterArr = likeItems.filter(
+    //     (obj: LikeButtonProps) => obj.productId !== productId,
+    //   );
+    //   localStorage.setItem('likeItems', JSON.stringify(filterArr));
     // } else {
-    //   axios
-    //     .delete(`/green/${id}`, {
-    //       headers: {
-    //         Authorization: accessToken,
-    //       },
-    //     })
-    //     .catch((err) => {
-    //       console.log(err);
-    //     });
+    //   likeItems.push({
+    //     productId: productId,
+    //     productName: productName,
+    //     image: image,
+    //     price: price,
+    //     point: point,
+    //     heart: !isLike,
+    //   });
+    //   localStorage.setItem('likeItems', JSON.stringify(likeItems));
     // }
+
+    if (!isLike) {
+      postLike();
+    } else {
+      deleteLike();
+    }
   };
 
   return (
