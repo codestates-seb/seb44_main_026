@@ -33,6 +33,7 @@ public class Member {
     @ElementCollection(fetch = FetchType.EAGER)
     private List<String> roles = new ArrayList<>();
 
+
     public Member(String email, String name, String password, String image, int point){
         this.email = email;
         this.name = name;

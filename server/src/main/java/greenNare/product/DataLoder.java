@@ -53,14 +53,14 @@ public class DataLoder implements CommandLineRunner {
     public void makeTestProduct() {
 
         for (int i=1; i<=30; i++) {
-            productRepository.save(new Product("칫솔"+i, "칫솔입니다", i*100, i, "link", "bathroom"));
-            productRepository.save(new Product("오이"+i, "오이입니다", i*100, i, "link", "kitchen"));
-            productRepository.save(new Product("집"+i, "집입니다", i*100, i, "link", "living"));
-            productRepository.save(new Product("연필"+i, "연필입니다", i*100, i, "link", "stationery"));
-            productRepository.save(new Product("손수건"+i, "손수건입니다", i*100, i, "link", "hygiene"));
+            productRepository.save(new Product("칫솔"+i, "칫솔입니다", i*100, i, "/images/image.jpg", "bathroom"));
+            productRepository.save(new Product("오이"+i, "오이입니다", i*100, i, "/images/image.jpg", "kitchen"));
+            productRepository.save(new Product("집"+i, "집입니다", i*100, i, "/images/image.jpg", "living"));
+            productRepository.save(new Product("연필"+i, "연필입니다", i*100, i, "/images/image.jpg", "stationery"));
+            productRepository.save(new Product("손수건"+i, "손수건입니다", i*100, i, "/images/image.jpg", "hygiene"));
         }
         for(int i=1; i<=30; i++) {
-            memberRepository.save(new Member("email"+i, "name"+i,"password"+i,"image"+i,i));
+            memberRepository.save(new Member("email"+i, "name"+i,"password"+i,"/images/image.jpg",i));
         }
         for (int i=1; i<=30; i++) {
             Member member = memberRepository.findBymemberId(i);
@@ -74,13 +74,13 @@ public class DataLoder implements CommandLineRunner {
         }
         for (int i=1; i<=30; i++) {
             for(int j=0; j<3; j++){
-                imageRepository.save(new Image("link"+ i + "-" + j, productService.getProduct(i)));
+                imageRepository.save(new Image("/images/image.jpg", productService.getProduct(i)));
             }
         }
 
         for (int i=1; i<=30; i++) {
             for(int j=0; j<3; j++){
-                imageRepository.save(new Image("link"+ i + "-" + j, reviewRepository.findById(i)));
+                imageRepository.save(new Image("/images/image.jpg", reviewRepository.findById(i)));
             }
         }
 

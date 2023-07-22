@@ -1,8 +1,10 @@
 package greenNare.product.entity;
 
+import greenNare.audit.Auditable;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -13,7 +15,7 @@ import java.util.Objects;
 @AllArgsConstructor
 @Getter
 @Entity
-public class Product {
+public class Product extends Auditable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int productId;

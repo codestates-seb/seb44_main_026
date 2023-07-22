@@ -61,8 +61,9 @@ public class ReviewController {
 
     @PostMapping("/{productId}")
     public ResponseEntity postReview(@PathVariable("productId") int productId,
-                                     @Valid @RequestPart ReviewDto.Post postDto,
-                                     @RequestPart (required = false) MultipartRequest imagefile,
+                                     @Valid @RequestBody ReviewDto.Post postDto,
+                                     /*@Valid @RequestPart ReviewDto.Post postDto,
+                                     @RequestPart (required = false) MultipartRequest imagefile,*/
                                      @RequestHeader(value = "Authorization", required = false) String token) {
 
         reviewService.createReview(reviewMapper.ReviewPostDtoToReview(postDto), jwtTokenizer.getMemberId(token), productId);
