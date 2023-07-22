@@ -74,13 +74,13 @@ public class DataLoder implements CommandLineRunner {
         }
         for (int i=1; i<=30; i++) {
             for(int j=0; j<3; j++){
-                imageRepository.save(new Image("link"+ i + "-" + j, productService.getProduct(i)));
+                imageRepository.save(new Image("/images/image.jpg", productService.getProduct(i)));
             }
         }
 
         for (int i=1; i<=30; i++) {
             for(int j=0; j<3; j++){
-                imageRepository.save(new Image("link"+ i + "-" + j, reviewRepository.findById(i)));
+                imageRepository.save(new Image("/images/image.jpg", reviewRepository.findById(i)));
             }
         }
 
