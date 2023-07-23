@@ -19,6 +19,7 @@ import org.springframework.web.multipart.MultipartRequest;
 import java.io.File;
 import java.io.IOException;
 import java.time.LocalDateTime;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -109,8 +110,6 @@ public class ReviewService {
 
         System.out.println("createReview " + review);
 
-//        List<String> imageLinks =
-
         //updatePoint(response-변경된 포인트 전송)
         int point = (int)Math.floor(review.getProduct().getPrice() * 0.01);
         memberService.addPoint(memberId, point);
@@ -130,26 +129,47 @@ public class ReviewService {
     }
 
 
-    public List<String> saveImage(List<MultipartFile> images) throws IOException{
-        List<String> imageLinks = images.stream()
-                .map( image -> {
-                    UUID uuid = UUID.randomUUID();
-                    String imageName = uuid + SEPERATOR + image.getOriginalFilename();
+//    public void createReviewWithImage(Review review, List<MultipartFile> images, int memberId, int productId) {
+//        //
+//        verifyExistsReview(memberId, productId);
+//
+//        review.setMember(memberRepository.findBymemberId(memberId));
+//        review.setProduct(productService.getProduct(productId));
+//        reviewRepository.save(review);
+//
+//        System.out.println("createReview " + review);
+//
+//        List<String> imageLinks = images.stream().map(
+//                image -> {
+//                    try {
+//                        return createImageName(image);
+//                    } catch (IOException e) {
+//                        throw new RuntimeException(e);
+//                    }
+//                }
+//        ).collect(Collectors.toList());
+//
+//
+//
+//        //updatePoint(response-변경된 포인트 전송)
+//        int point = (int)Math.floor(review.getProduct().getPrice() * 0.01);
+//        memberService.addPoint(memberId, point);
+//    }
 
-                    File imagefile = new File(IMAGE_SAVE_URL, imageName);
-                    try {
-                        image.transferTo(imagefile);
 
-                    } catch (IOException e) {
-                        throw new RuntimeException(e);
-                    }
 
-                    return "/images/" + imageName;
-                }
 
-        ).collect(Collectors.toList());
 
-        return imageLinks;
+
+
+    public String createImageName(MultipartFile image) throws IOException{
+        UUID uuid = UUID.randomUUID();
+        String imageName = uuid + SEPERATOR + image.getOriginalFilename();
+
+        File imagefile = new File(IMAGE_SAVE_URL, imageName);
+        image.transferTo(imagefile);
+
+        return "/images/" + imageName;
 
     }
 
