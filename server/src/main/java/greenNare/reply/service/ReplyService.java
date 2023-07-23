@@ -57,7 +57,7 @@ public class ReplyService {
         int sameUserReplyCnt = (int) replyList.stream()
                 .filter(r -> r.getMemberId() == memberId)
                 .count();
-        if(sameUserReplyCnt < 1) {
+        if(sameUserReplyCnt > 0) {
             throw new BusinessLogicException(ExceptionCode.ALREADY_JOINED);
         }
         memberService.addPoint(memberId, 100);
