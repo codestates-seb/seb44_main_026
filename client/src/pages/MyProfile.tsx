@@ -18,23 +18,6 @@ const MyProfile = () => {
   const [isEdit, setIsEdit] = useState(false);
   const loginAccToken = localStorage.getItem('accessToken');
   const [point, setPoint] = useState(0);
-  const userData = {};
-  /*
-  const getChallenge = async () => {
-    try {
-      setloading(true);
-      const res = await API.GET({
-        url: `https://jsonplaceholder.typicode.com/users/${memberId}`,
-      });
-      console.log(res);
-      setUserName(res.data.name);
-      setUserEmail(res.data.email);
-    } catch (err) {
-      console.log(err);
-    }
-    setloading(false);
-  };
-  */
 
   const getProfile = async () => {
     try {

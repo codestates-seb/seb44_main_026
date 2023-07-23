@@ -86,25 +86,6 @@ const AddChallenge = () => {
     }
   }, [title, contents]);
 
-  /*
-  //file upload 
-  //수정할때 데이터 받아서 세팅
-  const getDataurl = async () => {
-    try {
-      const res = await API.GET(`주소`);
-      setFileurl(`data:image/jpeg;base64,` + res.data[0]);
-      console.log(res);
-    } catch (err) {
-      console.log(err);
-    }
-  };
-
-  useEffect(() => {
-    getDataurl();
-    console.log(id);
-  }, []);
-*/
-
   return (
     <>
       <InputContainer>

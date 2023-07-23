@@ -31,6 +31,7 @@ const InputItem: React.FC<InputItemProps> = ({ setComment, value }) => {
         });
       } catch (err) {
         console.log(err);
+        alert('이미 댓글을 등록하셨는지 확인해보세요 ㅠ.ㅠ.');
       }
       setComment('');
       alert('댓글이 등록되었습니다.');
@@ -42,7 +43,7 @@ const InputItem: React.FC<InputItemProps> = ({ setComment, value }) => {
   };
 
   useEffect(() => {
-    if (value.length > 15) {
+    if (value.length >= 15) {
       setIsReady(true);
     } else {
       setIsReady(false);
