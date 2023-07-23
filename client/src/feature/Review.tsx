@@ -10,7 +10,7 @@ interface ReviewProps {
   id: number;
 
   context: string;
-  createdAt: string;
+  createdAt: number[];
   imageLinks?: string[];
   name: string;
   point: number;
@@ -76,6 +76,16 @@ export const Review = ({
     setIsOpen(false);
   };
 
+  const newDate = new Date(
+    createdAt[0],
+    createdAt[1] - 1,
+    createdAt[2],
+    createdAt[3] + 9,
+    createdAt[4],
+    createdAt[5],
+  );
+  const newCreatedAt = moment(newDate.toISOString());
+
   return (
     <ReviewWrapper>
       {isOpen ? (
@@ -90,9 +100,7 @@ export const Review = ({
         <UserInfo>
           <div className="userName">{`🐥 ${name}`}</div>
           <div className="point">{`🏆 ${point}P`}</div>
-          <div className="reviewDate">{`⏱️ ${moment(
-            createdAt,
-          ).fromNow()}`}</div>
+          <div className="reviewDate">{`⏱️ ${newCreatedAt.fromNow()}`}</div>
         </UserInfo>
         {memberId === user && !isEdit ? (
           <div>

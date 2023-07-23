@@ -15,7 +15,7 @@ import { ReviewSkeleton } from 'feature/skeletonUI/ReviewSkeleton';
 interface ReviewType {
   reviewId: number;
   context: string;
-  createdAt: string;
+  createdAt: number[];
   updateId: number;
   productId: number;
   imageLinks?: string[];
