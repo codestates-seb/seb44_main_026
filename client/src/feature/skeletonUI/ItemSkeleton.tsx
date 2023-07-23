@@ -36,6 +36,10 @@ const ItemWrapper = styled.div`
     width: 16rem;
     min-height: 13rem;
   }
+
+  & > * {
+    z-index: 0;
+  }
 `;
 
 const ItemInfoWrapper = styled.div`
