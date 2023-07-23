@@ -2,6 +2,8 @@ import React from 'react';
 import { styled } from 'styled-components';
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import moment from 'moment';
+import 'moment/locale/ko';
 
 type ItemProps = {
   item: any;
@@ -9,6 +11,16 @@ type ItemProps = {
 
 const ChallengeItem: React.FC<ItemProps> = ({ item }) => {
   const navigate = useNavigate();
+  const newDate = new Date(
+    item.createdAt[0],
+    item.createdAt[1] - 1,
+    item.createdAt[2],
+    item.createdAt[3] + 9,
+    item.createdAt[4],
+    item.createdAt[5],
+  );
+  const newCreatedAt = moment(newDate.toISOString());
+
   const gotoDetail = () => {
     navigate(`/challenge/${item.challengeId}`);
   };
@@ -16,6 +28,11 @@ const ChallengeItem: React.FC<ItemProps> = ({ item }) => {
     <ItemWrapper onClick={gotoDetail}>
       <div className="challenge">{'🌱 ' + item.title}</div>
       <WriterContainer>{item.name}</WriterContainer>
+      {newCreatedAt ? (
+        <WriterContainer>
+          {'⏱️ ' + moment(newCreatedAt).fromNow()}
+        </WriterContainer>
+      ) : null}
       <CountContainer>
         <h3>{item.countReply + ' '}</h3>명 참여중
       </CountContainer>

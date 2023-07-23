@@ -19,7 +19,6 @@ const ChallengeDetail = () => {
   const [loading, setloading] = useState(false); //데이터 받아올 때 로딩
   const [comment, setComment] = useState(''); //새로 작성할 댓글 내용
   const [commentList, setCommentList] = useState([]);
-  //const memberId = 33; // 나중에 수정
   const memberId = localStorage.getItem('memberId');
   const [commentCount, setCommentCount] = useState(0);
   const [admin, setAdmin] = useState(false);
@@ -29,6 +28,7 @@ const ChallengeDetail = () => {
   const loginAccToken = localStorage.getItem('accessToken');
   const [total, setTotal] = useState(0);
   const [isReady, setIsReady] = useState(true);
+  const [point, setPoint] = useState(0);
 
   const getChallenge = async () => {
     try {
@@ -80,7 +80,6 @@ const ChallengeDetail = () => {
       setCommentList([...res?.data.data]);
       setCommentCount(res?.data.pageInfo.totalElements);
       setTotal(res?.data.pageInfo.totalPages);
-      console.log('comment');
     } catch (err) {
       console.log(err);
     }
@@ -91,11 +90,9 @@ const ChallengeDetail = () => {
     window.scrollTo(0, 0);
     getChallenge();
     getComment();
-    console.log(memberId);
   }, []);
 
   useEffect(() => {
-    console.log(currentPage);
     getComment();
     window.scrollTo(0, 0);
   }, [currentPage]);

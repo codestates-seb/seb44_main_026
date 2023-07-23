@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { styled } from 'styled-components';
 import moment from 'moment';
 import 'moment/locale/ko';
@@ -11,7 +11,7 @@ interface CommentProps {
   name: any;
   body: string;
   point: number;
-  createdAt: string;
+  createdAt: number[];
   id: number;
 }
 
@@ -28,6 +28,16 @@ const CommentBox: React.FC<CommentProps> = ({
   //const memberId = 33;
   const memberId = localStorage.getItem('memberId');
   const loginAccToken = localStorage.getItem('accessToken');
+  const newDate = new Date(
+    createdAt[0],
+    createdAt[1] - 1,
+    createdAt[2],
+    createdAt[3] + 9,
+    createdAt[4],
+    createdAt[5],
+  );
+
+  const newCreatedAt = moment(newDate.toISOString());
 
   const deleteComment = async () => {
     try {
@@ -41,7 +51,7 @@ const CommentBox: React.FC<CommentProps> = ({
     } catch (err) {
       console.log(err);
     }
-    //location.reload();
+    location.reload();
   };
 
   return (
@@ -58,9 +68,11 @@ const CommentBox: React.FC<CommentProps> = ({
           <InfoContainer>
             <div className="member-name">{'🐥 '}</div>
             <div className="member-point">{'🏆 ' + point + '점'}</div>
-            <div className="comment-date">
-              {'⏱️ ' + moment(createdAt).fromNow()}
-            </div>
+            {newCreatedAt ? (
+              <div className="comment-date">
+                {'⏱️ ' + moment(newCreatedAt).fromNow()}
+              </div>
+            ) : null}
             <>
               {memberId == name ? (
                 <>
