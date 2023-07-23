@@ -66,9 +66,10 @@ export const UploadReview = ({
       setPreview([]);
 
       if (res.status === 409) {
-        setModalContent('이미 등록한 리뷰가 존재합니다.');
+        setModalContent('이미 등록된 리뷰가 존재합니다.');
         setIsAlert(true);
         setIsOpen(true);
+        return;
       } else if (res.status === 500) {
         setModalContent('리뷰 등록에 실패하였습니다.');
         setIsAlert(true);
