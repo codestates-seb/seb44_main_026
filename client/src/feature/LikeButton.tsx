@@ -4,6 +4,7 @@ import { faHeart as solidHeart } from '@fortawesome/free-solid-svg-icons';
 import { faHeart as regularHeart } from '@fortawesome/free-regular-svg-icons';
 import { useState } from 'react';
 import API from '../api/index';
+import { ReviewModal } from './ReviewModal';
 
 interface LikeButtonProps {
   productId: number;
@@ -23,13 +24,17 @@ interface StyleLikeProps {
 
 export const LikeButton = ({
   productId,
-  productName,
-  image,
-  price,
-  point,
+  // productName,
+  // image,
+  // price,
+  // point,
   heart,
 }: LikeButtonProps) => {
   const [isLike, setIsLike] = useState(heart);
+  //모달
+  const [isOpen, setIsOpen] = useState(false);
+  const [isAlert, setIsAlert] = useState(true);
+  const [modalContent, setModalContent] = useState('');
   const accessToken = localStorage.getItem('accessToken');
 
   const postLike = async () => {
@@ -40,6 +45,18 @@ export const LikeButton = ({
           Authorization: accessToken,
         },
       });
+
+      if (res.status === 409) {
+        setModalContent('이미 좋아요한 상품입니다.');
+        setIsAlert(true);
+        setIsOpen(true);
+        return;
+      } else if (res.status === 500) {
+        setModalContent('상품 좋아요에 실패하였습니다.');
+        setIsAlert(true);
+        setIsOpen(true);
+        return;
+      }
 
       console.log('like post');
       console.log(res.data);
@@ -95,8 +112,21 @@ export const LikeButton = ({
     }
   };
 
+  const handleClose = () => {
+    setIsOpen(false);
+    // 새로고침
+    location.reload();
+  };
+
   return (
     <>
+      {isOpen ? (
+        <ReviewModal
+          isAlert={isAlert}
+          content={modalContent}
+          onClose={handleClose}
+        />
+      ) : null}
       {isLike ? (
         <Heart
           icon={solidHeart}
