@@ -80,7 +80,7 @@ public class ReviewController {
                                      @RequestPart (required = false) List<MultipartFile> images,
                                      @RequestHeader(value = "Authorization", required = false) String token) {
 
-        reviewService.createReviewWithImage(reviewMapper.ReviewPostDtoToReview(postDto), images, jwtTokenizer.getMemberId(token), productId);
+        //reviewService.createReviewWithImage(reviewMapper.ReviewPostDtoToReview(postDto), images, jwtTokenizer.getMemberId(token), productId);
 
 
         return new ResponseEntity(HttpStatus.CREATED);
