@@ -140,7 +140,7 @@ public class ReviewService {
         reviewRepository.save(review);
 
         System.out.println("createReview " + review);
-        if(images.isEmpty() == false){
+        if(images != null && !images.isEmpty()){
             log.info("images_exist");
             List<Image> saveImages = images.stream().map(
                     image -> {
@@ -175,7 +175,7 @@ public class ReviewService {
             }
         }
 
-        if(images.isEmpty() == false){
+        if(images != null && !images.isEmpty()){
             List<Image> saveImages = images.stream().map(
                     image -> {
                         try {
