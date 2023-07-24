@@ -44,6 +44,8 @@ public class ReplyDto {
                     .content(reply.getContent())
                     .name(member.getName())
                     .point(member.getPoint())
+                    .createdAt(reply.getCreatedAt())
+                    .updatedAt(reply.getUpdatedAt())
                     .build();
         }
 

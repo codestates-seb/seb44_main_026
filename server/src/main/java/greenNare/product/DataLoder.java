@@ -95,7 +95,7 @@ public class DataLoder implements CommandLineRunner {
 
         imageRepository.save(new Image( "/images/b9c5b606f71d43689be84d477df85cda_[블루워시] 고체 섬유유연제 (무향).jpg", productService.getProduct(4)));
 
-        
+
 
 
 
