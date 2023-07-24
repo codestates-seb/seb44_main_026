@@ -138,17 +138,17 @@ public class ReviewService {
         reviewRepository.save(review);
 
         System.out.println("createReview " + review);
-
-        List<Image> saveImages = images.stream().map(
-                image -> {
-                    try {
-                        return imageRepository.save(new Image(createImageName(image), findReview(memberId,productId)));
-                    } catch (IOException e) {
-                        throw new RuntimeException(e);
+        if(images.size() != 0){
+            List<Image> saveImages = images.stream().map(
+                    image -> {
+                        try {
+                            return imageRepository.save(new Image(createImageName(image), findReview(memberId,productId)));
+                        } catch (IOException e) {
+                            throw new RuntimeException(e);
+                        }
                     }
-                }
-        ).collect(Collectors.toList());
-
+            ).collect(Collectors.toList());
+        }
 
         //updatePoint(response-변경된 포인트 전송)
         int point = (int)Math.floor(review.getProduct().getPrice() * 0.01);
@@ -166,21 +166,23 @@ public class ReviewService {
         reviewRepository.save(findReview);
 
         for(int i = 0; i<deleteImages.size(); i++) {
-            if(imageRepository.findByImageUri(deleteImages.get(i)).isPresent()){
-                Image ig = imageRepository.findByImageUri(deleteImages.get(i)).orElseThrow();
+            if(imageRepository.findImageUriByImageUri(deleteImages.get(i)).isPresent()){
+                Image ig = imageRepository.findImageUriByImageUri(deleteImages.get(i)).orElseThrow();
                 imageRepository.delete(ig);
             }
         }
 
-        List<Image> saveImages = images.stream().map(
-                image -> {
-                    try {
-                        return imageRepository.save(new Image(createImageName(image), findReview(memberId,productId)));
-                    } catch (IOException e) {
-                        throw new RuntimeException(e);
+        if(images.size() != 0){
+            List<Image> saveImages = images.stream().map(
+                    image -> {
+                        try {
+                            return imageRepository.save(new Image(createImageName(image), findReview(memberId,productId)));
+                        } catch (IOException e) {
+                            throw new RuntimeException(e);
+                        }
                     }
-                }
-        ).collect(Collectors.toList());
+            ).collect(Collectors.toList());
+        }
 
         System.out.println("updateReview " + review);
 

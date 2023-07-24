@@ -13,5 +13,5 @@ public interface ImageRepository extends JpaRepository<Image, Integer> {
 
     List<Image> findImagesUriByReviewReviewId(int reviewId);
 
-    Optional<Image> findByImageUri(String ImageUri);
+    Optional<Image> findImageUriByImageUri(String ImageUri);
 }
