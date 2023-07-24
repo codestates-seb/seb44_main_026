@@ -10,6 +10,7 @@ import greenNare.product.entity.Image;
 import greenNare.product.entity.Review;
 import greenNare.product.repository.ImageRepository;
 import greenNare.product.repository.ReviewRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
@@ -26,6 +27,7 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
+@Slf4j
 public class ReviewService {
     private ReviewRepository reviewRepository;
 
@@ -139,6 +141,7 @@ public class ReviewService {
 
         System.out.println("createReview " + review);
         if(images.size() != 0){
+            log.info("images_exist");
             List<Image> saveImages = images.stream().map(
                     image -> {
                         try {
