@@ -1,4 +1,3 @@
-#externalImagePath: C:/Users/eheka/seb44_main_026/images/
 externalImagePath: home/ssm-user/seb44_main_026/images/
 spring:
   mvc:
