@@ -101,21 +101,21 @@ public class ReviewService {
     }
 
 
-    //create결과 리턴?
-//    public void createReview(Review review, int memberId, int productId) {
-//        //
-//        verifyExistsReview(memberId, productId);
-//
-//        review.setMember(memberRepository.findBymemberId(memberId));
-//        review.setProduct(productService.getProduct(productId));
-//        reviewRepository.save(review);
-//
-//        System.out.println("createReview " + review);
-//
-//        //updatePoint(response-변경된 포인트 전송)
-//        int point = (int)Math.floor(review.getProduct().getPrice() * 0.01);
-//        memberService.addPoint(memberId, point);
-//    }
+//    create결과 리턴?
+    public void createReview(Review review, int memberId, int productId) {
+        //
+        verifyExistsReview(memberId, productId);
+
+        review.setMember(memberRepository.findBymemberId(memberId));
+        review.setProduct(productService.getProduct(productId));
+        reviewRepository.save(review);
+
+        System.out.println("createReview " + review);
+
+        //updatePoint(response-변경된 포인트 전송)
+        int point = (int)Math.floor(review.getProduct().getPrice() * 0.01);
+        memberService.addPoint(memberId, point);
+    }
 
 
     public void updateReview(Review review,  int memberId, int productId) {
