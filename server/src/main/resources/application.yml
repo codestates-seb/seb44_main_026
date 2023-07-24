@@ -1,14 +1,19 @@
 #externalImagePath: C:/Users/eheka/seb44_main_026/images/
-externalImagePath: /home/ssm-user/seb44_main_026/images/
+externalImagePath: home/ssm-user/seb44_main_026/images/
 spring:
   mvc:
     static-path-pattern: /images/**
   resources:
     static-locations: file:${externalImagePath}
-
+  h2:
+    console:
+      enabled: true
+      path: /h2
   jpa:
+    defer-datasource-initialization: true
+    database-platform: H2
     hibernate:
-      ddl-auto: none
+      ddl-auto: create-drop
 
     open-in-view: false
 
@@ -23,15 +28,14 @@ spring:
       port: 6379
 
   datasource:
-    url: jdbc:mysql://greennare-db.cvohnsqc7tsw.ap-northeast-2.rds.amazonaws.com:3306/greennare
-    username: admin
-    password: greennare
-    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:h2:mem:test
+    username: sa
+    driver-class-name: org.h2.Driver
 
   sql:
     init:
-      mode: always
-      data-locations: classpath*:db/schema.sql
+      #schema-locations: classpath*:db/h2/schema.sql
+      #data-locations: classpath*:db/h2/data.sql
 
 logging:
   level:
