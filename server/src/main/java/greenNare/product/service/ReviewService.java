@@ -100,20 +100,20 @@ public class ReviewService {
 
 
     //create결과 리턴?
-    public void createReview(Review review, int memberId, int productId) {
-        //
-        verifyExistsReview(memberId, productId);
-
-        review.setMember(memberRepository.findBymemberId(memberId));
-        review.setProduct(productService.getProduct(productId));
-        reviewRepository.save(review);
-
-        System.out.println("createReview " + review);
-
-        //updatePoint(response-변경된 포인트 전송)
-        int point = (int)Math.floor(review.getProduct().getPrice() * 0.01);
-        memberService.addPoint(memberId, point);
-    }
+//    public void createReview(Review review, int memberId, int productId) {
+//        //
+//        verifyExistsReview(memberId, productId);
+//
+//        review.setMember(memberRepository.findBymemberId(memberId));
+//        review.setProduct(productService.getProduct(productId));
+//        reviewRepository.save(review);
+//
+//        System.out.println("createReview " + review);
+//
+//        //updatePoint(response-변경된 포인트 전송)
+//        int point = (int)Math.floor(review.getProduct().getPrice() * 0.01);
+//        memberService.addPoint(memberId, point);
+//    }
 
 
     public void updateReview(Review review,  int memberId, int productId) {
@@ -129,35 +129,62 @@ public class ReviewService {
     }
 
 
-//    public void createReviewWithImage(Review review, List<MultipartFile> images, int memberId, int productId) {
-//        //
-//        verifyExistsReview(memberId, productId);
-//
-//        review.setMember(memberRepository.findBymemberId(memberId));
-//        review.setProduct(productService.getProduct(productId));
-//        reviewRepository.save(review);
-//
-//        System.out.println("createReview " + review);
-//
-//        List<String> imageLinks = images.stream().map(
-//                image -> {
-//                    try {
-//                        return createImageName(image);
-//                    } catch (IOException e) {
-//                        throw new RuntimeException(e);
-//                    }
-//                }
-//        ).collect(Collectors.toList());
-//
-//
-//
-//        //updatePoint(response-변경된 포인트 전송)
-//        int point = (int)Math.floor(review.getProduct().getPrice() * 0.01);
-//        memberService.addPoint(memberId, point);
-//    }
+    public void createReviewWithImage(Review review, List<MultipartFile> images, int memberId, int productId) {
+        //
+        verifyExistsReview(memberId, productId);
+
+        review.setMember(memberRepository.findBymemberId(memberId));
+        review.setProduct(productService.getProduct(productId));
+        reviewRepository.save(review);
+
+        System.out.println("createReview " + review);
+
+        List<Image> saveImages = images.stream().map(
+                image -> {
+                    try {
+                        return imageRepository.save(new Image(createImageName(image), findReview(memberId,productId)));
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+        ).collect(Collectors.toList());
 
 
+        //updatePoint(response-변경된 포인트 전송)
+        int point = (int)Math.floor(review.getProduct().getPrice() * 0.01);
+        memberService.addPoint(memberId, point);
+    }
 
+
+    public void updateReviewWithImage(Review review, List<String> deleteImages, List<MultipartFile> images, int memberId, int productId) {
+        //
+        Review findReview = findReview(memberId, productId);
+
+        findReview.setContext(review.getContext());
+        findReview.setUpdatedAt(LocalDateTime.now());
+
+        reviewRepository.save(findReview);
+
+        for(int i = 0; i<deleteImages.size(); i++) {
+            if(imageRepository.findImageUriByImageUri(deleteImages.get(i)).isPresent()){
+                Image ig = imageRepository.findImageUriByImageUri(deleteImages.get(i)).orElseThrow();
+                imageRepository.delete(ig);
+            }
+        }
+
+        List<Image> saveImages = images.stream().map(
+                image -> {
+                    try {
+                        return imageRepository.save(new Image(createImageName(image), findReview(memberId,productId)));
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+        ).collect(Collectors.toList());
+
+        System.out.println("updateReview " + review);
+
+    }
 
 
 
@@ -171,12 +198,6 @@ public class ReviewService {
 
         return "/images/" + imageName;
 
-    }
-
-
-    public String getImage() {
-        String imageLink = "";
-        return imageLink;
     }
 
 

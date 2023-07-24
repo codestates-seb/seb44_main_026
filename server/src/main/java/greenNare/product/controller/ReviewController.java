@@ -60,23 +60,23 @@ public class ReviewController {
         return new ResponseEntity(response,  HttpStatus.OK);
     }
 
-    @PostMapping("/{productId}")
-    public ResponseEntity postReview(@PathVariable("productId") int productId,
-                                     @Valid @RequestBody ReviewDto.Post postDto,
-                                     /*@Valid @RequestPart ReviewDto.Post postDto,
-                                     @RequestPart (required = false) MultipartRequest imagefile,*/
-                                     @RequestHeader(value = "Authorization", required = false) String token) {
+//    @PostMapping("/{productId}")
+//    public ResponseEntity postReview(@PathVariable("productId") int productId,
+//                                     @Valid @RequestBody ReviewDto.Post postDto,
+//                                     /*@Valid @RequestPart ReviewDto.Post postDto,
+//                                     @RequestPart (required = false) MultipartRequest imagefile,*/
+//                                     @RequestHeader(value = "Authorization", required = false) String token) {
+//
+//        reviewService.createReview(reviewMapper.ReviewPostDtoToReview(postDto), jwtTokenizer.getMemberId(token), productId);
+//
+//
+//        return new ResponseEntity(HttpStatus.CREATED);
+//
+//    }
 
-        reviewService.createReview(reviewMapper.ReviewPostDtoToReview(postDto), jwtTokenizer.getMemberId(token), productId);
-
-
-        return new ResponseEntity(HttpStatus.CREATED);
-
-    }
-
-    @PostMapping("withImage/{productId}")
+    @PostMapping(value = "/{productId}", consumes = "multipart/form-data")
     public ResponseEntity postReviewWithImage(@PathVariable("productId") int productId,
-                                     @Valid @RequestPart ReviewDto.Post postDto,
+                                     @Valid @RequestPart (required = false) ReviewDto.Post postDto,
                                      @RequestPart (required = false) List<MultipartFile> images,
                                      @RequestHeader(value = "Authorization", required = false) String token) {
 
@@ -87,11 +87,24 @@ public class ReviewController {
 
     }
 
+//    @PatchMapping("/{productId}")
+//    public ResponseEntity patchReview(@PathVariable("productId") int productId,
+//                                      @Valid @RequestBody ReviewDto.Patch patchDto,
+//                                      @RequestHeader(value = "Authorization", required = false) String token) {
+//        reviewService.updateReview(reviewMapper.ReviewPatchDtoToReview(patchDto), jwtTokenizer.getMemberId(token), productId);
+//
+//        return new ResponseEntity(HttpStatus.OK);
+//
+//    }
+
     @PatchMapping("/{productId}")
-    public ResponseEntity patchReview(@PathVariable("productId") int productId,
-                                      @Valid @RequestBody ReviewDto.Patch patchDto,
-                                      @RequestHeader(value = "Authorization", required = false) String token) {
-        reviewService.updateReview(reviewMapper.ReviewPatchDtoToReview(patchDto), jwtTokenizer.getMemberId(token), productId);
+    public ResponseEntity patchReviewwithImage(@PathVariable("productId") int productId,
+                                               @Valid @RequestPart (required = false) ReviewDto.Patch patchDto,
+                                               @RequestPart (required = false) List<String> deleteImages,
+                                               @RequestPart (required = false) List<MultipartFile> images,
+                                               @RequestHeader(value = "Authorization", required = false) String token) {
+
+        reviewService.updateReviewWithImage(reviewMapper.ReviewPatchDtoToReview(patchDto), deleteImages, images, jwtTokenizer.getMemberId(token), productId);
 
         return new ResponseEntity(HttpStatus.OK);
 

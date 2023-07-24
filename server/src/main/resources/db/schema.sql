@@ -86,12 +86,3 @@ CREATE TABLE challenge (
     updatedAt DATETIME,
     updatedBy VARCHAR(255)
 );
-
-
-
-
-
-
-
-
-
