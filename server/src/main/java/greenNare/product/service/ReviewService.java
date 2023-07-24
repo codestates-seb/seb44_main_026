@@ -166,8 +166,8 @@ public class ReviewService {
         reviewRepository.save(findReview);
 
         for(int i = 0; i<deleteImages.size(); i++) {
-            if(imageRepository.findImageUriByImageUri(deleteImages.get(i)).isPresent()){
-                Image ig = imageRepository.findImageUriByImageUri(deleteImages.get(i)).orElseThrow();
+            if(imageRepository.findByImageUri(deleteImages.get(i)).isPresent()){
+                Image ig = imageRepository.findByImageUri(deleteImages.get(i)).orElseThrow();
                 imageRepository.delete(ig);
             }
         }
