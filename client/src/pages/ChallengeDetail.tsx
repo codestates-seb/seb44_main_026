@@ -156,7 +156,7 @@ const ChallengeDetail = () => {
                 name={item.memberId}
                 id={item.replyId}
                 body={item.content}
-                point={100}
+                point={item.point}
                 createdAt={item.createdAt}
                 key={index}
               ></CommentBox>
