@@ -1,6 +1,5 @@
 package greenNare.product.service;
 
-import greenNare.auth.jwt.JwtTokenizer;
 import greenNare.exception.BusinessLogicException;
 import greenNare.exception.ExceptionCode;
 import greenNare.member.repository.MemberRepository;
@@ -14,7 +13,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.multipart.MultipartRequest;
 
 import java.io.File;
 import java.io.IOException;

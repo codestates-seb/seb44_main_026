@@ -3,7 +3,11 @@ package greenNare.exception;
 import lombok.Getter;
 
 public enum ExceptionCode {
-    MEMBER_EXIST(409, "이미 등록된 회원입니다"),
+
+    MEMBER_EXIST(409, "이미 가입되었습니다"),
+    EMAIL_EXIST(409, "이미 등록된 이메일입니다"),
+
+    MEMBER_NOT_FOUND(404, "회원을 찾을 수 없습니다."),
     PRODUCT_EXIST(409, "이미 등록된 상품입니다"),
     PRODUCT_NOT_FOUND(404, "등록되지 않은 상품입니다"),
     REVIEW_EXIST(409, "이미 등록된 리뷰가 존재합니다."),
@@ -15,7 +19,7 @@ public enum ExceptionCode {
     PLACE_NOT_FOUND(404, "존재하지 않는 장소 입니다"),
     REPLY_NOT_FOUND(404, "존재하지 않는 댓글입니다"),
     REPLY_WRITER_NOT_MATCHED(403, "댓글 접근 권한이 없습니다."),
-    MEMBER_NOT_FOUND(404, "회원을 찾을 수 없습니다."),
+
     POINT_LAKE(403, "포인트가 부족합니다"),
     ALREADY_JOINED(403,"이미 참여한 챌린지 입니다.");
 

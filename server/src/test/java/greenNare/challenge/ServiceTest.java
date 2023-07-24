@@ -4,15 +4,12 @@ import greenNare.challenge.entity.Challenge;
 import greenNare.challenge.repository.ChallengeRepository;
 import greenNare.challenge.service.ChallengeService;
 import greenNare.exception.BusinessLogicException;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;

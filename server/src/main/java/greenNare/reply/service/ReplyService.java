@@ -1,8 +1,6 @@
 package greenNare.reply.service;
 
 import greenNare.auth.jwt.JwtTokenizer;
-import greenNare.challenge.entity.Challenge;
-import greenNare.challenge.service.ChallengeService;
 import greenNare.exception.BusinessLogicException;
 import greenNare.exception.ExceptionCode;
 import greenNare.member.entity.Member;

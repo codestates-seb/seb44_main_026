@@ -3,8 +3,6 @@ package greenNare.place.service;
 import greenNare.auth.jwt.JwtTokenizer;
 import greenNare.exception.BusinessLogicException;
 import greenNare.exception.ExceptionCode;
-import greenNare.member.entity.Member;
-import greenNare.place.dto.PlaceDto;
 import greenNare.place.entity.Place;
 import greenNare.place.repository.PlaceRepository;
 import org.springframework.stereotype.Service;

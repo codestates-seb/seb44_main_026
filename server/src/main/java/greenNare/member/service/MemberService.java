@@ -1,27 +1,15 @@
 package greenNare.member.service;
 
-import greenNare.cart.entity.Cart;
-import greenNare.cart.repository.CartRepository;
-import greenNare.cart.service.CartService;
 import greenNare.config.SecurityConfiguration;
 import greenNare.exception.BusinessLogicException;
 import greenNare.exception.ExceptionCode;
 import greenNare.member.entity.Member;
 import greenNare.member.repository.MemberRepository;
-import greenNare.product.dto.GetProductWithImageDto;
-import greenNare.product.entity.Image;
-import greenNare.product.entity.Product;
-import greenNare.product.repository.ImageRepository;
-import greenNare.product.service.ProductService;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
-import javax.imageio.ImageReader;
 import java.util.Optional;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class MemberService {
@@ -108,7 +96,7 @@ public class MemberService {
     private void verifyExistsEmail(String email) {
         Optional<Member> member = memberRepository.findByEmail(email);
         if (member.isPresent())
-            throw new BusinessLogicException(ExceptionCode.MEMBER_NOT_FOUND);
+            throw new BusinessLogicException(ExceptionCode.EMAIL_EXIST);
     }
 
     public Member findMemberByEmail(String email) {
