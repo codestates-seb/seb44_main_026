@@ -60,7 +60,43 @@ public class DataLoder implements CommandLineRunner {
                 "https://onlyeco.co.kr/product/%EC%B9%9C%ED%99%98%EA%B2%BD-%EC%A7%81%EC%9E%A5%EC%9D%B8-%EB%8F%84%EC%8B%9C%EB%9D%BD-%EC%84%B8%ED%8A%B8/730/category/1/display/3/",
                 "living"
         ));
-        imageRepository.save(new Image("/images/947cdd39dd19b4c417e8e3ae9364eec4_모두애ESG네이처키트스탠다드", productService.getProduct(1)));
+        imageRepository.save(new Image("/images/947cdd39dd19b4c417e8e3ae9364eec4_모두애ESG네이처키트스탠다드.jpg", productService.getProduct(1)));
+
+        productRepository.save(new Product(
+                "업사이클링 문구 선물세트",
+                "업사이클링 문구 선물세트를 소개합니다! 학생들도, 직장인들도 매일 사용하는 문구류, 지구를  아프게 하는 플라스틱 대신 버려진 자원으로 만든 업사이클링 문구들로 친환경 일상을 실천해 보세요.",
+                22000,
+                220,
+                "https://onlyeco.co.kr/product/%EC%97%85%EC%82%AC%EC%9D%B4%ED%81%B4%EB%A7%81-%EB%AC%B8%EA%B5%AC-%EC%84%A0%EB%AC%BC%EC%84%B8%ED%8A%B8/629/category/1/display/8/",
+                "stationery"
+        ));
+
+        imageRepository.save(new Image( "/images/de7710a88708842998d0410ff08de383업사이클링 문구 선물세트.jpg", productService.getProduct(2)));
+
+        productRepository.save(new Product(
+                "[아트앤허그] 검수리 플로깅키트",
+                "가치있는 쓰레기줍기 활동을 위한 키트",
+                10500,
+                105,
+                "https://onlyeco.co.kr/product/%EC%95%84%ED%8A%B8%EC%95%A4%ED%97%88%EA%B7%B8-%EA%B2%80%EC%88%98%EB%A6%AC-%ED%94%8C%EB%A1%9C%EA%B9%85%ED%82%A4%ED%8A%B8/790/category/1/display/8/",
+                "hygiene"
+        ));
+
+        imageRepository.save(new Image( "/images/ed2f458d7a90ad8995defdaebfd240df[아트앤허그] 검수리 플로깅키트.jpg", productService.getProduct(3)));
+
+        productRepository.save(new Product(
+                "[블루워시] 고체 섬유유연제 (무향)",
+                "친환경 고체 섬유 유연제! 잔여물 걱정없는 잘 녹는 섬유유연제입니다",
+                20900,
+                209,
+                "https://onlyeco.co.kr/product/%EB%B8%94%EB%A3%A8%EC%9B%8C%EC%8B%9C-%EA%B3%A0%EC%B2%B4-%EC%84%AC%EC%9C%A0%EC%9C%A0%EC%97%B0%EC%A0%9C-%EB%AC%B4%ED%96%A5/781/category/1/display/8/",
+                "bathroom"
+        ));
+
+        imageRepository.save(new Image( "/images/b9c5b606f71d43689be84d477df85cda_[블루워시] 고체 섬유유연제 (무향).jpg", productService.getProduct(4)));
+
+        
+
 
 
 //        for (int i=1; i<=30; i++) {

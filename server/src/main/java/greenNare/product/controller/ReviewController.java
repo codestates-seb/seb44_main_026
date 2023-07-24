@@ -98,13 +98,13 @@ public class ReviewController {
 //    }
 
     @PatchMapping("/{productId}")
-    public ResponseEntity patchReviewwithImage(@PathVariable("productId") int productId,
+    public ResponseEntity patchReviewWithImage(@PathVariable("productId") int productId,
                                                @Valid @RequestPart (required = false) ReviewDto.Patch patchDto,
-                                               @RequestPart (required = false) List<String> deleteImages,
+                                               @RequestPart (required = false) ReviewDto.deleteImagesDto deleteImages,
                                                @RequestPart (required = false) List<MultipartFile> images,
                                                @RequestHeader(value = "Authorization", required = false) String token) {
 
-        reviewService.updateReviewWithImage(reviewMapper.ReviewPatchDtoToReview(patchDto), deleteImages, images, jwtTokenizer.getMemberId(token), productId);
+        reviewService.updateReviewWithImage(reviewMapper.ReviewPatchDtoToReview(patchDto), deleteImages.getDeleteImageLinks(), images, jwtTokenizer.getMemberId(token), productId);
 
         return new ResponseEntity(HttpStatus.OK);
 
