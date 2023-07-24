@@ -6,7 +6,7 @@
 </br>
 
 ## 🧑‍🤝‍🧑 Team members
-| 김수성<br>(BE Leader) | 백승효<br>(FE) | 김영윤<br>(FE) | 백도담<br>(BE Leader) | 최서우<br>(BE) | 김리나<br>(BE) |
+| 김수성<br>(FE Leader) | 백승효<br>(FE) | 김영윤<br>(FE) | 백도담<br>(BE Leader) | 최서우<br>(BE) | 김리나<br>(BE) |
 |:--------:| :--------: | :--------: | :--------: | :--------: |  :--------: |
 | <img src="img/green.png" alt="김수성" width="80" height="80">| <img src="img/green.png" alt="백승효" width="80" height="80"> |<img src="img/green.png" alt="김영윤" width="80" height="80"> | <img src="img/green.png" alt="백도담" width="80" height="80"> | <img src="img/green.png" alt="최서우" width="80" height="80"> |<img src="img/green.png" alt="김리나" width="80" height="80"> |
 |[@KimSuSung0326](https://github.com/KimSuSung0326) | [@hyo-4](https://github.com/hyo-4) | [@youngyun213](https://github.com/youngyun213) |  [@BAEKDODAM](https://github.com/BAEKDODAM)  |[@wooseoboy](https://github.com/wooseoboy)  | [@LinaKK](https://github.com/LinaKK) |
