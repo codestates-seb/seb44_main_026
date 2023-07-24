@@ -12,7 +12,7 @@ export const Nav = () => {
   const setFilter = useSetAtom(filterAtom);
   const isShop = useAtomValue(isShopAtom);
 
-  const shopMenuArr = ['상품', '관심상품'];
+  const shopMenuArr = ['상품'];
   const communityMenuArr = ['챌린지', '그린나래지도'];
 
   const selectMenuHandler = (menu: string) => {
@@ -21,8 +21,6 @@ export const Nav = () => {
       // 상품목록 페이지로 이동
       navigate('/product/all');
       setFilter('all');
-    } else if (menu === '관심상품') {
-      navigate('/product/like');
     } else if (menu === '챌린지') {
       // 커뮤니티-챌린지 페이지로 이동
       navigate('/challenge');
@@ -61,32 +59,7 @@ export const Nav = () => {
 
   return (
     <NavWrapper>
-      <MenuWrapper>
-        {menuList}
-        {/* {isShop
-          ? shopMenuArr.map((menu) => {
-              return (
-                <Menu
-                  key={menu}
-                  className={currentMenu === menu ? 'focused' : null}
-                  onClick={() => selectMenuHandler(menu)}
-                >
-                  {menu}
-                </Menu>
-              );
-            })
-          : communityMenuArr.map((menu) => {
-              return (
-                <Menu
-                  key={menu}
-                  className={currentMenu === menu ? 'focused' : null}
-                  onClick={() => selectMenuHandler(menu)}
-                >
-                  {menu}
-                </Menu>
-              );
-            })} */}
-      </MenuWrapper>
+      <MenuWrapper>{menuList}</MenuWrapper>
     </NavWrapper>
   );
 };

@@ -47,6 +47,7 @@ const UserInfo = styled.div`
 
   & > * {
     margin-right: 1rem;
+    z-index: 0;
   }
 
   .userName {
