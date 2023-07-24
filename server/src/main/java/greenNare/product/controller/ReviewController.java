@@ -107,7 +107,11 @@ public class ReviewController {
                                                @RequestPart (required = false) List<MultipartFile> images,
                                                @RequestHeader(value = "Authorization", required = false) String token) {
 
-        reviewService.updateReviewWithImage(reviewMapper.ReviewPatchDtoToReview(patchDto), deleteImages.getDeleteImageLinks(), images, jwtTokenizer.getMemberId(token), productId);
+        if (images == null)
+            reviewService.updateReview(reviewMapper.ReviewPatchDtoToReview(patchDto), deleteImages.getDeleteImageLinks(), jwtTokenizer.getMemberId(token), productId);
+
+        else if(images != null)
+            reviewService.updateReviewWithImage(reviewMapper.ReviewPatchDtoToReview(patchDto), deleteImages.getDeleteImageLinks(), images, jwtTokenizer.getMemberId(token), productId);
 
         return new ResponseEntity(HttpStatus.OK);
 

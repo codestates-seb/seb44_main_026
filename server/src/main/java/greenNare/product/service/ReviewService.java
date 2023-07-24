@@ -118,7 +118,7 @@ public class ReviewService {
     }
 
 
-    public void updateReview(Review review,  int memberId, int productId) {
+    public void updateReview(Review review, List<String> deleteImages, int memberId, int productId) {
         //
         Review findReview = findReview(memberId, productId);
 
@@ -127,6 +127,13 @@ public class ReviewService {
 
         reviewRepository.save(findReview);
         System.out.println("updateReview " + review);
+
+        for(int i = 0; i<deleteImages.size(); i++) {
+            if(imageRepository.findImageUriByImageUri(deleteImages.get(i)).isPresent()){
+                Image ig = imageRepository.findImageUriByImageUri(deleteImages.get(i)).orElseThrow();
+                imageRepository.delete(ig);
+            }
+        }
 
     }
 
