@@ -61,7 +61,7 @@ public class DataLoder implements CommandLineRunner {
                 "living"
         ));
         imageRepository.save(new Image("/images/947cdd39dd19b4c417e8e3ae9364eec4_모두애ESG네이처키트스탠다드", productService.getProduct(1)));
-        
+
 
 //        for (int i=1; i<=30; i++) {
 //            productRepository.save(new Product("칫솔"+i, "칫솔입니다", i*100, i, "/images/image.jpg", "bathroom"));
