@@ -17,6 +17,8 @@ public class GetProductWithImageDto {
     private int price;
     private String category;
     private int point;
+
+    private String storeLink;
     List<String> imageLinks;
     //String imageLink;
 
