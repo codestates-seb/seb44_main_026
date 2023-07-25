@@ -1,6 +1,8 @@
 package greenNare.member.entity;
 
 import greenNare.cart.entity.Cart;
+import greenNare.challenge.entity.Challenge;
+import greenNare.reply.entity.Reply;
 import lombok.*;
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -30,11 +32,16 @@ public class Member {
     @OneToMany(mappedBy = "member")
     private List<Cart> carts;
 
+    @OneToMany(mappedBy = "member")
+    private List<Challenge>  challenges;
+    @OneToMany(mappedBy = "member")
+    private List<Reply>  reply;
+
     @ElementCollection(fetch = FetchType.EAGER)
     private List<String> roles = new ArrayList<>();
 
 
-    public Member(String email, String name, String password, String image, int point){
+    public Member(String email, String name, String password, int point){
         this.email = email;
         this.name = name;
         this.password = password;

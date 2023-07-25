@@ -35,6 +35,6 @@ public interface ChallengeRepository extends JpaRepository<Challenge, Integer> {
     ChallengeDto.Response findByMemberId(int memberId);
 */
 
-    Page<Challenge> findByMemberId(int membereId, Pageable pageable);
-    List<Challenge> findByMemberId(int memberId);
+    Page<Challenge> findByMemberMemberId(int membereId, Pageable pageable);
+    List<Challenge> findByMemberMemberId(int memberId);
 }

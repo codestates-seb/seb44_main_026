@@ -4,10 +4,7 @@ import greenNare.member.entity.Member;
 import greenNare.reply.entity.Reply;
 import lombok.*;
 
-import javax.validation.constraints.NotBlank;
 import java.time.LocalDateTime;
-
-import javax.persistence.Column;
 
 @NoArgsConstructor
 //@AllArgsConstructor
@@ -39,8 +36,8 @@ public class ReplyDto {
         public static Response from(Reply reply, Member member) {
             return Response.builder()
                     .replyId(reply.getReplyId())
-                    .memberId(reply.getMemberId())
-                    .challengeId(reply.getChallengeId())
+                    .memberId(reply.getMember().getMemberId())
+                    .challengeId(reply.getChallenge().getChallengeId())
                     .content(reply.getContent())
                     .name(member.getName())
                     .point(member.getPoint())
