@@ -136,14 +136,6 @@ export const UploadReview = ({
   };
   // 이미지 파일 업로드, 프리뷰
   const uploadFileHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
-    // const files = Array.from(e.target.files);
-    // const addFiles = [...imageFiles, ...files];
-    // setImageFiles(addFiles);
-
-    // const previewArray = addFiles.map((data) =>
-    //   window.URL.createObjectURL(data),
-    // );
-    // setPreview(previewArray);
     const files = Array.from(e.target.files);
     const addFiles = [...imageFiles.file, ...files];
     setImageFiles({
@@ -180,10 +172,7 @@ export const UploadReview = ({
       });
       setDeleteUrl([...deleteUrl, imageFiles.url[index]]);
     }
-    // setImageFiles([
-    //   ...imageFiles.slice(0, index),
-    //   ...imageFiles.slice(index + 1, preview.length),
-    // ]);
+
     setPreview([
       ...preview.slice(0, index),
       ...preview.slice(index + 1, preview.length),

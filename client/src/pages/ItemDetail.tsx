@@ -53,7 +53,7 @@ export const ItemDetail = () => {
       const res = await API.GET({
         url: `${process.env.REACT_APP_SERVER_URL}green/review/${id}?page=${
           currentPage - 1
-        }&size=${5}`,
+        }&size=${3}`,
       });
 
       const Reviews = res.data;
@@ -100,7 +100,7 @@ export const ItemDetail = () => {
       <Wrapper>
         <div className="itemWrapper">
           <Image>
-            <img src={`https://ok.greennare.store${currentItem.imageLinks}`} />
+            <img src={currentItem.imageLinks} />
           </Image>
           <ItemInfo>
             <div>

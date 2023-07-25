@@ -36,7 +36,7 @@ export const Product = () => {
       const res = await API.GET({
         url: `${process.env.REACT_APP_SERVER_URL}green?page=${
           currentPage - 1
-        }&size=${9}&category=${filter}`,
+        }&size=${6}&category=${filter}`,
       });
 
       const products = res.data;
