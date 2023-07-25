@@ -11,6 +11,7 @@ import API from '../api/index';
 import { Pagination } from 'feature/Pagination';
 import { Review } from 'feature/Review';
 import { ReviewSkeleton } from 'feature/skeletonUI/ReviewSkeleton';
+import { Link } from 'react-router-dom';
 
 interface ReviewType {
   reviewId: number;
@@ -75,7 +76,11 @@ export const ItemDetail = () => {
       });
 
       const itemDetail = res.data;
-      setCurrentItem(itemDetail.data);
+
+      setCurrentItem({
+        ...itemDetail.data,
+        imageLinks: itemDetail.data.imageLinks[0],
+      });
       console.log('item detail');
       console.log(res.data);
     } catch (err) {
@@ -95,7 +100,7 @@ export const ItemDetail = () => {
       <Wrapper>
         <div className="itemWrapper">
           <Image>
-            <img src={currentItem.imageLinks} />
+            <img src={`https://ok.greennare.store${currentItem.imageLinks}`} />
           </Image>
           <ItemInfo>
             <div>
@@ -116,10 +121,6 @@ export const ItemDetail = () => {
               <div className="likebutton">
                 <LikeButton
                   productId={currentItem.productId}
-                  productName={currentItem.productName}
-                  image={currentItem.imageLinks}
-                  price={currentItem.price}
-                  point={currentItem.point}
                   heart={currentItem.heart}
                 />
               </div>
@@ -129,11 +130,13 @@ export const ItemDetail = () => {
         {/* 리뷰 표시 */}
         <div className="reviewWrapper">
           리뷰 {reviewList.length}개
-          {accessToken ? (
-            <FormWrapper>
+          <FormWrapper>
+            {accessToken ? (
               <UploadReview id={currentItem.productId} />
-            </FormWrapper>
-          ) : null}
+            ) : (
+              <ToLogin to={'/login'}>로그인 후 리뷰를 작성해보세요!</ToLogin>
+            )}
+          </FormWrapper>
           <ul>
             {isLoding
               ? Array(3)
@@ -250,4 +253,14 @@ const FormWrapper = styled.div`
 
   padding: 1rem;
   margin: 1rem 0;
+`;
+
+const ToLogin = styled(Link)`
+  cursor: pointer;
+  text-decoration: none;
+  color: var(--green-200);
+
+  &:hover {
+    color: var(--green-100);
+  }
 `;

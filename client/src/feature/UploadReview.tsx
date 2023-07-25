@@ -316,6 +316,7 @@ export const UploadReview = ({
             className="inputfile"
           />
         </FileUploadButton>
+        <div className="guide">1MB 이하의 이미지만 선택해주세요.</div>
       </Form>
     </>
   );
@@ -362,6 +363,12 @@ const Form = styled.form`
     color: var(--red);
     font-size: 0.75rem;
     padding: 0.5rem;
+  }
+
+  .guide {
+    color: var(--green-200);
+    font-size: 0.5rem;
+    margin-top: 0.5rem;
   }
 `;
 

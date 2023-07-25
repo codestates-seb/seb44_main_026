@@ -41,7 +41,7 @@ export const Product = () => {
 
       const products = res.data;
       const setProducts = products.data.map((item: ItemType) => {
-        return { ...item, imageLink: item.imageLinks[0] };
+        return { ...item, imageLinks: item.imageLinks[0] };
       });
       setItemList(setProducts);
       setTotalPages(products.pageInfo.totalPages);
@@ -65,6 +65,8 @@ export const Product = () => {
   useEffect(() => {
     getProduct();
   }, [currentPage]);
+
+  console.log(itemList);
 
   return (
     <>

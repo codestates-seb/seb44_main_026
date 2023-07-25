@@ -31,14 +31,7 @@ export const Item = ({
           <div className="point">{`${point.toLocaleString()} 포인트`}</div>
         </ItemInfo>
         <div className="likebutton">
-          <LikeButton
-            productId={productId}
-            productName={productName}
-            image={imageLinks}
-            price={price}
-            point={point}
-            heart={heart}
-          />
+          <LikeButton productId={productId} heart={heart} />
         </div>
       </ItemInfoWrapper>
     </ItemWrapper>
