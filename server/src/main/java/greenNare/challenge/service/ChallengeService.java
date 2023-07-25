@@ -35,7 +35,6 @@ public class ChallengeService {
     private final MemberService memberService;
     private final SecurityConfiguration securityConfiguration;
     private final JwtTokenizer jwtTokenizer;
-    //private final ReplyService replyService;
 
     public static final String IMAGE_SAVE_URL = "/home/ssm-user/seb44_main_026/images/";
     public static final String IMAGE_DELETE_URL = "/home/ssm-user/seb44_main_026";
@@ -76,7 +75,6 @@ public class ChallengeService {
         }
         log.info("patch 요청에 image 있음");
         String projectPath = IMAGE_SAVE_URL;
-        log.info("user.dir: {}", System.getProperty("user.dir"));
 
         UUID uuid = UUID.randomUUID();
         String fileName = uuid + SEPERATOR + file.getOriginalFilename(); // 숨기기. 파일 객체가 이메서드를 갖고 있도록
@@ -133,9 +131,7 @@ public class ChallengeService {
     }
     public Page<Challenge> getMyChallengePage(Pageable pageable, String token){
         int memberId = jwtTokenizer.getMemberId(token);
-        log.info("get MyChallenge memberID : {}", memberId);
         Page<Challenge> challengePage = challengeRepository.findByMemberMemberId(memberId, pageable);
-        log.info("getMyChallenge Page : {}",  challengePage);
 
         List<Challenge> list = challengeRepository.findByMemberMemberId(memberId);
         log.info("findByMemberId List로 추출했을 때 : {}", list.size());
@@ -224,10 +220,6 @@ public class ChallengeService {
         }
         log.info("validateWriter OK");
     }
-
-    /*public int countReply(int challengeId) {
-        return replyService.countChallenge(challengeId);
-    }*/
 
     public int getReplyCountForChallenge(int challengeId) {
         Challenge challenge = challengeRepository.findById(challengeId)
