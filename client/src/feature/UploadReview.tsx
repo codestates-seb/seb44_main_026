@@ -51,13 +51,13 @@ export const UploadReview = ({
     try {
       const res = await API.POST({
         url: `${process.env.REACT_APP_SERVER_URL}green/review/${id}`,
-        data: { context: review },
-        // data: formData,
+        // data: { context: review },
+        data: formData,
         headers: {
           Authorization: accessToken,
-          // 'Content-Type': 'multipart/form-data',
+          'Content-Type': 'multipart/form-data',
 
-          'Content-Type': 'application/json',
+          // 'Content-Type': 'application/json',
         },
       });
 
@@ -103,12 +103,12 @@ export const UploadReview = ({
     try {
       const res = await API.PATCH({
         url: `${process.env.REACT_APP_SERVER_URL}green/review/${id}`,
-        data: { context: review },
-        // data: formData,
+        // data: { context: review },
+        data: formData,
         headers: {
           Authorization: accessToken,
-          // 'Content-Type': 'multipart/form-data',
-          'Content-Type': 'application/json',
+          'Content-Type': 'multipart/form-data',
+          // 'Content-Type': 'application/json',
         },
       });
 
@@ -206,10 +206,35 @@ export const UploadReview = ({
     }
 
     const formData = new FormData();
-    formData.append('context', review);
+    const textContent = { context: review };
+    const deleteImagesLinks = {
+      deleteImageLinks: deleteUrl,
+    };
+    if (isEdit) {
+      formData.append(
+        'patchDto',
+        new Blob([JSON.stringify(textContent)], {
+          type: 'application/json',
+        }),
+      );
+    } else {
+      formData.append(
+        'postDto',
+        new Blob([JSON.stringify(textContent)], {
+          type: 'application/json',
+        }),
+      );
+    }
     // imageFiles.url.forEach((url) => formData.append('image', url));
-    deleteUrl.forEach((url) => formData.append('image', url));
-    imageFiles.file.forEach((file) => formData.append('image', file));
+    console.log(deleteUrl);
+    formData.append(
+      'deleteImages',
+      new Blob([JSON.stringify(deleteImagesLinks)], {
+        type: 'application/json',
+      }),
+    );
+    // deleteUrl.forEach((url) => formData.append('deleteImages', url));
+    imageFiles.file.forEach((file) => formData.append('images', file));
 
     if (isEdit) {
       return patchReview(formData);
