@@ -58,6 +58,7 @@ public class ProductService {
                             product.getPrice(),
                             product.getCategory(),
                             product.getPoint(),
+                            product.getStoreLink(),
                             imageLinks
 //                            imageLink
                     );
@@ -89,7 +90,8 @@ public class ProductService {
                 productDetails.getPrice(),
                 productDetails.getCategory(),
                 productDetails.getPoint(),
-                            imageLinks
+                productDetails.getStoreLink(),
+                imageLinks
 //                imageLink
         );
         return resultDto;

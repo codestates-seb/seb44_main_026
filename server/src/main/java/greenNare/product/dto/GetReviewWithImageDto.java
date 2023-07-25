@@ -26,6 +26,8 @@ public class GetReviewWithImageDto {
     //@Column(name = "PRODUCT_ID")
     private int productId;
 
+    private String storeLink;
+
     private List<String> imageLinks; //imageLinks
 
     //@Column(name = "NAME")
