@@ -37,6 +37,7 @@ public class ChallengeService {
     private final ReplyService replyService;
 
     public static final String IMAGE_SAVE_URL = "/home/ssm-user/seb44_main_026/images/";
+    public static final String IMAGE_DELETE_URL = "/home/ssm-user/seb44_main_026";
     public static final String SEPERATOR  = "_";
 
     public ChallengeService(ChallengeRepository challengeRepository, MemberService memberService, SecurityConfiguration securityConfiguration, JwtTokenizer jwtTokenizer, ReplyService replyService) {
@@ -54,7 +55,6 @@ public class ChallengeService {
         int memberId = jwtTokenizer.getMemberId(token);
         Member member = findMemberByToken(token);
 
-        //challenge.setMemberId(member.getMemberId());
         challenge.setMemberId(memberId);
 
         Challenge imageSaveChallenge = saveImage(challenge, file);
@@ -75,9 +75,7 @@ public class ChallengeService {
             return challenge;
         }
         log.info("patch 요청에 image 있음");
-        //String projectPath = System.getProperty("user.dir")+ IMAGE_SAVE_URL; // * 상수 값은 모두 변수로 만들기
         String projectPath = IMAGE_SAVE_URL;
-        //String projectPath = "C:/Users/eheka/seb44_main_026/images/";
         log.info("user.dir: {}", System.getProperty("user.dir"));
 
         UUID uuid = UUID.randomUUID();
@@ -86,8 +84,7 @@ public class ChallengeService {
         File saveFile = new File(projectPath, fileName);
         file.transferTo(saveFile);
 
-        String image = "/images/" + fileName; // /user/images/
-        //String image = "file:"+System.getProperty("user.dir")+"/images/" + fileName; // /user/images/
+        String image = "/images/" + fileName;
 
         challenge.setImage(image);
         return challengeRepository.save(challenge);
@@ -134,13 +131,28 @@ public class ChallengeService {
         return addWriterInfo(challenge.getMemberId(), response);
 
     }
+    public Page<Challenge> getMyChallengePage(Pageable pageable, String token){
+        int memberId = jwtTokenizer.getMemberId(token);
+        log.info("get MyChallenge memberID : {}", memberId);
+        Page<Challenge> challengePage = challengeRepository.findByMemberId(memberId, pageable);
+        log.info("getMyChallenge Page : {}",  challengePage);
+
+        List<Challenge> list = challengeRepository.findByMemberId(memberId);
+        log.info("findByMemberId List로 추출했을 때 : {}", list.size());
+        return challengePage;
+    }
+
+    public List<Challenge> getMyChallenges (Page<Challenge> challengePage){
+        List<Challenge>  challengeList = challengePage.stream().collect(Collectors.toList());
+        return challengeList;
+    }
 
     public ChallengeDto.Response updateChallenge(Challenge challenge, int challengeId, MultipartFile image, String token) throws IOException {
         Challenge findChallenge = findVerifideChallenge(challengeId);
 
         validateWriter(findChallenge.getMemberId(), token);
 
-        File file = new File(System.getProperty("user.dir")+"/src/main/resources/static"+findChallenge.getImage());
+        File file = new File(IMAGE_DELETE_URL+findChallenge.getImage());
         deleteImage(file);
 
         findChallenge.setImage(null);
@@ -168,7 +180,7 @@ public class ChallengeService {
         Challenge findChallenge = findVerifideChallenge(challengeId);
         validateWriter(findChallenge.getMemberId(),token);
 
-        File file = new File(System.getProperty("user.dir")+"/src/main/resources/static"+findChallenge.getImage());
+        File file = new File(IMAGE_DELETE_URL+findChallenge.getImage());
         deleteImage(file);
         log.info("##### find challenge 통과");
         challengeRepository.delete(findChallenge);

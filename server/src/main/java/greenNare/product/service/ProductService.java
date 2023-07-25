@@ -92,7 +92,7 @@ public class ProductService {
                 productDetails.getPoint(),
                 productDetails.getStoreLink(),
                 imageLinks
-//                imageLink
+
         );
         return resultDto;
     }

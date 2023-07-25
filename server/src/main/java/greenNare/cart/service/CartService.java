@@ -96,6 +96,7 @@ public class CartService {
                             product.getPrice(),
                             product.getCategory(),
                             product.getPoint(),
+                            product.getStoreLink(),
                             imageLinks
 //                            imageLink
                     );
