@@ -93,6 +93,7 @@ public class CartService {
                     GetProductWithImageDto resultDto = new GetProductWithImageDto(
                             product.getProductId(),
                             product.getProductName(),
+                            product.getDetail(),
                             product.getPrice(),
                             product.getCategory(),
                             product.getPoint(),

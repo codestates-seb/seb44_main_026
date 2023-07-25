@@ -19,7 +19,7 @@ public class Image extends Auditable {
     @Column(nullable = false/*, unique = true*/)
     String imageUri;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "reviewId")
     Review review;
 
