@@ -60,6 +60,23 @@ public class ReviewController {
         return new ResponseEntity(response,  HttpStatus.OK);
     }
 
+    @GetMapping("/my")
+    public ResponseEntity getMyReviews(@RequestParam int page,
+                                       @RequestParam int size,
+                                       @RequestHeader(value = "Authorization", required = false) String token) {
+
+        //쿼리 결과가 GetReviewsResultDto로 바뀌지않음 - 확인 후 수정
+        //Page<GetReviewsResultDto> reviews = reviewService.getReviews(productId, page, size);
+
+        PageRequest pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "createdAt"));
+        Page<Review> reviewPage = reviewService.getMyReviews(jwtTokenizer.getMemberId(token), pageable);
+        List<GetReviewWithImageDto> reviews = reviewService.getReviewImage(reviewPage);
+        MultiResponseDto response = new MultiResponseDto(reviews, reviewPage);
+
+        return new ResponseEntity(response,  HttpStatus.OK);
+
+    }
+
 //    @PostMapping("/{productId}")
 //    public ResponseEntity postReview(@PathVariable("productId") int productId,
 //                                     @Valid @RequestBody ReviewDto.Post postDto,

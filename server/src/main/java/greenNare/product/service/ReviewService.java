@@ -66,6 +66,11 @@ public class ReviewService {
     }
 
 
+    public Page<Review> getMyReviews(int memberId, PageRequest pageable) {
+        Page<Review> reviews = reviewRepository.findByMemberMemberId(memberId, pageable);
+        return reviews;
+    }
+
     public List<GetReviewWithImageDto> getReviewImage(Page<Review> reviews) {
         List<GetReviewWithImageDto> getReviewWithImageDtos = reviews.getContent().stream()
                 .map(review -> {
