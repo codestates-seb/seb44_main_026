@@ -63,17 +63,19 @@ public class ChallengeController {
         return ResponseEntity.ok(new SingleResponseDto<>(response));
     }
 
+    @GetMapping("/myChallenge")
+    public ResponseEntity getMyChallenge(@RequestHeader(value = "Authorization") String token,
+                                         Pageable pageable){
+        Page<Challenge> challengePage = challengeService.getMyChallengePage(pageable, token);
+        List<Challenge> challengeList = challengeService.getMyChallenges(challengePage);
+        return new ResponseEntity<>(new MultiResponseDto<>(challengeList, challengePage), HttpStatus.OK);
+    }
+
     @PostMapping("/challenge") // 챌린지 생성
     public ResponseEntity postChallenge(@Valid @RequestPart(required = false) ChallengeDto.Post requestBody,
                                         @RequestPart(required = false) MultipartFile image,
                                         @RequestHeader(value = "Authorization", required = false) String token) throws Exception, IOException {
         ChallengeDto.Response createdChallenge = challengeService.createChallenge(mapper.challengePostDtoToChallenge(requestBody), token, image);
-
-        //URI location = UriCreator.createUri(CHALLENGE_DEFAULT_URL+"/challenge/", createdChallenge.getChallengeId());
-        //HttpHeaders headers = new HttpHeaders();
-        //headers.setLocation(location);
-
-        //return ResponseEntity.status(HttpStatus.CREATED).headers(headers).body(new SingleResponseDto<>(response));
 
         return new ResponseEntity<>(new SingleResponseDto<>(createdChallenge), HttpStatus.CREATED);
     }
@@ -86,7 +88,6 @@ public class ChallengeController {
         Challenge patch = mapper.challengePatchDtoToChallenge(requestBody);
 
         ChallengeDto.Response response = challengeService.updateChallenge(patch, challengeId, image, token);
-        //challengeService.saveImage(updateChallenge, image)
 
         return ResponseEntity.ok(new SingleResponseDto<>(response));
     }
@@ -99,7 +100,6 @@ public class ChallengeController {
         Challenge patch = mapper.challengePatchDtoToChallenge(requestBody);
 
         ChallengeDto.Response response = challengeService.updateChallenge(patch, challengeId, image, token);
-        //challengeService.saveImage(updateChallenge, image)
 
         return ResponseEntity.ok(new SingleResponseDto<>(response));
     }
@@ -110,11 +110,4 @@ public class ChallengeController {
         challengeService.deleteChallenge(challengeId, token);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
-    /*
-    @GetMapping("/images/{imageFileName}") // image
-    public Resource showImage(@PathVariable String imageFileName) throws MalformedURLException {
-        //return new UrlResource("file:" + "/home/ssm-user/seb44_main_026" + imageFileName);
-        return new UrlResource("file:" + System.getProperty("user.dir") + "/images/" + imageFileName);
-    }
-*/
 }

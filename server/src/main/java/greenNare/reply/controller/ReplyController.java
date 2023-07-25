@@ -75,7 +75,6 @@ public class ReplyController {
     @DeleteMapping("/reply/{replyId}")
     public ResponseEntity deleteReply(@PathVariable int replyId,
                                       @RequestHeader(value = "Authorization", required = false) String token){
-        int memberId  = 1;
         replyService.deleteReply(replyId, token);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
