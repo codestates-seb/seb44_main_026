@@ -221,6 +221,11 @@ public class ReviewService {
     public void deleteReview(int memberId, int productId) {
         Review findReview = findReview(memberId, productId);
 
+        List<Image> deleteImages = imageRepository.findByReviewReviewId(findReview.getReviewId());
+        for(int i=0; i< deleteImages.size(); i++){
+            imageRepository.delete(deleteImages.get(i));
+        }
+
         reviewRepository.delete(findReview);
     }
 
