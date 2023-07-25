@@ -1,8 +1,11 @@
 package greenNare.challenge.entity;
 
 import greenNare.audit.Auditable;
+import greenNare.member.entity.Member;
+import greenNare.reply.entity.Reply;
 import lombok.*;
-
+import org.w3c.dom.stylesheets.LinkStyle;
+import java.util.List;
 import javax.persistence.*;
 
 @AllArgsConstructor
@@ -15,12 +18,13 @@ public class Challenge extends Auditable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(nullable = false)
-    private int ChallengeId;
+    private int challengeId;
 
-    //@ManyToOne
-    //@joinColumn
-    @Column(nullable = false)
-    private int memberId;
+    @ManyToOne
+    @JoinColumn(name = "memberId")
+    private Member member;
+    //@Column(nullable = false)
+    //private int memberId;
 
     @Column(nullable = false)
     private String title;
@@ -31,13 +35,17 @@ public class Challenge extends Auditable {
     @Column
     private String image;
 
+    @OneToMany(mappedBy = "challenge")
+    private List<Reply> reply;
+
     public Challenge(String title, String content) {
         this.title = title;
         this.content = content;
     }
-    public Challenge(String title, String content, int memberId) {
+
+    public Challenge(String title, String content, Member member) {
         this.title = title;
         this.content = content;
-        this.memberId = memberId;
+        this.member = member;
     }
 }

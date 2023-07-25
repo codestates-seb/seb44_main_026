@@ -1,6 +1,8 @@
 package greenNare.reply.entity;
 
 import greenNare.audit.Auditable;
+import greenNare.challenge.entity.Challenge;
+import greenNare.member.entity.Member;
 import lombok.*;
 
 import javax.persistence.*;
@@ -17,18 +19,24 @@ public class Reply extends Auditable {
     @Column(nullable = false)
     private int replyId;
 
-    //@ManyToOne
-    @Column
-    private int memberId;
-    //@ManyToOne
-    @Column
-    private int challengeId;
+    @ManyToOne
+    @JoinColumn(name = "MemberId")
+    private Member member;
+
+    @ManyToOne
+    @JoinColumn(name = "challengeId")
+    private Challenge challenge;
+    //@Column
+    //private int memberId;
+    //@Column
+    //private int challengeId;
     @Column(nullable = false)
     private String content;
 
-    public Reply(int memberId, int challengeId, String content) {
-        this.memberId = memberId;
-        this.challengeId = challengeId;
+
+    public Reply(Member member, Challenge challenge, String content) {
+        this.member = member;
+        this.challenge = challenge;
         this.content = content;
     }
 }

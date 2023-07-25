@@ -63,7 +63,7 @@ public class ChallengeDto {
         public static Response from(Challenge challenge) {
             return Response.builder()
                     .challengeId(challenge.getChallengeId())
-                    .memberId(challenge.getMemberId())
+                    .memberId(challenge.getMember().getMemberId())
                     .title(challenge.getTitle())
                     .content(challenge.getContent())
                     .image(challenge.getImage())
@@ -97,7 +97,7 @@ public class ChallengeDto {
         public static PageResponse from(Challenge challenge) {
             return PageResponse.builder()
                     .challengeId(challenge.getChallengeId())
-                    .memberId(challenge.getMemberId())
+                    .memberId(challenge.getMember().getMemberId())
                     .title(challenge.getTitle())
                     .createdAt(challenge.getCreatedAt())
                     .updatedAt(challenge.getUpdatedAt())

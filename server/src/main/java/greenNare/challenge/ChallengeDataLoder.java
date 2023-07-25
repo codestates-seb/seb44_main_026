@@ -1,7 +1,10 @@
 package greenNare.challenge;
 
+import greenNare.auth.jwt.JwtTokenizer;
+import greenNare.auth.utils.CustomAuthorityUtils;
 import greenNare.challenge.entity.Challenge;
 import greenNare.challenge.repository.ChallengeRepository;
+import greenNare.config.SecurityConfiguration;
 import greenNare.member.entity.Member;
 import greenNare.member.repository.MemberRepository;
 import greenNare.product.entity.Product;
@@ -30,13 +33,34 @@ public class ChallengeDataLoder implements CommandLineRunner {
         makeChallenge();
     }
     public void makeChallenge(){
+        /*
+        Member member = new Member("emain@email", "name","password12",0);
+        Challenge challenge = new Challenge("title", "content", member);
+        memberRepository.save(member);
         for(int i=1; i<=50; i++){
-            challengeRepository.save(new Challenge("title "+i,"content "+i, 1));
+            challengeRepository.save(new Challenge("title "+i,"content "+i, member));
         }
         for(int j=1; j<40; j++) {
-            replyRepository.save(new Reply(1,1,j+"번 댓글입니다"));
+            replyRepository.save(new Reply(member,challenge,j+"번 댓글입니다"));
+        }*/
+        JwtTokenizer jwtTokenizer = new JwtTokenizer();
+        CustomAuthorityUtils authorityUtils = new CustomAuthorityUtils();
+        SecurityConfiguration securityConfiguration = new SecurityConfiguration(jwtTokenizer, authorityUtils);
+        String password = securityConfiguration.passwordEncoder().encode("password12");
+
+        Member member = new Member("email@example.com", "name", password, 0);
+        memberRepository.save(member); // Member 엔티티를 먼저 저장
+
+        Challenge challenge = new Challenge("title", "content", member);
+        challengeRepository.save(challenge); // Challenge 엔티티 저장
+
+        for (int i = 1; i <= 50; i++) {
+            challengeRepository.save(new Challenge("title " + i, "content " + i, member));
         }
 
+        for (int j = 1; j < 40; j++) {
+            replyRepository.save(new Reply(member, challenge, j + "번 댓글입니다"));
+        }
     }
 
 }

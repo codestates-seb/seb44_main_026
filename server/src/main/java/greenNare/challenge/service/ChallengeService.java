@@ -22,6 +22,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -34,18 +35,17 @@ public class ChallengeService {
     private final MemberService memberService;
     private final SecurityConfiguration securityConfiguration;
     private final JwtTokenizer jwtTokenizer;
-    private final ReplyService replyService;
+    //private final ReplyService replyService;
 
     public static final String IMAGE_SAVE_URL = "/home/ssm-user/seb44_main_026/images/";
     public static final String IMAGE_DELETE_URL = "/home/ssm-user/seb44_main_026";
     public static final String SEPERATOR  = "_";
 
-    public ChallengeService(ChallengeRepository challengeRepository, MemberService memberService, SecurityConfiguration securityConfiguration, JwtTokenizer jwtTokenizer, ReplyService replyService) {
+    public ChallengeService(ChallengeRepository challengeRepository, MemberService memberService, SecurityConfiguration securityConfiguration, JwtTokenizer jwtTokenizer) {
         this.challengeRepository = challengeRepository;
         this.memberService = memberService;
         this.securityConfiguration = securityConfiguration;
         this.jwtTokenizer = jwtTokenizer;
-        this.replyService = replyService;
     }
 
     public ChallengeDto.Response createChallenge(Challenge challenge, String token, MultipartFile file) throws NullPointerException, IOException {
@@ -55,7 +55,7 @@ public class ChallengeService {
         int memberId = jwtTokenizer.getMemberId(token);
         Member member = findMemberByToken(token);
 
-        challenge.setMemberId(memberId);
+        challenge.setMember(member); // 멤버 넣어야함
 
         Challenge imageSaveChallenge = saveImage(challenge, file);
 
@@ -98,8 +98,8 @@ public class ChallengeService {
         List<ChallengeDto.PageResponse> challenges = challengePage.stream()
                 .map(challenge -> {
                     ChallengeDto.PageResponse response =  ChallengeDto.PageResponse.from(challenge);
-                    response.setCountReply(countReply(challenge.getChallengeId()));
-                    Member member = memberService.findMemberById(challenge.getMemberId());
+                    response.setCountReply(getReplyCountForChallenge(challenge.getChallengeId())); //(countReply(challenge.getChallengeId()));
+                    Member member = challenge.getMember();
                     response.setName(member.getName());
                     response.setPoint(member.getPoint());
                     return response;
@@ -124,20 +124,20 @@ public class ChallengeService {
         Challenge challenge = findVerifideChallenge(challengeId);
         log.info("### challenge content : {}", challenge.getContent());
         ChallengeDto.Response response = ChallengeDto.Response.from(challenge);
-        response.setCountReply(countReply(challengeId));
+        response.setCountReply(getReplyCountForChallenge(challengeId)); //(countReply(challengeId));
 
         log.info("response : {}", response.getName());
 
-        return addWriterInfo(challenge.getMemberId(), response);
+        return addWriterInfo(challenge.getMember(), response);
 
     }
     public Page<Challenge> getMyChallengePage(Pageable pageable, String token){
         int memberId = jwtTokenizer.getMemberId(token);
         log.info("get MyChallenge memberID : {}", memberId);
-        Page<Challenge> challengePage = challengeRepository.findByMemberId(memberId, pageable);
+        Page<Challenge> challengePage = challengeRepository.findByMemberMemberId(memberId, pageable);
         log.info("getMyChallenge Page : {}",  challengePage);
 
-        List<Challenge> list = challengeRepository.findByMemberId(memberId);
+        List<Challenge> list = challengeRepository.findByMemberMemberId(memberId);
         log.info("findByMemberId List로 추출했을 때 : {}", list.size());
         return challengePage;
     }
@@ -150,7 +150,7 @@ public class ChallengeService {
     public ChallengeDto.Response updateChallenge(Challenge challenge, int challengeId, MultipartFile image, String token) throws IOException {
         Challenge findChallenge = findVerifideChallenge(challengeId);
 
-        validateWriter(findChallenge.getMemberId(), token);
+        validateWriter(findChallenge.getMember(), token);
 
         File file = new File(IMAGE_DELETE_URL+findChallenge.getImage());
         deleteImage(file);
@@ -168,7 +168,7 @@ public class ChallengeService {
 
         challengeRepository.save(imageSaveChallenge);
         ChallengeDto.Response response = ChallengeDto.Response.from(imageSaveChallenge);
-        return addWriterInfo(imageSaveChallenge.getMemberId(), response);
+        return addWriterInfo(imageSaveChallenge.getMember(), response);
     }
 
     public void deleteChallenge(int challengeId, String token){
@@ -178,7 +178,7 @@ public class ChallengeService {
         }
         log.info("##### token empty 통과");
         Challenge findChallenge = findVerifideChallenge(challengeId);
-        validateWriter(findChallenge.getMemberId(),token);
+        validateWriter(findChallenge.getMember(),token);
 
         File file = new File(IMAGE_DELETE_URL+findChallenge.getImage());
         deleteImage(file);
@@ -186,8 +186,7 @@ public class ChallengeService {
         challengeRepository.delete(findChallenge);
     }
 
-    public ChallengeDto.Response addWriterInfo(int memberId, ChallengeDto.Response response) {
-        Member member = memberService.findMemberById(memberId);
+    public ChallengeDto.Response addWriterInfo(Member member, ChallengeDto.Response response) {
         response.setName(member.getName());
         response.setPoint(member.getPoint());
         return response;
@@ -215,20 +214,25 @@ public class ChallengeService {
         return memberService.findMemberById(memberId);
     }
 
-    public void validateWriter(int writerMemberId, String token) {
+    public void validateWriter(Member member, String token) {
         if(token.isBlank()) {
             throw new BusinessLogicException(ExceptionCode.INVALID_TOKEN);
         }
-        if (findMemberByToken(token).getMemberId() != writerMemberId) {
+        if (findMemberByToken(token).getMemberId() != member.getMemberId()) {
             log.info("작성자와 접근자(수정) 불일치");
-            log.info("token 주인 : {}", findMemberByToken(token).getMemberId());
-            log.info("챌린지 작성자 : {}", writerMemberId);
             throw new BusinessLogicException(ExceptionCode.UNMATCHED_WRITER);
         }
         log.info("validateWriter OK");
     }
 
-    public int countReply(int challengeId) {
+    /*public int countReply(int challengeId) {
         return replyService.countChallenge(challengeId);
+    }*/
+
+    public int getReplyCountForChallenge(int challengeId) {
+        Challenge challenge = challengeRepository.findById(challengeId)
+                .orElseThrow(() -> new NoSuchElementException("Challenge not found with ID: " + challengeId));
+
+        return challenge.getReply().size();
     }
 }
