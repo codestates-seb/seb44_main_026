@@ -187,17 +187,26 @@ public class ReviewService {
             }
         }
 
-        if(images != null && !images.isEmpty()){
-            List<Image> saveImages = images.stream().map(
-                    image -> {
-                        try {
-                            return imageRepository.save(new Image(createImageName(image), findReview(memberId,productId)));
-                        } catch (IOException e) {
-                            throw new RuntimeException(e);
-                        }
+//        if(images != null && !images.isEmpty()){
+//            List<Image> saveImages = images.stream().map(
+//                    image -> {
+//                        try {
+//                            return imageRepository.save(new Image(createImageName(image), findReview(memberId,productId)));
+//                        } catch (IOException e) {
+//                            throw new RuntimeException(e);
+//                        }
+//                    }
+//            ).collect(Collectors.toList());
+//        }
+        List<Image> saveImages = images.stream().map(
+                image -> {
+                    try {
+                        return imageRepository.save(new Image(createImageName(image), findReview(memberId,productId)));
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
                     }
-            ).collect(Collectors.toList());
-        }
+                }
+        ).collect(Collectors.toList());
 
         System.out.println("updateReview " + review);
 
