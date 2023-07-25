@@ -16,6 +16,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartRequest;
 
 import javax.validation.Valid;
@@ -59,25 +60,58 @@ public class ReviewController {
         return new ResponseEntity(response,  HttpStatus.OK);
     }
 
-    @PostMapping("/{productId}")
-    public ResponseEntity postReview(@PathVariable("productId") int productId,
-                                     @Valid @RequestBody ReviewDto.Post postDto,
-                                     /*@Valid @RequestPart ReviewDto.Post postDto,
-                                     @RequestPart (required = false) MultipartRequest imagefile,*/
-                                     @RequestHeader(value = "Authorization", required = false) String token) {
+//    @PostMapping("/{productId}")
+//    public ResponseEntity postReview(@PathVariable("productId") int productId,
+//                                     @Valid @RequestBody ReviewDto.Post postDto,
+//                                     /*@Valid @RequestPart ReviewDto.Post postDto,
+//                                     @RequestPart (required = false) MultipartRequest imagefile,*/
+//                                     @RequestHeader(value = "Authorization", required = false) String token) {
+//
+//        reviewService.createReview(reviewMapper.ReviewPostDtoToReview(postDto), jwtTokenizer.getMemberId(token), productId);
+//
+//
+//        return new ResponseEntity(HttpStatus.CREATED);
+//
+//    }
 
-        reviewService.createReview(reviewMapper.ReviewPostDtoToReview(postDto), jwtTokenizer.getMemberId(token), productId);
+    @PostMapping(value = "/{productId}", consumes = "multipart/form-data")
+    public ResponseEntity postReviewWithImage(@PathVariable("productId") int productId,
+                                     @Valid @RequestPart (required = false) ReviewDto.Post postDto,
+                                     @RequestPart (required = false) List<MultipartFile> images,
+                                     @RequestHeader(value = "Authorization", required = false) String token) {
+        if (images == null)
+            reviewService.createReview(reviewMapper.ReviewPostDtoToReview(postDto), jwtTokenizer.getMemberId(token), productId);
+
+        else if(images != null)
+            reviewService.createReviewWithImage(reviewMapper.ReviewPostDtoToReview(postDto), images, jwtTokenizer.getMemberId(token), productId);
 
 
         return new ResponseEntity(HttpStatus.CREATED);
 
     }
 
+//    @PatchMapping("/{productId}")
+//    public ResponseEntity patchReview(@PathVariable("productId") int productId,
+//                                      @Valid @RequestBody ReviewDto.Patch patchDto,
+//                                      @RequestHeader(value = "Authorization", required = false) String token) {
+//        reviewService.updateReview(reviewMapper.ReviewPatchDtoToReview(patchDto), jwtTokenizer.getMemberId(token), productId);
+//
+//        return new ResponseEntity(HttpStatus.OK);
+//
+//    }
+
     @PatchMapping("/{productId}")
-    public ResponseEntity patchReview(@PathVariable("productId") int productId,
-                                      @Valid @RequestBody ReviewDto.Patch patchDto,
-                                      @RequestHeader(value = "Authorization", required = false) String token) {
-        reviewService.updateReview(reviewMapper.ReviewPatchDtoToReview(patchDto), jwtTokenizer.getMemberId(token), productId);
+    public ResponseEntity patchReviewWithImage(@PathVariable("productId") int productId,
+                                               @Valid @RequestPart (required = false) ReviewDto.Patch patchDto,
+                                               @RequestPart (required = false) ReviewDto.deleteImagesDto deleteImages,
+                                               @RequestPart (required = false) List<MultipartFile> images,
+                                               @RequestHeader(value = "Authorization", required = false) String token) {
+
+        if (images == null)
+            reviewService.updateReview(reviewMapper.ReviewPatchDtoToReview(patchDto), deleteImages.getDeleteImageLinks(), jwtTokenizer.getMemberId(token), productId);
+
+        else if(images != null)
+            reviewService.updateReviewWithImage(reviewMapper.ReviewPatchDtoToReview(patchDto), deleteImages.getDeleteImageLinks(), images, jwtTokenizer.getMemberId(token), productId);
 
         return new ResponseEntity(HttpStatus.OK);
 

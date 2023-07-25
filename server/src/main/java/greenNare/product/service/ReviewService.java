@@ -10,6 +10,7 @@ import greenNare.product.entity.Image;
 import greenNare.product.entity.Review;
 import greenNare.product.repository.ImageRepository;
 import greenNare.product.repository.ReviewRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
@@ -19,12 +20,14 @@ import org.springframework.web.multipart.MultipartRequest;
 import java.io.File;
 import java.io.IOException;
 import java.time.LocalDateTime;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
+@Slf4j
 public class ReviewService {
     private ReviewRepository reviewRepository;
 
@@ -98,7 +101,7 @@ public class ReviewService {
     }
 
 
-    //create결과 리턴?
+//    create결과 리턴?
     public void createReview(Review review, int memberId, int productId) {
         //
         verifyExistsReview(memberId, productId);
@@ -109,15 +112,13 @@ public class ReviewService {
 
         System.out.println("createReview " + review);
 
-//        List<String> imageLinks =
-
         //updatePoint(response-변경된 포인트 전송)
         int point = (int)Math.floor(review.getProduct().getPrice() * 0.01);
         memberService.addPoint(memberId, point);
     }
 
 
-    public void updateReview(Review review,  int memberId, int productId) {
+    public void updateReview(Review review, List<String> deleteImages, int memberId, int productId) {
         //
         Review findReview = findReview(memberId, productId);
 
@@ -127,36 +128,88 @@ public class ReviewService {
         reviewRepository.save(findReview);
         System.out.println("updateReview " + review);
 
+        for(int i = 0; i<deleteImages.size(); i++) {
+            if(imageRepository.findImageUriByImageUri(deleteImages.get(i)).isPresent()){
+                Image ig = imageRepository.findImageUriByImageUri(deleteImages.get(i)).orElseThrow();
+                imageRepository.delete(ig);
+            }
+        }
+
     }
 
 
-    public List<String> saveImage(List<MultipartFile> images) throws IOException{
-        List<String> imageLinks = images.stream()
-                .map( image -> {
-                    UUID uuid = UUID.randomUUID();
-                    String imageName = uuid + SEPERATOR + image.getOriginalFilename();
+    public void createReviewWithImage(Review review, List<MultipartFile> images, int memberId, int productId) {
+        //
+        verifyExistsReview(memberId, productId);
 
-                    File imagefile = new File(IMAGE_SAVE_URL, imageName);
-                    try {
-                        image.transferTo(imagefile);
+        review.setMember(memberRepository.findBymemberId(memberId));
+        review.setProduct(productService.getProduct(productId));
+        reviewRepository.save(review);
 
-                    } catch (IOException e) {
-                        throw new RuntimeException(e);
+        System.out.println("createReview " + review);
+        if(images.size() !=0){
+            log.info("images_exist");
+            List<Image> saveImages = images.stream().map(
+                    image -> {
+                        try {
+                            return imageRepository.save(new Image(createImageName(image), findReview(memberId,productId)));
+                        } catch (IOException e) {
+                            throw new RuntimeException(e);
+                        }
                     }
+            ).collect(Collectors.toList());
+        }
 
-                    return "/images/" + imageName;
-                }
+        //updatePoint(response-변경된 포인트 전송)
+        int point = (int)Math.floor(review.getProduct().getPrice() * 0.01);
+        memberService.addPoint(memberId, point);
+    }
 
-        ).collect(Collectors.toList());
 
-        return imageLinks;
+    public void updateReviewWithImage(Review review, List<String> deleteImages, List<MultipartFile> images, int memberId, int productId) {
+        //
+        Review findReview = findReview(memberId, productId);
+
+        findReview.setContext(review.getContext());
+        findReview.setUpdatedAt(LocalDateTime.now());
+
+        reviewRepository.save(findReview);
+
+        for(int i = 0; i<deleteImages.size(); i++) {
+            if(imageRepository.findImageUriByImageUri(deleteImages.get(i)).isPresent()){
+                Image ig = imageRepository.findImageUriByImageUri(deleteImages.get(i)).orElseThrow();
+                imageRepository.delete(ig);
+            }
+        }
+
+        if(images != null && !images.isEmpty()){
+            List<Image> saveImages = images.stream().map(
+                    image -> {
+                        try {
+                            return imageRepository.save(new Image(createImageName(image), findReview(memberId,productId)));
+                        } catch (IOException e) {
+                            throw new RuntimeException(e);
+                        }
+                    }
+            ).collect(Collectors.toList());
+        }
+
+        System.out.println("updateReview " + review);
 
     }
 
 
-    public String getImage() {
-        String imageLink = "";
-        return imageLink;
+
+
+    public String createImageName(MultipartFile image) throws IOException{
+        UUID uuid = UUID.randomUUID();
+        String imageName = uuid + SEPERATOR + image.getOriginalFilename();
+
+        File imagefile = new File(IMAGE_SAVE_URL, imageName);
+        image.transferTo(imagefile);
+
+        return "/images/" + imageName;
+
     }
 
 
