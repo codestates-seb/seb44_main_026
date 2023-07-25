@@ -51,13 +51,10 @@ export const UploadReview = ({
     try {
       const res = await API.POST({
         url: `${process.env.REACT_APP_SERVER_URL}green/review/${id}`,
-        // data: { context: review },
         data: formData,
         headers: {
           Authorization: accessToken,
           'Content-Type': 'multipart/form-data',
-
-          // 'Content-Type': 'application/json',
         },
       });
 
@@ -103,12 +100,10 @@ export const UploadReview = ({
     try {
       const res = await API.PATCH({
         url: `${process.env.REACT_APP_SERVER_URL}green/review/${id}`,
-        // data: { context: review },
         data: formData,
         headers: {
           Authorization: accessToken,
           'Content-Type': 'multipart/form-data',
-          // 'Content-Type': 'application/json',
         },
       });
 
@@ -225,15 +220,12 @@ export const UploadReview = ({
         }),
       );
     }
-    // imageFiles.url.forEach((url) => formData.append('image', url));
-    console.log(deleteUrl);
     formData.append(
       'deleteImages',
       new Blob([JSON.stringify(deleteImagesLinks)], {
         type: 'application/json',
       }),
     );
-    // deleteUrl.forEach((url) => formData.append('deleteImages', url));
     imageFiles.file.forEach((file) => formData.append('images', file));
 
     if (isEdit) {
