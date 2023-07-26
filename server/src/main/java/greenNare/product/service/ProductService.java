@@ -55,6 +55,7 @@ public class ProductService {
                     GetProductWithImageDto resultDto = new GetProductWithImageDto(
                             product.getProductId(),
                             product.getProductName(),
+                            product.getDetail(),
                             product.getPrice(),
                             product.getCategory(),
                             product.getPoint(),
@@ -87,6 +88,7 @@ public class ProductService {
         GetProductWithImageDto resultDto = new GetProductWithImageDto(
                 productDetails.getProductId(),
                 productDetails.getProductName(),
+                productDetails.getDetail(),
                 productDetails.getPrice(),
                 productDetails.getCategory(),
                 productDetails.getPoint(),
