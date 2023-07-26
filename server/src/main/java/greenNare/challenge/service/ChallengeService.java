@@ -31,6 +31,9 @@ import java.util.stream.Collectors;
 @Transactional
 @Service
 public class ChallengeService {
+
+
+
     private final ChallengeRepository challengeRepository;
     private final MemberService memberService;
     private final SecurityConfiguration securityConfiguration;
