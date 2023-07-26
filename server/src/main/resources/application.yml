@@ -35,8 +35,9 @@ spring:
     init:
       #schema-locations: classpath*:db/h2/schema.sql
       #data-locations: classpath*:db/h2/data.sql
-  application:
-    name: monitoring
+#  application:
+#    name: monitoring
+
 logging:
   level:
     org:
@@ -54,18 +55,18 @@ mail:
   address:
     admin: admin@gmail.com
 
-management:
-  endpoint:
-    metrics:
-      enabled: true
-    prometheus:
-      enabled: true
+#management:
+#  endpoint:
+#    metrics:
+#      enabled: true
+#    prometheus:
+#      enabled: true
 
-  endpoints:
-    web:
-      exposure:
-        include: health, info, metrics, prometheus
+# endpoints:
+#    web:
+#      exposure:
+#        include: health, info, metrics, prometheus
 
-  metrics:
-    tags:
-      application: ${spring.application.name}
+# metrics:
+#    tags:
+#      application: ${spring.application.name}
