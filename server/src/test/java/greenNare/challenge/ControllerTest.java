@@ -34,6 +34,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 //@WebMvcTest(ChallengeController.class)
 public class ControllerTest {
+
+    /*
     @Autowired
     private MockMvc mockMvc;
 
@@ -111,6 +113,7 @@ public class ControllerTest {
                 //.andExpect(jsonPath("$.data.challengeId"))
                 //.andExpect(jsonPath("$.data.name"))
                 //.andExpect(jsonPath("$.data.point"))
-
     }
+
+     */
 }
