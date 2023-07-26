@@ -16,10 +16,10 @@
 
 ## BE
 
-| 백도담 | (맡은 역할) |
+| 백도담 | Challenge crud / Challenge Reply crud / map crud / image 저장 / aws 배포 |
 |:--------:| :--------: |
-| 최서우 | (맡은 역할) |
-| 김리나 | (맡은 역할) |
+| **최서우** | **Member crud / Jwt 사용한 로그인 / aws 배포** |
+| **김리나** | **Product crud / Product review crud / Cart crud / image / aws 배포** |
 
 </br>
 
@@ -28,7 +28,7 @@
 | 백승효 | 메인페이지 / 마이페이지(회원 정보 조회, 수정) / 챌린지 페이지( 챌린지 CRUD, 챌린지 댓글 CRUD) / 배포 |
 |:--------:| :--------: |
 | **김수성** |  **Header / Footer / providers routing / 로그인 / 회원가입 / 지도 추가,삭제** |
-| 김영윤 | 네비게이션 바 / 상품조회 페이지 / 상품상세 페이지 / 관심상품 페이지 /  리뷰 CRUD  |
+| **김영윤** | **네비게이션 바 / 상품조회 페이지 / 상품상세 페이지 / 관심상품 페이지 /  리뷰 CRUD**  |
 
 </br>
 
@@ -53,9 +53,9 @@
 
 ## 💻 Stacks Used
 ### Back-end
-|   Java   |   Spring   |   Spring Boot   |   Spring Security   |   MySQL   |   AWS   |
-| :----------------------------------------------------------: | :----------------------------------------------------------: | :----------------------------------------------------------: | :----------------------------------------------------------: | :----------------------------------------------------------: | :----------------------------------------------------------: |
-| <div style="display: flex; align-items: flex-start;"><img src="https://techstack-generator.vercel.app/java-icon.svg" alt="icon" width="65" height="65" /></div> | <img alt="spring logo" src="https://www.vectorlogo.zone/logos/springio/springio-icon.svg" height="50" width="50" > | <img alt="spring-boot logo" src="https://t1.daumcdn.net/cfile/tistory/27034D4F58E660F616" width="65" height="65" > |  <img alt="spring-security logo" width="60px" src="https://camo.githubusercontent.com/923e99a57f8a456fdade5f65b35ada254be277612ddc991afb702d8dfd880d4f/68747470733a2f2f63646e2e73696d706c6569636f6e732e6f72672f737072696e677365637572697479" width="85" height=auto > | <div style="display: flex; align-items: flex-start;"><img src="https://techstack-generator.vercel.app/mysql-icon.svg" alt="icon" width="65" height="65" /></div> | <div style="display: flex; align-items: flex-start;"><img src="https://techstack-generator.vercel.app/aws-icon.svg" alt="icon" width="65" height="65" /></div> |
+|   Java   |   Spring   |   Spring Boot   |   Spring Security   |   MySQL   |   AWS   |   Spring Data JPA   |  JWT |
+| :----------------------------------------------------------: | :----------------------------------------------------------: | :----------------------------------------------------------: | :----------------------------------------------------------: | :----------------------------------------------------------: | :----------------------------------------------------------: | :----------------------------------------------------------: | :----------------------------------------------------------: |
+| <div style="display: flex; align-items: flex-start;"><img src="https://techstack-generator.vercel.app/java-icon.svg" alt="icon" width="65" height="65" /></div> | <img alt="spring logo" src="https://www.vectorlogo.zone/logos/springio/springio-icon.svg" height="50" width="50" > | <img alt="spring-boot logo" src="https://t1.daumcdn.net/cfile/tistory/27034D4F58E660F616" width="65" height="65" > |  <img alt="spring-security logo" width="60px" src="https://camo.githubusercontent.com/923e99a57f8a456fdade5f65b35ada254be277612ddc991afb702d8dfd880d4f/68747470733a2f2f63646e2e73696d706c6569636f6e732e6f72672f737072696e677365637572697479" width="85" height=auto > | <div style="display: flex; align-items: flex-start;"><img src="https://techstack-generator.vercel.app/mysql-icon.svg" alt="icon" width="65" height="65" /></div> | <div style="display: flex; align-items: flex-start;"><img src="https://techstack-generator.vercel.app/aws-icon.svg" alt="icon" width="65" height="65" /></div> |  <div><img src="https://camo.githubusercontent.com/5e5576796c5a9c459145c9f4aed898705cb7f2b34811057f9ebd2a458a63a573/68747470733a2f2f6e6f7469636f6e2d7374617469632e74616d6d6f6c6f2e636f6d2f6467676763726b78712f696d6167652f75706c6f61642f76313630393039343535312f6e6f7469636f6e2f676b636a63686c6f633766376b686c73797979792e706e67" width="75" height="75" /></div> | <div><img src = "https://user-images.githubusercontent.com/103114936/194072927-530fe608-9089-4aa1-bf3f-5a9df029800b.png" width="75" height="75" /></div> |
 
 
 </br>
@@ -63,7 +63,7 @@
 ### Front-end
 |     Html     |     CSS     |     TypeScript     |     React    |     Styled<br>Components     |     axios     |      esLint     | 
 | :----------------------------------------------------------: | :----------------------------------------------------------: | :----------------------------------------------------------: | :----------------------------------------------------------: | :----------------------------------------------------------: | :----------------------------------------------------------: | :----------------------------------------------------------:|
-| <img alt="Html" src ="https://upload.wikimedia.org/wikipedia/commons/thumb/6/61/HTML5_logo_and_wordmark.svg/440px-HTML5_logo_and_wordmark.svg.png" width="65" height="65" /> | <div style="display: flex; align-items: flex-start;"><img src="https://user-images.githubusercontent.com/111227745/210204643-4c3d065c-59ec-481d-ac13-cea795730835.png" alt="CSS" width="50" height="65" /></div> | <div style="display: flex; align-items: flex-start;"><img src="https://techstack-generator.vercel.app/ts-icon.svg" alt="icon" width="75" height="75" /></div> | <div style="display: flex; align-items: flex-start;"><img src="https://techstack-generator.vercel.app/react-icon.svg" alt="icon" width="65" height="65" /></div> | <div style="display: flex; align-items: flex-start;"><img src="https://styled-components.com/logo.png" alt="styled-components icon" width="65" height="65" /></div> | <div style="display: flex; align-items: flex-start;"><img src="https://axios-http.com/assets/logo.svg" width="65" height="65"/></div> | <div style="display: flex; align-items: flex-start;"><img src="https://img.shields.io/badge/ESLint-4B32C3?style=for-the-badge&logo=ESLint&logoColor=white" width="100" height="65" /></div> |
+| <img alt="Html" src ="https://upload.wikimedia.org/wikipedia/commons/thumb/6/61/HTML5_logo_and_wordmark.svg/440px-HTML5_logo_and_wordmark.svg.png" width="65" height="65" /> | <div style="display: flex; align-items: flex-start;"><img src="https://user-images.githubusercontent.com/111227745/210204643-4c3d065c-59ec-481d-ac13-cea795730835.png" alt="CSS" width="50" height="65" /></div> | <div style="display: flex; align-items: flex-start;"><img src="https://techstack-generator.vercel.app/ts-icon.svg" alt="icon" width="75" height="75" /></div> | <div style="display: flex; align-items: flex-start;"><img src="https://techstack-generator.vercel.app/react-icon.svg" alt="icon" width="65" height="65" /></div> | <div style="display: flex; align-items: flex-start;"><img src="https://styled-components.com/logo.png" alt="styled-components icon" width="65" height="65" /></div> | <div style="display: flex; align-items: flex-start;"><img src="https://axios-http.com/assets/logo.svg" width="65" height="65"/></div> | <div style="display: flex; align-items: flex-start;"><img src="https://img.shields.io/badge/ESLint-4B32C3?style=for-the-badge&logo=ESLint&logoColor=white" width="100" height="65" /></div> | 
 
 
 </br>
