@@ -12,22 +12,11 @@ export const ItemList = ({ itemlist, isLoding }: ItemListProps) => {
   return (
     <ListWrapper>
       {isLoding
-        ? Array(9)
+        ? Array(6)
             .fill(null)
             .map((_, index) => <ItemSkeleton key={index} />)
         : itemlist.map((item: ItemType) => {
-            // <Item key={item.id} {...item} />
-            // const { productId, productName, image, heart } = item;
-            return (
-              <Item
-                key={item.productId}
-                // productId={productId}
-                // productName={productName}
-                // image={image}
-                // heart={heart}
-                {...item}
-              />
-            );
+            return <Item key={item.productId} {...item} />;
           })}
     </ListWrapper>
   );

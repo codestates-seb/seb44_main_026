@@ -36,12 +36,12 @@ export const Product = () => {
       const res = await API.GET({
         url: `${process.env.REACT_APP_SERVER_URL}green?page=${
           currentPage - 1
-        }&size=${9}&category=${filter}`,
+        }&size=${6}&category=${filter}`,
       });
 
       const products = res.data;
       const setProducts = products.data.map((item: ItemType) => {
-        return { ...item, imageLink: item.imageLinks[0] };
+        return { ...item, imageLinks: item.imageLinks[0] };
       });
       setItemList(setProducts);
       setTotalPages(products.pageInfo.totalPages);
@@ -65,6 +65,8 @@ export const Product = () => {
   useEffect(() => {
     getProduct();
   }, [currentPage]);
+
+  console.log(itemList);
 
   return (
     <>

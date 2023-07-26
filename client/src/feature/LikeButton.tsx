@@ -8,13 +8,6 @@ import { ReviewModal } from './ReviewModal';
 
 interface LikeButtonProps {
   productId: number;
-  productName: string;
-  detail?: string;
-  price?: number;
-  point?: number;
-  category?: string;
-  storeLink?: string;
-  image?: string;
   heart?: boolean;
 }
 
@@ -22,14 +15,7 @@ interface StyleLikeProps {
   color: string;
 }
 
-export const LikeButton = ({
-  productId,
-  // productName,
-  // image,
-  // price,
-  // point,
-  heart,
-}: LikeButtonProps) => {
+export const LikeButton = ({ productId, heart }: LikeButtonProps) => {
   const [isLike, setIsLike] = useState(heart);
   //모달
   const [isOpen, setIsOpen] = useState(false);
@@ -52,7 +38,7 @@ export const LikeButton = ({
         setIsOpen(true);
         return;
       } else if (res.status === 500) {
-        setModalContent('상품 좋아요에 실패하였습니다.');
+        setModalContent('로그인이 필요한 기능입니다.');
         setIsAlert(true);
         setIsOpen(true);
         return;

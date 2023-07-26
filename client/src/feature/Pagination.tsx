@@ -2,7 +2,6 @@ import { styled } from 'styled-components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAngleRight } from '@fortawesome/free-solid-svg-icons';
 import { faAngleLeft } from '@fortawesome/free-solid-svg-icons';
-// import { Dispatch, SetStateAction } from 'react';
 
 interface PaginationProps {
   total: number;
@@ -25,7 +24,7 @@ export const Pagination = ({ total, page, setPage }: PaginationProps) => {
 
       {Array(total)
         .fill(null)
-        .map((el, index) => (
+        .map((_, index) => (
           <Button
             key={index + 1}
             onClick={() => setPage(index + 1)}

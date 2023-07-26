@@ -55,7 +55,6 @@ export const LikeProducts = () => {
       <Nav />
       <ProductWrapper>
         <Title>관심 상품</Title>
-        {/* <ItemList itemlist={likeItems} isLoding={isLoding} /> */}
         <ItemList itemlist={likeItems} isLoding={isLoding} />
         <Pagination
           total={totalPages}

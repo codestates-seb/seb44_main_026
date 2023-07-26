@@ -51,13 +51,10 @@ export const UploadReview = ({
     try {
       const res = await API.POST({
         url: `${process.env.REACT_APP_SERVER_URL}green/review/${id}`,
-        data: { context: review },
-        // data: formData,
+        data: formData,
         headers: {
           Authorization: accessToken,
-          // 'Content-Type': 'multipart/form-data',
-
-          'Content-Type': 'application/json',
+          'Content-Type': 'multipart/form-data',
         },
       });
 
@@ -103,12 +100,10 @@ export const UploadReview = ({
     try {
       const res = await API.PATCH({
         url: `${process.env.REACT_APP_SERVER_URL}green/review/${id}`,
-        data: { context: review },
-        // data: formData,
+        data: formData,
         headers: {
           Authorization: accessToken,
-          // 'Content-Type': 'multipart/form-data',
-          'Content-Type': 'application/json',
+          'Content-Type': 'multipart/form-data',
         },
       });
 
@@ -141,14 +136,6 @@ export const UploadReview = ({
   };
   // 이미지 파일 업로드, 프리뷰
   const uploadFileHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
-    // const files = Array.from(e.target.files);
-    // const addFiles = [...imageFiles, ...files];
-    // setImageFiles(addFiles);
-
-    // const previewArray = addFiles.map((data) =>
-    //   window.URL.createObjectURL(data),
-    // );
-    // setPreview(previewArray);
     const files = Array.from(e.target.files);
     const addFiles = [...imageFiles.file, ...files];
     setImageFiles({
@@ -185,10 +172,7 @@ export const UploadReview = ({
       });
       setDeleteUrl([...deleteUrl, imageFiles.url[index]]);
     }
-    // setImageFiles([
-    //   ...imageFiles.slice(0, index),
-    //   ...imageFiles.slice(index + 1, preview.length),
-    // ]);
+
     setPreview([
       ...preview.slice(0, index),
       ...preview.slice(index + 1, preview.length),
@@ -206,10 +190,32 @@ export const UploadReview = ({
     }
 
     const formData = new FormData();
-    formData.append('context', review);
-    // imageFiles.url.forEach((url) => formData.append('image', url));
-    deleteUrl.forEach((url) => formData.append('image', url));
-    imageFiles.file.forEach((file) => formData.append('image', file));
+    const textContent = { context: review };
+    const deleteImagesLinks = {
+      deleteImageLinks: deleteUrl,
+    };
+    if (isEdit) {
+      formData.append(
+        'patchDto',
+        new Blob([JSON.stringify(textContent)], {
+          type: 'application/json',
+        }),
+      );
+    } else {
+      formData.append(
+        'postDto',
+        new Blob([JSON.stringify(textContent)], {
+          type: 'application/json',
+        }),
+      );
+    }
+    formData.append(
+      'deleteImages',
+      new Blob([JSON.stringify(deleteImagesLinks)], {
+        type: 'application/json',
+      }),
+    );
+    imageFiles.file.forEach((file) => formData.append('images', file));
 
     if (isEdit) {
       return patchReview(formData);
@@ -291,6 +297,7 @@ export const UploadReview = ({
             className="inputfile"
           />
         </FileUploadButton>
+        <div className="guide">1MB 이하의 이미지만 선택해주세요.</div>
       </Form>
     </>
   );
@@ -337,6 +344,12 @@ const Form = styled.form`
     color: var(--red);
     font-size: 0.75rem;
     padding: 0.5rem;
+  }
+
+  .guide {
+    color: var(--green-200);
+    font-size: 0.5rem;
+    margin-top: 0.5rem;
   }
 `;
 

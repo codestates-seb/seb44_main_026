@@ -1,5 +1,5 @@
 import { styled } from 'styled-components';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { UploadReview } from './UploadReview';
 import moment from 'moment';
 import 'moment/locale/ko';
@@ -33,9 +33,7 @@ export const Review = ({
   const [modalContent, setModalContent] = useState('');
 
   const accessToken = localStorage.getItem('accessToken');
-  // 임시
   const user = parseInt(localStorage.getItem('memberId'));
-  // const user = 31;
 
   const onDeleteReview = () => {
     setModalContent('정말 삭제하시겠습니까?');
@@ -126,13 +124,7 @@ export const Review = ({
             <PreviewWrapper>
               {imageLinks.map((image, index) => (
                 <Preview key={index}>
-                  <img
-                    className="previewImg"
-                    src={image}
-                    // src={
-                    //   'https://i.namu.wiki/i/c1FfgJTOGJAGV6Pz4hfrAtzmfdCpnO0Sqjqhd2wB9DtgjKFoEcTen1HymS9oa2FpgNdKSUxj494vii746Eu_YLAueKFu_VpKCbegr6Sa4WYX-rr5598Ma8quoNWHv3620PkvgxolW58DYM5-e4bOGQ.webp'
-                    // }
-                  />
+                  <img className="previewImg" src={image} />
                 </Preview>
               ))}
             </PreviewWrapper>
