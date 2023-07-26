@@ -14,10 +14,11 @@ import java.util.List;
 public class GetProductWithImageDto {
     private int productId;
     private String productName;
+
+    private String detail;
     private int price;
     private String category;
     private int point;
-
     private String storeLink;
     List<String> imageLinks;
     //String imageLink;

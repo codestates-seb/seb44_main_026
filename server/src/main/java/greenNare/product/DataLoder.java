@@ -60,7 +60,7 @@ public class DataLoder implements CommandLineRunner {
                 "https://onlyeco.co.kr/product/%EC%B9%9C%ED%99%98%EA%B2%BD-%EC%A7%81%EC%9E%A5%EC%9D%B8-%EB%8F%84%EC%8B%9C%EB%9D%BD-%EC%84%B8%ED%8A%B8/730/category/1/display/3/",
                 "living"
         ));
-        imageRepository.save(new Image("/images/947cdd39dd19b4c417e8e3ae9364eec4_모두애ESG네이처키트스탠다드.jpg", productService.getProduct(1)));
+        imageRepository.save(new Image("/images/947cdd39dd19b4c417e8e3ae9364eec4_친환경 직장인 도시락 세트.jpg", productService.getProduct(1)));
 
         productRepository.save(new Product(
                 "업사이클링 문구 선물세트",
