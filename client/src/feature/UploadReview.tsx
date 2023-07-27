@@ -278,7 +278,10 @@ export const UploadReview = ({
         <PreviewWrapper>
           {preview.map((image, index) => (
             <Preview key={index}>
-              <img className="previewImg" src={image} />
+              <img
+                className="previewImg"
+                src={`https://ok.greennare.store${image}`}
+              />
               <div className="delete" onClick={() => deleteFileHandler(index)}>
                 삭제
               </div>
