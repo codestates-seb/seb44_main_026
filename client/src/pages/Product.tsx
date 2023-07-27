@@ -41,7 +41,10 @@ export const Product = () => {
 
       const products = res.data;
       const setProducts = products.data.map((item: ItemType) => {
-        return { ...item, imageLinks: item.imageLinks[0] };
+        return {
+          ...item,
+          imageLinks: `https://ok.greennare.store${item.imageLinks[0]}`,
+        };
       });
       setItemList(setProducts);
       setTotalPages(products.pageInfo.totalPages);
