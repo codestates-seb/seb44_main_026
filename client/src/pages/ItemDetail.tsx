@@ -100,7 +100,7 @@ export const ItemDetail = () => {
       <Wrapper>
         <div className="itemWrapper">
           <Image>
-            <img src={currentItem.imageLinks} />
+            <img src={`https://ok.greennare.store${currentItem.imageLinks}`} />
           </Image>
           <ItemInfo>
             <div>

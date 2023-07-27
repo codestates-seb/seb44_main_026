@@ -124,7 +124,10 @@ export const Review = ({
             <PreviewWrapper>
               {imageLinks.map((image, index) => (
                 <Preview key={index}>
-                  <img className="previewImg" src={image} />
+                  <img
+                    className="previewImg"
+                    src={`https://ok.greennare.store${image}`}
+                  />
                 </Preview>
               ))}
             </PreviewWrapper>
