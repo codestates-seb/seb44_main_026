@@ -1,17 +1,11 @@
 externalImagePath: home/ssm-user/seb44_main_026/images/
-#cloudPath: classpath:greennare-9e6b24e727ac.json
 spring:
   #mvc:
   #  static-path-pattern: /images/**
   #resources:
   #  static-locations: file:${externalImagePath}
-  h2:
-    console:
-      enabled: true
-      path: /h2
   jpa:
     defer-datasource-initialization: true
-    database-platform: H2
     hibernate:
       ddl-auto: create-drop
 
@@ -35,9 +29,10 @@ spring:
       port: 6379
 
   datasource:
-    url: jdbc:h2:mem:test
-    username: sa
-    driver-class-name: org.h2.Driver
+    url: jdbc:mysql://34.64.148.174:3306/greennare?serverTimezone=Asia/Seoul
+    username: api
+    password: api
+    driver-class-name: com.mysql.cj.jdbc.Driver
 
   sql:
     init:
@@ -58,7 +53,6 @@ logging:
           core: TRACE
 
 jwt:
-  #key: ${JWT_SECRET_KEY}
   key: jasdfasfd1312345351354314560984745
   access-token-expiration-minutes: 120
   refresh-token-expiration-minutes: 420
