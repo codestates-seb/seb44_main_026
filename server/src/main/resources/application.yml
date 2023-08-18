@@ -10,7 +10,7 @@ spring:
       path: /h2
   jpa:
     defer-datasource-initialization: true
-    database-platform: H2
+#    database-platform: H2
     hibernate:
       ddl-auto: create-drop
 
@@ -27,9 +27,14 @@ spring:
       port: 6379
 
   datasource:
-    url: jdbc:h2:mem:test
-    username: sa
-    driver-class-name: org.h2.Driver
+    url: jdbc:mysql://172.27.96.3:3306/greennare?cloudSqlInstance=greennare:asia-northeast3:greennare-db&socketFactory=com.google.cloud.sql.mysql.SocketFactory
+    username: api
+    password: api
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+#  url: jdbc:h2:mem:test
+#   username: sa
+#    driver-class-name: org.h2.Driver
 
   sql:
     init:
