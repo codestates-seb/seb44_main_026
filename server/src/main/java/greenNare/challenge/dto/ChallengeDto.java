@@ -1,10 +1,7 @@
 package greenNare.challenge.dto;
 
 import greenNare.challenge.entity.Challenge;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.validation.constraints.NotBlank;
 import java.time.LocalDateTime;
@@ -15,6 +12,7 @@ public class ChallengeDto {
     @NoArgsConstructor
     @AllArgsConstructor
     @Getter
+    @Setter
     public static class Post {
         @NotBlank
         private String title;
@@ -36,6 +34,7 @@ public class ChallengeDto {
     @AllArgsConstructor
     @Getter
     @Builder
+    @Setter
     public static class Response {
         private int challengeId;
         private int memberId;

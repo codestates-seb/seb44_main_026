@@ -1,9 +1,10 @@
 externalImagePath: home/ssm-user/seb44_main_026/images/
+#cloudPath: classpath:greennare-9e6b24e727ac.json
 spring:
-  mvc:
-    static-path-pattern: /images/**
-  resources:
-    static-locations: file:${externalImagePath}
+  #mvc:
+  #  static-path-pattern: /images/**
+  #resources:
+  #  static-locations: file:${externalImagePath}
   h2:
     console:
       enabled: true
@@ -20,6 +21,13 @@ spring:
       hibernate:
         format_sql: true
         show_sql: true
+  cloud:
+    gcp:
+      storage:
+        credentials:
+          location: classpath:greennare-9e6b24e727ac.json
+        project-id: greennare
+        bucket: greennare-bucket-1
 
   redis:
     cache:

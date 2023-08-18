@@ -1,5 +1,7 @@
 package greenNare.challenge.service;
 
+import com.google.cloud.storage.BlobInfo;
+import com.google.cloud.storage.Storage;
 import greenNare.auth.jwt.JwtTokenizer;
 import greenNare.challenge.dto.ChallengeDto;
 import greenNare.challenge.entity.Challenge;
@@ -9,9 +11,9 @@ import greenNare.exception.BusinessLogicException;
 import greenNare.exception.ExceptionCode;
 import greenNare.member.entity.Member;
 import greenNare.member.service.MemberService;
-import greenNare.reply.entity.Reply;
-import greenNare.reply.service.ReplyService;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -38,16 +40,21 @@ public class ChallengeService {
     private final MemberService memberService;
     private final SecurityConfiguration securityConfiguration;
     private final JwtTokenizer jwtTokenizer;
+    @Value("${spring.cloud.gcp.storage.bucket}")
+    private String bucketName;
+    private final Storage storage;
+
 
     public static final String IMAGE_SAVE_URL = "/home/ssm-user/seb44_main_026/images/";
     public static final String IMAGE_DELETE_URL = "/home/ssm-user/seb44_main_026";
     public static final String SEPERATOR  = "_";
 
-    public ChallengeService(ChallengeRepository challengeRepository, MemberService memberService, SecurityConfiguration securityConfiguration, JwtTokenizer jwtTokenizer) {
+    public ChallengeService(ChallengeRepository challengeRepository, MemberService memberService, SecurityConfiguration securityConfiguration, JwtTokenizer jwtTokenizer, Storage storage) {
         this.challengeRepository = challengeRepository;
         this.memberService = memberService;
         this.securityConfiguration = securityConfiguration;
         this.jwtTokenizer = jwtTokenizer;
+        this.storage = storage;
     }
 
     public ChallengeDto.Response createChallenge(Challenge challenge, String token, MultipartFile file) throws NullPointerException, IOException {
@@ -59,7 +66,7 @@ public class ChallengeService {
 
         challenge.setMember(member); // 멤버 넣어야함
 
-        Challenge imageSaveChallenge = saveImage(challenge, file);
+        Challenge imageSaveChallenge = saveFile(challenge, file);
 
         memberService.deletePoint(memberId, 500);
 
@@ -69,6 +76,21 @@ public class ChallengeService {
         response.setName(member.getName());
         response.setPoint(member.getPoint());
         return response;
+    }
+    public Challenge saveFile(Challenge challenge, MultipartFile file) throws IOException{
+        UUID uuid = UUID.randomUUID();
+        String fileName = uuid.toString();
+        String type = file.getContentType();
+        BlobInfo blobInfo = storage.create(
+                BlobInfo.newBuilder(bucketName, fileName)
+                        .setContentType("image/jpeg")
+                        .build(),
+                file.getInputStream()
+        );
+        String name = bucketName+"/"+fileName;
+        challenge.setImage(name);
+        return challengeRepository.save(challenge);
+
     }
 
     public Challenge saveImage(Challenge challenge, MultipartFile file) throws IOException {

@@ -1,0 +1,13 @@
+{
+  "type": "service_account",
+  "project_id": "greennare",
+  "private_key_id": "9e6b24e727ac83fa1af25f63fb57c01072a65ed1",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQDCmM9ny+LoJBv8\n3JFeDkd0h4HsqIGJThtk5RUbIuyuj2pd11q6qI1cjqqDje454zmkoHHsyb3tPFyU\npSYoebAIlp3joRnOfkR6F+UrGH6Fw+TLsHhH6AxH4W8X+VMid267+NYMNysNViGU\n2QOjF8JVY3pCgFItxlP017212gqlIX9sTh1DqkpKN8KhzNg8sN3UB5VRxXkNQLI9\nB5tFC/AxJWTeTIKjmVTJWsIXuP/dNu97i9q946aBPiegjbaQNAxQaLINBBw87PPb\nvb1l35x46yiDKWd2D2ZMByXII2JWDZ8vQ0rmccjPU/T22LEO5XCQ6E6ymoNEmG0C\nSPIST8kXAgMBAAECggEAChn4mkDBNJ+7PDMO8Lz5BJmMKwbMQp5lWaVypQf5FU6o\njNqDATGCtQ1K2K1jcmnTMjKJ92q5izkY7TZtdqhqdOespoZUWp2/XD8lTElnN/Zl\nSBWPCNyI1qpjI/FzWVSt0OAn7FZoy7Zu49UoFS1Ejz4suIsEuQ+UiB8y39/DsbKm\nR9UlWW2HsHGvkn3CEK4/fKF4XWTHDlkpCQqnaQlH8RCvbEO06bK+gBhmnApkT0LL\ndjw7bJgeQj23GG0V9tcF/1bxDTir0D+u1ME20emwLuGlk8lxC5+S0CfEEfPVrUyp\n2XH2hct9yM8Jfv16vakudIk5y5uIw/1Js61hQrc/4QKBgQDipgjImuqru4h+y/7t\n0p/ehWPlRg5sBILLQ0pTGCwSiwq66pI2A+B0palrPBIjWAiz9TTVeKw5Aj7UVQG6\nb0bJiTRGRYMY6yIGNFDTgR/JYKWd3PLuVtC8SNhdcyuku6nsfyzdIY4tZw+rPAUs\n0FguhgXgSv1/CSEfPL7EQ5gIfwKBgQDbzC73wfde5d7433yandCSIPdKZLmTWH2I\n5eWU9BWFR4sM6M6HNox2k3I6FFCZReM6sdt8Z2oU+agV4W5Om6kFf1iC8aosCSOk\nU+ULXsQujka2CSo4U7j8zsPpKXsBF5RfmpSMyk5Xz3KedYXhBFByhlF5oSeZQ0m5\nwf8ydz0zaQKBgG9cl0pB2/Y/caSjhQHDkKucLOY1Uta+LKnEyVsksFr4GHCY2vhR\nVVLbJvA6lsro8XXCkJAm97AXK1nW3r+E92oE0TuJ4g03UwNrZx9U/ZJLu3RiYLa8\nz1kEDdN0yEfrsWUzY47PcvVaAzfmiMBpKjrJvU9kaUOm77BSf4UdlTDvAoGBAM/P\nplyTpJmxxvYQ/1OEgG2ZA5Xv09FvKgmkK0OA31QLB3omJxaKSZXW5HnrOSUhgay9\n+mINuKuqO/SsFkn2PIE5HOt5J8bIwU0eEQGGEQBffpWf5q4o4k8MAwjRMj4fGCao\nFWlj4Vx+g8U0ImdUV+df/Wp9Jt5uUydxNyJ0wIV5AoGAUFObhycMI4064DDDil5r\nMVGTVrXi2G6sme+qLfhr/7hUqgo5V5mhKkbGoKh5SJCQLsjh3VtBDj0o7tgWJet8\nfgYwzTCu5QtfoSwIPX/PLALqWmuCFy4T/t/b6y0nTAUIQJ74AJiKCc/9sobMLnrs\nKndv3w0EKoEpJ2zzgDjUfYY=\n-----END PRIVATE KEY-----\n",
+  "client_email": "greennare-bucket-access@greennare.iam.gserviceaccount.com",
+  "client_id": "110770161457044633375",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/greennare-bucket-access%40greennare.iam.gserviceaccount.com",
+  "universe_domain": "googleapis.com"
+}
