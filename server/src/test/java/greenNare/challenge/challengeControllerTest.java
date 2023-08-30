@@ -61,6 +61,7 @@ public class challengeControllerTest {
 
     @BeforeEach
     public void setUp() {
+        //
         // 테스트에 사용할 예시 데이터 초기화
         mockChallengePostDto = new ChallengeDto.Post("title", "content example");
 
