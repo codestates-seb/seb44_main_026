@@ -1,20 +1,13 @@
 steps:
-  - name: docker/compose:1.29.0
-    args:
-      - -f
-      - docker-compose.prod.yaml
-      - build
-  - name: docker/compose:1.29.0
-    args:
-      - -f
-      - docker-compose.prod.yaml
-      - push
-  - name: gcr.id/cloud-builders/kubectl
-    args:
-      - set
-      - image
-      - deployment/snsteam-backend-api-resource
-      - team-sha256-1=asia.gcr.io/evocative-tube-352516/team:2.5.0
-    env:
-      - CLOUDSDK_COMPUTE_ZONE=asia-northeast3
-      - CLOUDSDK_CONTAINER_CLUSTER=autopilot-cluster-1
+  # Build the container image
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['build', '-t', 'gcr.io/greennare/greennare_img', '.']
+  # Push the container image to Container Registry
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['push', 'gcr.io/greennare/greennare_img']
+  # Deploy container image to Cloud Run for Anthos
+  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+    entrypoint: gcloud
+    args: ['run', 'deploy', 'greennare-cloud-run', '--image', 'gcr.io/greennare/greennare_img', '--cluster', 'autopilot-cluster-1', '--cluster-location', 'asia-northeast3', '--platform', 'gke']
+images:
+  - gcr.io/greennare/greennare_img
