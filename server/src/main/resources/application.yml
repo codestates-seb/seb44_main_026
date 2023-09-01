@@ -30,8 +30,8 @@ spring:
 
   datasource:
     url: jdbc:mysql://34.64.148.174:3306/greennare?serverTimezone=Asia/Seoul
-    username: api
-    password: api
+    username: root
+    password: root
     driver-class-name: com.mysql.cj.jdbc.Driver
 
   sql:
