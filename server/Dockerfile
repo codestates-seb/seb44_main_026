@@ -1,6 +1,7 @@
 FROM openjdk:11-jdk
 
 WORKDIR /app
+RUN cd server
 RUN chmod +x gradlew
 RUN ./gradlew build -p /server
 
