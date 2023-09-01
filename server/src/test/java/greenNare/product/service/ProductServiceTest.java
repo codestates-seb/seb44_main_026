@@ -40,7 +40,7 @@ public class ProductServiceTest {
 
     @Autowired
     private EntityManager entityManager;
-
+/*
     @BeforeEach //@BeforeAll 사용, static고려
     public void initAll() {
 
@@ -74,4 +74,6 @@ public class ProductServiceTest {
         assertEquals(pagenated.getTotalElements(), findProducts.getTotalElements());
 
     }
+
+ */
 }

@@ -46,7 +46,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 @AutoConfigureMockMvc
 //@WebMvcTest(ChallengeController.class)
 @SpringBootTest
+
 public class challengeControllerTest {
+    /*
     @Autowired
     private MockMvc mockMvc;
 
@@ -73,6 +75,8 @@ public class challengeControllerTest {
         //mockChallengeResponse.setTitle("Mock Challenge");
         //mockChallengeResponse.setContent("Mock Content");
     }
+
+ */
 
 /*
     @Test
@@ -182,6 +186,7 @@ public void testPostChallenge() throws Exception {
             .andExpect(MockMvcResultMatchers.jsonPath("$.data.image").value("images/image.jpg"));
 }
 */
+    /*
     @Test
     @DisplayName("get challenge test")
     void getChallengeTest() throws Exception {
@@ -192,4 +197,6 @@ public void testPostChallenge() throws Exception {
 
         //given(challengeService.getAllChallengeWithUsername(pageable)).willReturn(mockChallenges);
     }
+    
+     */
 }

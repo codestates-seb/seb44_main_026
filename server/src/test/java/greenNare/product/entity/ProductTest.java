@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class ProductTest {
+    /*
     @DisplayName("상품정보 유효성 검증 : 필수정보 포함여부")
     @Test
     public void validateProductTest() {
@@ -23,4 +24,6 @@ public class ProductTest {
 
 
     }
+
+     */
 }

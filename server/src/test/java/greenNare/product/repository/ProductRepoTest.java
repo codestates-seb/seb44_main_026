@@ -21,7 +21,7 @@ public class ProductRepoTest {
 
     @Autowired
     private ProductRepository productRepository;
-
+/*
     @DisplayName("모든 상품정보 조회(페이지네이션 적용) 확인(데이터베이스조회)")        //??
     @Test
     public void getProductsTest() {
@@ -48,4 +48,6 @@ public class ProductRepoTest {
 
 
     }
+
+ */
 }

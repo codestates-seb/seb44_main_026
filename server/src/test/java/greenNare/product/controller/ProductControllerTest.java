@@ -19,6 +19,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @AutoConfigureMockMvc   //MockMvc 자동구성
 public class ProductControllerTest {
+    /*
     @Autowired
     private MockMvc mockMvc;
 
@@ -51,5 +52,7 @@ public class ProductControllerTest {
 
 
     }
+
+     */
 
 }

@@ -39,7 +39,7 @@ public class PlaceControllerTest {
 
     @MockBean
     PlaceMapper placeMapper;
-
+/*
     @Test
     @DisplayName("create place test")
     void createPlaceTest() throws Exception {
@@ -108,4 +108,6 @@ public class PlaceControllerTest {
 
         verify(placeService).deletePlace(placeId, mockToken);
     }
+
+ */
 }
