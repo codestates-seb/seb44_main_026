@@ -48,7 +48,7 @@ public class ChallengeDataLoder implements CommandLineRunner {
         SecurityConfiguration securityConfiguration = new SecurityConfiguration(jwtTokenizer, authorityUtils);
         String password = securityConfiguration.passwordEncoder().encode("greennare12");
 
-        Member member = new Member("guest@email.com", "name", password, 0);
+        Member member = new Member("guest@email.com", "name", password, 10000);
         memberRepository.save(member); // Member 엔티티를 먼저 저장
 
         Challenge challenge = new Challenge("title", "content", member);

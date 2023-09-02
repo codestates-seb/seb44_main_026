@@ -60,7 +60,8 @@ jwt:
 mail:
   address:
     admin: admin@gmail.com
-
+server:
+  port: 8080
 #management:
 #  endpoint:
 #    metrics:
