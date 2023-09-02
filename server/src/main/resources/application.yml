@@ -29,7 +29,7 @@ spring:
       port: 6379
 
   datasource:
-    url: jdbc:mysql://172.27.96.3:3306/greennare?serverTimezone=Asia/Seoul
+    url: jdbc:mysql://34.64.148.174:3306/greennare?serverTimezone=Asia/Seoul
     username: root
     password: root
     driver-class-name: com.mysql.cj.jdbc.Driver
