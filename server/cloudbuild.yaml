@@ -1,14 +1,20 @@
 steps:
   # Build the container image
   - name: 'gcr.io/cloud-builders/docker'
-    args: ['build', '-t', 'gcr.io/greennare/greennare_img', './server']
+    args: ['build', '-t', 'gcr.io/greennare/greennare-cloud-run:$COMMIT_SHA', '.']
   # Push the container image to Container Registry
   - name: 'gcr.io/cloud-builders/docker'
-    args: ['push', 'gcr.io/greennare/greennare_img']
-  # Deploy container image to Cloud Run for Anthos
+    args: ['push', 'gcr.io/greennare/greennare-cloud-run:$COMMIT_SHA']
+  # Deploy container image to Cloud Run
   - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
     entrypoint: gcloud
-    args: ['run', 'deploy', 'greennare-cloud-run', '--image', 'gcr.io/greennare/greennare_img', '--cluster', 'autopilot-cluster-1', '--cluster-location', 'asia-northeast3', '--platform', 'gke']
+    args:
+      - 'run'
+      - 'deploy'
+      - 'greennare-cloud-run'
+      - '--image'
+      - 'gcr.io/greennare/greennare-cloud-run:$COMMIT_SHA'
+      - '--region'
+      - 'asia-northeast3'
 images:
-  - 'gcr.io/greennare/greennare_img'
-
+  - 'gcr.io/greennare/greennare-cloud-run:$COMMIT_SHA'
