@@ -7,7 +7,7 @@ spring:
   jpa:
     defer-datasource-initialization: true
     hibernate:
-      ddl-auto: validate
+      ddl-auto: create-drop
 
     open-in-view: false
 
@@ -63,8 +63,8 @@ jwt:
 mail:
   address:
     admin: admin@gmail.com
-server:
-  port: 8080
+#server:
+#  port: 8080
 #management:
 #  endpoint:
 #    metrics:
@@ -81,6 +81,6 @@ server:
 #    tags:
 #      application: ${spring.application.name}
 CLOUD_SQL_INSTANCE_CONNECTION_NAME: greennare:asia-northeast3:greennare-db
-DATABASE_NAME: greennare-db
+DATABASE_NAME: greennare
 USERNAME: cloudrun
 PASSWORD: cloudrun

@@ -1,7 +1,9 @@
 package greenNare.challenge.service;
 
+import com.google.cloud.storage.Blob;
 import com.google.cloud.storage.BlobInfo;
 import com.google.cloud.storage.Storage;
+import com.google.cloud.storage.StorageOptions;
 import greenNare.auth.jwt.JwtTokenizer;
 import greenNare.challenge.dto.ChallengeDto;
 import greenNare.challenge.entity.Challenge;
@@ -78,6 +80,10 @@ public class ChallengeService {
         return response;
     }
     public Challenge saveFile(Challenge challenge, MultipartFile file) throws IOException{
+        if (file.isEmpty()) {
+            log.info("patch 요청에 image 없음");
+            return challenge;
+        }
         UUID uuid = UUID.randomUUID();
         String fileName = uuid.toString();
         String type = file.getContentType();
@@ -173,10 +179,10 @@ public class ChallengeService {
 
         validateWriter(findChallenge.getMember(), token);
 
-        File file = new File(IMAGE_DELETE_URL+findChallenge.getImage());
-        deleteImage(file);
+        //File file = new File(IMAGE_DELETE_URL+findChallenge.getImage());
+        //deleteImage(file);
 
-        findChallenge.setImage(null);
+        //findChallenge.setImage(null);
 
         log.info("update image delete");
 
@@ -185,11 +191,25 @@ public class ChallengeService {
         Optional.ofNullable(challenge.getContent())
                 .ifPresent(content -> findChallenge.setContent(content));
 
-        Challenge imageSaveChallenge = saveImage(findChallenge, image);
+        Challenge imageSaveChallenge = saveFile(findChallenge, image);
 
         challengeRepository.save(imageSaveChallenge);
         ChallengeDto.Response response = ChallengeDto.Response.from(imageSaveChallenge);
         return addWriterInfo(imageSaveChallenge.getMember(), response);
+    }
+    public void changeImg(Challenge challenge, MultipartFile file) {
+        String imageName = challenge.getImage();
+        Storage storage = StorageOptions.newBuilder().setProjectId("greennare").build().getService();
+        Blob blob = storage.get(bucketName, imageName);
+        if (blob == null) {
+            System.out.println("The image " + imageName + " wasn't found in " + bucketName);
+            return;
+        }
+        Storage.BlobSourceOption precondition =
+                Storage.BlobSourceOption.generationMatch(blob.getGeneration());
+
+        storage.delete(bucketName,imageName, precondition);
+        challenge.setImage(null);
     }
 
     public void deleteChallenge(int challengeId, String token){
