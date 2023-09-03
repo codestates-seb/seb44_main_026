@@ -13,6 +13,7 @@ spring:
 
     properties:
       hibernate:
+        dialect: org.hibernate.dialect.MySQL5Dialect
         format_sql: true
         show_sql: true
   cloud:
@@ -29,10 +30,17 @@ spring:
       port: 6379
 
   datasource:
-    url: jdbc:mysql://34.64.148.174:3306/greennare?serverTimezone=Asia/Seoul
+    url: jdbc:mysql://greennare:asia-northeast3:greennare-db/greennare-db?socketFactory=com.google.cloud.sql.mysql.SocketFactory&cloudSqlInstance=greennare:asia-northeast3:greennare-db&user=cloudrun&password=cloudrun
+    driver-class-name: com.mysql.cj.jdbc.Driver
     username: cloudrun
     password: cloudrun
-    driver-class-name: com.mysql.cj.jdbc.Driver
+    hikari:
+      maximum-pool-size: 5
+  #datasource:
+  #  url: jdbc:mysql://34.64.148.174:3306/greennare?serverTimezone=Asia/Seoul
+  #  username: cloudrun
+  #  password: cloudrun
+  #  driver-class-name: com.mysql.cj.jdbc.Driver
 
   sql:
     init:
@@ -77,3 +85,7 @@ server:
 # metrics:
 #    tags:
 #      application: ${spring.application.name}
+CLOUD_SQL_INSTANCE_CONNECTION_NAME: greennare:asia-northeast3:greennare-db
+DATABASE_NAME: greennare-db
+USERNAME: cloudrun
+PASSWORD: cloudrun
