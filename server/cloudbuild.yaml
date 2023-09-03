@@ -10,4 +10,5 @@ steps:
     entrypoint: gcloud
     args: ['run', 'deploy', 'greennare-cloud-run', '--image', 'gcr.io/greennare/greennare_img', '--cluster', 'autopilot-cluster-1', '--cluster-location', 'asia-northeast3', '--platform', 'gke']
 images:
-  - gcr.io/greennare/greennare_img
+  - 'gcr.io/greennare/greennare_img'
+
