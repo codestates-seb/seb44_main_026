@@ -7,9 +7,11 @@ import { faArrowUp } from '@fortawesome/free-solid-svg-icons';
 import { Nav } from 'components/Nav';
 import { useSetAtom } from 'jotai';
 import { isShopAtom } from 'jotai/atom';
+import { menuAtom } from 'jotai/atom';
 
 const MainPage = () => {
   const setIsShop = useSetAtom(isShopAtom);
+  const setMenu = useSetAtom(menuAtom);
 
   const scrollToTop = () => {
     window.scrollTo({
@@ -20,6 +22,7 @@ const MainPage = () => {
 
   useEffect(() => {
     setIsShop(true);
+    setMenu('');
   }, []);
   return (
     <>

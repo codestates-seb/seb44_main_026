@@ -8,11 +8,13 @@ import { faArrowUp } from '@fortawesome/free-solid-svg-icons';
 import { useSetAtom } from 'jotai';
 import { isShopAtom } from 'jotai/atom';
 import API from '../api/index';
+import { menuAtom } from 'jotai/atom';
 
 const ChallengePage = () => {
   const setIsShop = useSetAtom(isShopAtom);
   const login = localStorage.getItem('accessToken');
   const [point, setPoint] = useState<number>(0);
+  const setMenu = useSetAtom(menuAtom);
 
   const getPoint = async () => {
     try {
@@ -47,6 +49,7 @@ const ChallengePage = () => {
   useEffect(() => {
     setIsShop(false);
     getPoint();
+    setMenu('챌린지');
   }, []);
 
   return (

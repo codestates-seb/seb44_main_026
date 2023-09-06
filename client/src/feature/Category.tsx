@@ -1,6 +1,7 @@
 import { styled } from 'styled-components';
 import { useAtom } from 'jotai';
 import { filterAtom } from 'jotai/atom';
+import { useEffect } from 'react';
 
 export const Category = () => {
   const [currentFilter, setCurrentFilter] = useAtom(filterAtom);
@@ -31,6 +32,10 @@ export const Category = () => {
       data: 'hygiene',
     },
   ];
+
+  useEffect(() => {
+    setCurrentFilter('all');
+  }, []);
 
   return (
     <Wrapper>
@@ -85,13 +90,13 @@ const Filter = styled.li`
   font-size: 0.875rem;
 
   &:hover {
-    font-weight: bold;
+    /* font-weight: bold; */
     color: var(--white);
     background-color: var(--green-100);
   }
 
   &.focused {
-    font-weight: bold;
+    /* font-weight: bold; */
     color: var(--white);
     background-color: var(--green-200);
   }

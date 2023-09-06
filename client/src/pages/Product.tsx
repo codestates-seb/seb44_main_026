@@ -9,6 +9,7 @@ import { Pagination } from 'feature/Pagination';
 import { ItemList } from 'feature/ItemList';
 import { TopScrollButton } from 'feature/TopScrollButton';
 import API from '../api/index';
+import { menuAtom } from 'jotai/atom';
 
 export interface ItemType {
   productId: number;
@@ -25,6 +26,7 @@ export interface ItemType {
 export const Product = () => {
   const filter = useAtomValue(filterAtom);
   const setIsShop = useSetAtom(isShopAtom);
+  const setMenu = useSetAtom(menuAtom);
 
   const [isLoding, setIsLoding] = useState(true);
   const [itemList, setItemList] = useState<ItemType[]>([]);
@@ -56,6 +58,10 @@ export const Product = () => {
       console.log(err);
     }
   };
+
+  useEffect(() => {
+    setMenu('상품');
+  }, []);
 
   //카테고리 변경 시
   useEffect(() => {

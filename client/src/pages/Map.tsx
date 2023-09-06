@@ -2,6 +2,10 @@ import styled from 'styled-components';
 import { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import API from '../api/index';
+import { Nav } from 'components/Nav';
+import { useSetAtom } from 'jotai';
+import { menuAtom } from 'jotai/atom';
+
 declare global {
   interface Window {
     kakao: any;
@@ -55,6 +59,7 @@ const StyledLink = styled(Link)`
 export const Map = () => {
   const [mapDataArray, setMapDataArray] = useState<MapData[]>([]); // 지도 데이터 배열
   const [map, setMap] = useState(null); // 지도 상태
+  const setMenu = useSetAtom(menuAtom);
 
   interface MapData {
     placeName: string;
@@ -82,6 +87,7 @@ export const Map = () => {
   useEffect(() => {
     window.scrollTo(0, 0);
     getMapData();
+    setMenu('그린나래지도');
   }, []);
 
   useEffect(() => {
@@ -137,8 +143,10 @@ export const Map = () => {
 
     setMap(map);
   }, [mapDataArray]);
+
   return (
     <>
+      <Nav />
       <StyledNav>
         <StyledTitle>🗺 지도보기</StyledTitle>
         <StyledAddButton>

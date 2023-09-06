@@ -93,9 +93,11 @@ const Menu = styled.li`
   &:hover {
     cursor: pointer;
     font-weight: bold;
+    color: var(--green-200);
   }
 
   &.focused {
     font-weight: bold;
+    color: var(--green-200);
   }
 `;

@@ -2,7 +2,7 @@ import { styled } from 'styled-components';
 import { Link, useNavigate } from 'react-router-dom';
 import logo from '../../assets/img/logo.png';
 // import { SearchBar } from '../../feature/SearchBar';
-import { useSetAtom } from 'jotai';
+import { useAtom, useSetAtom } from 'jotai';
 import { AfterLogin } from './AfterLogin';
 import { BeforeLogin } from './BeforeLogin';
 import { isShopAtom } from 'jotai/atom';
@@ -20,6 +20,8 @@ const StyledChoicePage = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+
+  color: var(--gray-100);
 `;
 const StyledGreen = styled(Link)`
   color: var(--black);
@@ -39,13 +41,17 @@ const StyledNavContainer = styled.div`
 `;
 
 const StyledSpan = styled.span`
+  color: var(--gray-100);
+
   &:hover {
     cursor: pointer;
     font-weight: bold;
+    color: var(--green-200);
   }
 
   &.focused {
     font-weight: bold;
+    color: var(--green-200);
   }
 `;
 
@@ -54,7 +60,8 @@ const StyledLink = styled(Link)`
 `;
 
 export const Header = () => {
-  const setIsShop = useSetAtom(isShopAtom);
+  // const setIsShop = useSetAtom(isShopAtom);
+  const [isShop, setIsShop] = useAtom(isShopAtom);
 
   const accessToken = localStorage.getItem('accessToken');
   return (
@@ -66,11 +73,21 @@ export const Header = () => {
 
         <StyledChoicePage>
           <StyledGreen to={'/'}>
-            <StyledSpan onClick={() => setIsShop(true)}>그린</StyledSpan>
+            <StyledSpan
+              className={isShop ? 'focused' : null}
+              onClick={() => setIsShop(true)}
+            >
+              그린 마켓
+            </StyledSpan>
           </StyledGreen>
           ㅣ{/* 그린 라우팅 주소 입력*/}
           <StyledNare to={'/challenge'}>
-            <StyledSpan onClick={() => setIsShop(false)}>나래</StyledSpan>
+            <StyledSpan
+              className={isShop ? null : 'focused'}
+              onClick={() => setIsShop(false)}
+            >
+              나래 커뮤니티
+            </StyledSpan>
           </StyledNare>
           {/* 나래 라우팅 주소 입력*/}
         </StyledChoicePage>
