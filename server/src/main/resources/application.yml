@@ -22,6 +22,7 @@ spring:
           location: classpath:greennare-9e6b24e727ac.json
         project-id: greennare
         bucket: greennare-bucket-1
+        url: https://storage.googleapis.com/greennare-bucket-1/
 
   redis:
     cache:

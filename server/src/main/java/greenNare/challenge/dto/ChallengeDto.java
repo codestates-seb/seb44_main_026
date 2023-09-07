@@ -28,6 +28,7 @@ public class ChallengeDto {
         private String title;
         @NotBlank
         private String content;
+        private String delImage;
     }
 
     //@NoArgsConstructor

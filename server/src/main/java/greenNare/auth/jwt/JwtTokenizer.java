@@ -1,5 +1,7 @@
 package greenNare.auth.jwt;
 
+import greenNare.exception.BusinessLogicException;
+import greenNare.exception.ExceptionCode;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
@@ -89,6 +91,9 @@ public class JwtTokenizer {
         return key;
     }
     public int getMemberId(String token) {
+        if(token == null) {
+            throw new BusinessLogicException(ExceptionCode.INVALID_TOKEN);
+        }
         String jws = token.replace("Bearer ", "");
         String base64EncodedSecretKey = encodeBase64SecretKey(getSecretKey());
         Jws<Claims> claimsJws = getClaims(token, base64EncodedSecretKey);
