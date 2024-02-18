@@ -5,6 +5,8 @@ import { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import API from '../api/index';
 import { Link, useNavigate } from 'react-router-dom';
+import { Modal } from 'feature/Modal';
+import { modalAtom } from 'jotai/atom';
 declare global {
   interface Window {
     kakao: any;
@@ -66,13 +68,11 @@ export const AddMap = () => {
   const [address, setAddress] = useState(''); // 지도 주소
   const [placeName, setPlaceName] = useState(''); // 내용
   const [map, setMap] = useState(null); // 지도 상태
+  const [location, setLocation] = useState(0); // 위치 상태 변수
   const [lat, setLat] = useState(0); // 위도 상태 변수
   const [longi, setLongi] = useState(0); // 경도 상태 변수
-  const [PlaceId, setPlaceId] = useState(0);
+
   const accessToken = localStorage.getItem('accessToken');
-  const handleChangeValue = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setAddress(e.target.value);
-  };
 
   const PostMapData = async (lat: number, longi: number) => {
     try {
@@ -138,36 +138,27 @@ export const AddMap = () => {
       console.log('GET 요청 실패', error);
     }
   };
+
   const handlechangeregister = () => {
-    const geocoder = new window.kakao.maps.services.Geocoder();
-    geocoder.addressSearch(address, function (result: any, status: any) {
-      if (status === window.kakao.maps.services.Status.OK) {
-        const coords = new window.kakao.maps.LatLng(result[0].y, result[0].x);
+    // 클릭 이벤트 함수 만들기
 
-        const marker = new window.kakao.maps.Marker({
-          map: map,
-          position: coords,
-        });
-
-        const infowindow = new window.kakao.maps.InfoWindow({
-          content: `<div style="width:150px;text-align:center;padding:6px 0;">${placeName}</div>`,
-        });
-        infowindow.open(map, marker);
-
-        map.setCenter(coords);
-        console.log('위도:', coords.getLat());
-        console.log('경도:', coords.getLng());
-        setLat(coords.getLat()); // 위도
-        setLongi(coords.getLng()); // 경도
-        // post 요청 보내기
-        PostMapData(coords.getLat(), coords.getLng()); // coords.getLat()와 coords.getLng() 값을 전달
-      }
+    const marker = new window.kakao.maps.Marker({
+      position: location,
+      map: map,
     });
+    const infowindow = new window.kakao.maps.InfoWindow({
+      content: `<div style="width:150px;text-align:center;padding:6px 0;">${placeName}</div>`,
+    });
+    infowindow.open(map, marker);
+
+    // 데이터 보내기
+    PostMapData(lat, longi);
   };
 
   const handledeleteregister = () => {
     DeleteMapData();
   };
+
   useEffect(() => {
     const mapContainer = document.getElementById('map'); // 지도를 표시할 div
     const mapOption = {
@@ -177,6 +168,28 @@ export const AddMap = () => {
 
     // 지도를 생성합니다
     const map = new window.kakao.maps.Map(mapContainer, mapOption);
+    window.kakao.maps.event.addListener(
+      map,
+      'click',
+      function (mouseEvent: any) {
+        MapClick(mouseEvent);
+      },
+    );
+    const MapClick = (e: any) => {
+      // 클릭 시 위도 경도
+      const latLng = e.latLng;
+      const lat = latLng.getLat();
+      const longi = latLng.getLng();
+
+      console.log('위치:', latLng);
+      console.log('위도:', lat);
+      console.log('경도:', longi);
+
+      //위도, 경도, 위치정보 저장
+      setLocation(latLng);
+      setLat(lat);
+      setLongi(longi);
+    };
     setMap(map);
   }, []);
 
@@ -194,8 +207,9 @@ export const AddMap = () => {
         </StyledMapItem>
         <StyledMapItem>
           <StyledPadding>
-            <StyledSubTitle>나만의 상점 등록하기</StyledSubTitle>{' '}
-            <SearchBar onChange={handleChangeValue} value={address}></SearchBar>
+            <StyledSubTitle>나만의 상점 등록하기</StyledSubTitle>
+            <h3>1. 등록할 상점의 위치를 지도에서 찾아 클릭 해주세요!</h3>
+            <h3>2. 상점의 이름을 입력 하고 등록 버튼을 눌러 주세요!</h3>
             <StyledPaddingBottom />
             <NewChallenge setContents={setPlaceName} contents={placeName} />
           </StyledPadding>
